@@ -3,15 +3,19 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Traits\Identifiers;
 
 /**
  * Ecole
  *
  * @ORM\Table(name="ecole")
+ * @ORM\EntityListeners("AppBundle\EntityListener\AppEntityListener")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EcoleRepository")
  */
 class Ecole
-{/**
+{
+    use Identifiers;
+    /**
  * @var int
  *
  * @ORM\Column(name="id", type="integer")
@@ -65,16 +69,24 @@ class Ecole
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateCreation", type="datetime", length=255)
+     * @ORM\Column(name="createdAt", type="datetime", length=255)
      */
-    private $dateCreation;
+    private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateModification", type="datetime", length=255)
+     * @ORM\Column(name="updatedAt", type="datetime", length=255)
      */
-    private $dateModification;
+    private $updatedAt;
+
+    /**
+     * Ecole constructor.
+     */
+    public function __construct()
+    {
+        $this->codeTelephone = 'ab';
+    }
 
 
     /**

@@ -12,6 +12,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Eleve
 {
+   
+    public  function __construct()
+    {
+        $this->dateCreation=new \DateTime();
+        $this->dateModification=new \DateTime();
+        $this->archiver=0;
+        $this->photo="prpfile.png";
+    }
+
+   
     /**
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Classe",cascade={"persist"})
@@ -78,7 +88,13 @@ class Eleve
      * @ORM\Column(name="dateModification", type="datetimetz")
      */
     private $dateModification;
-
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="archiver", type="boolean")
+     */
+    private $archiver;
+    
 
     /**
      * Get id
@@ -257,5 +273,52 @@ class Eleve
     {
         return $this->dateModification;
     }
-}
 
+    /**
+     * Set classe
+     *
+     * @param \AppBundle\Entity\Classe $classe
+     *
+     * @return Eleve
+     */
+    public function setClasse(\AppBundle\Entity\Classe $classe = null)
+    {
+        $this->classe = $classe;
+    
+        return $this;
+    }
+
+    /**
+     * Get classe
+     *
+     * @return \AppBundle\Entity\Classe
+     */
+    public function getClasse()
+    {
+        return $this->classe;
+    }
+
+    /**
+     * Set archiver
+     *
+     * @param boolean $archiver
+     *
+     * @return Eleve
+     */
+    public function setArchiver($archiver)
+    {
+        $this->archiver = $archiver;
+    
+        return $this;
+    }
+
+    /**
+     * Get archiver
+     *
+     * @return boolean
+     */
+    public function getArchiver()
+    {
+        return $this->archiver;
+    }
+}

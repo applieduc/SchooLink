@@ -27,12 +27,6 @@ class Periode
      */
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255)
-     */
-    private $type;
 
     /**
      * @var \DateTime
@@ -130,5 +124,28 @@ class Periode
     {
         return $this->dateFin;
     }
-}
 
+    /**
+     * Set annee
+     *
+     * @param \AppBundle\Entity\Annee $annee
+     *
+     * @return Periode
+     */
+    public function setAnnee(\AppBundle\Entity\Annee $annee = null)
+    {
+        $this->annee = $annee;
+    
+        return $this;
+    }
+
+    /**
+     * Get annee
+     *
+     * @return \AppBundle\Entity\Annee
+     */
+    public function getAnnee()
+    {
+        return $this->annee;
+    }
+}

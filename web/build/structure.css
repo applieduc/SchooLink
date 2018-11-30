@@ -21463,6 +21463,11 @@ label:not(.form-check-label):not(.custom-file-label) {
 .select2-dropdown {
   border: 1px solid #d2d6de;
 }
+.badge.badge-flat {
+    border-radius: 0;
+    box-shadow: none;
+    border-width: 1px;
+}
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
   background-color: #007bff;

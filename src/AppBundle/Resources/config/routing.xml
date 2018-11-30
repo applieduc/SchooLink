@@ -4,10 +4,30 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
+
     <route id="app_educ_homepage" path="/">
         <default key="_controller">AppEducBundle:Default:index</default>
     </route>
     <route id="app_educ_signin" path="/signin">
         <default key="_controller">AppEducBundle:Default:login</default>
+    </route>
+
+
+    <route id="schools" path="/schools">
+        <default key="_controller">AppEducBundle:Dashboard:index</default>
+    </route>
+    <route id="school_save" path="/school_save">
+        <default key="_controller">AppEducBundle:Dashboard:ecole_save</default>
+    </route>
+    <route id="new_school" path="/new_school/{id}">
+        <default key="_controller">AppEducBundle:Dashboard:new</default>
+    </route>
+
+    <route id="cloture_year" path="/cloture_year/{id}">
+    <default key="_controller">AppEducBundle:Dashboard:clotureYear</default>
+    </route>
+    <route id="save" path="/save">
+        <default key="_controller">AppEducBundle:Dashboard:saveYear</default>
+    </route>
     </route>
 </routes>

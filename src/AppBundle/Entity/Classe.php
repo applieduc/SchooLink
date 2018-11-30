@@ -13,6 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Classe
 {
 
+    public  function __construct()
+    {
+        $this->dateCreation=new \DateTime();
+        $this->dateModification=new \DateTime();
+        $this->archiver=0;
+    }
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
      */
@@ -48,7 +55,13 @@ class Classe
      */
     private $dateModification;
 
-
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="archiver", type="boolean")
+     */
+    private $archiver;
+    
     /**
      * Get id
      *
@@ -130,5 +143,52 @@ class Classe
     {
         return $this->dateModification;
     }
-}
 
+    /**
+     * Set ecole
+     *
+     * @param \AppBundle\Entity\Ecole $ecole
+     *
+     * @return Classe
+     */
+    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
+    {
+        $this->ecole = $ecole;
+    
+        return $this;
+    }
+
+    /**
+     * Get ecole
+     *
+     * @return \AppBundle\Entity\Ecole
+     */
+    public function getEcole()
+    {
+        return $this->ecole;
+    }
+
+    /**
+     * Set archiver
+     *
+     * @param boolean $archiver
+     *
+     * @return Classe
+     */
+    public function setArchiver($archiver)
+    {
+        $this->archiver = $archiver;
+    
+        return $this;
+    }
+
+    /**
+     * Get archiver
+     *
+     * @return boolean
+     */
+    public function getArchiver()
+    {
+        return $this->archiver;
+    }
+}

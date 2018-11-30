@@ -207,8 +207,8 @@
     EXPANDED: "expanded" + B,
     COLLAPSED: "collapsed" + B,
     LOAD_DATA_API: "load" + B
-  }, H = ".nav-item", N = ".nav-treeview", Y = ".menu-open", V = "menu-open", G = {
-    trigger: (U = '[data-widget="treeview"]') + " " + ".nav-link",
+  }, H = ".navs-item", N = ".navs-treeview", Y = ".menu-open", V = "menu-open", G = {
+    trigger: (U = '[data-widget="treeview"]') + " " + ".navs-link",
     animationSpeed: 300,
     accordion: !0
   }, W = function () {

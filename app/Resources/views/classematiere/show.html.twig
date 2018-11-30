@@ -1,0 +1,58 @@
+{% extends 'master.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                    <span class="">
+                       Matière</span>
+                        <span class="pull-right" >
+                        <a href="{{ path('class_mat_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        <a href="{{ path('class_mat_edit', { 'id': classeMatiere.id }) }}"><i class="fa fa-edit text-warning"></i></a>
+                            {% if classeMatiere.archiver %}
+                                <a href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
+                        {% else %}
+                                <a href="{{ path('class_mat_archive', { 'id': classeMatiere.id }) }}"><i class="fa fa-folder text-danger"></i></a>
+                            {% endif %}
+
+                    </span>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center"><table>
+                                <tbody>
+                                <tr>
+                                    <th>Id</th>
+                                    <td>{{ classeMatiere.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Matière</th>
+                                    <td>{{ classeMatiere.matiere }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Coefficient</th>
+                                    <td>{{ classeMatiere.coefficient }}</td>
+                                </tr>
+                                <tr>
+                                    <th>classe</th>
+                                    <td>{{  classeMatiere.coefficient }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Statut</th>
+                                    <td>{% if classeMatiere.archiver %}<span class="badge badge-danger">Matière non enseignée</span>{% else %}<span class="badge badge-success">Matière enseignée</span>{% endif %}</td>
+                                </tr>
+                                </tbody>
+                            </table></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

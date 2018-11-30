@@ -3,16 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use AppBundle\Traits\Identifiers;
 /**
  * Professeur
  *
  * @ORM\Table(name="professeur")
+ * @ORM\EntityListeners("AppBundle\EntityListener\AppEntityListener")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProfesseurRepository")
  */
-class Professeur extends User
+class Professeur
 {
-
+    use Identifiers;
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Compte",cascade={"persist"})
      *
@@ -36,18 +37,40 @@ class Professeur extends User
     private $codeProf;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="dateCreation", type="datetimetz")
+     * @ORM\Column(name="nom", type="string", length=255)
      */
-    private $dateCreation;
+    private $nom;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="dateModification", type="datetimetz")
+     * @ORM\Column(name="prenom", type="string", length=255)
      */
-    private $dateModification;
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telephone", type="string", length=255)
+     */
+    private $telephone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=255)
+     */
+    private $adresse;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
+
+
 
 
     /**
@@ -85,51 +108,102 @@ class Professeur extends User
     }
 
     /**
-     * Set dateCreation
-     *
-     * @param \DateTime $dateCreation
-     *
-     * @return Professeur
-     */
-    public function setDateCreation($dateCreation)
-    {
-        $this->dateCreation = $dateCreation;
-
-        return $this;
-    }
-
-    /**
-     * Get dateCreation
-     *
      * @return \DateTime
      */
-    public function getDateCreation()
+    public function getCreatedAt()
     {
-        return $this->dateCreation;
+        return $this->createdAt;
     }
 
     /**
-     * Set dateModification
-     *
-     * @param \DateTime $dateModification
-     *
-     * @return Professeur
+     * @param \DateTime $createdAt
      */
-    public function setDateModification($dateModification)
+    public function setCreatedAt($createdAt)
     {
-        $this->dateModification = $dateModification;
-
-        return $this;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * Get dateModification
-     *
-     * @return \DateTime
+     * @return string
      */
-    public function getDateModification()
+    public function getNom()
     {
-        return $this->dateModification;
+        return $this->nom;
     }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * @param string $prenom
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @param string $telephone
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * @param string $adresse
+     */
+    public function setAdresse($adresse)
+    {
+        $this->adresse = $adresse;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+
+
 }
 
