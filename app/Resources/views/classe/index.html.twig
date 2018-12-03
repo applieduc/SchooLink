@@ -42,11 +42,14 @@
         {% for classe in classes %}
             <tr>
                 <td><a href="{{ path('classe_show', { 'id': classe.id }) }}">{{ classe.id }}</a></td>
-                <td><a href="{{ path('classe_show', { 'id': classe.id }) }}">{{ classe.libelle }} </a></td>
+                <td><a href="{{ path('eleve_classe_index', { 'classe': classe.id }) }}">{{ classe.libelle }} </a></td>
                 <td>{{ classe.dateCreation | date('Y-m-d H:i:s')}}</td>
                 <td>
                     <div class=" row d-column justify-content-center">
-                            <div class="">  <a class="dropdown-item modif btn btn-sm btn-secondary" title="Liste des matieres" href="{{ path('classe_show', { 'id': classe.id }) }}" rel="#"><i class="fa fa-list text-secondary"></i></a></div>
+
+                        {% if(app.session.get('annee')!=null) %}
+                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-secondary" title="Liste des matieres" href="{{ path('class_mat_index', { 'id': classe.id }) }}" rel="#"><i class="fa fa-list text-secondary"></i></a></div>
+                        {% endif %}
                         <div class="">      <a href="{{ path('classe_edit', { 'id': classe.id }) }}"><i class="fa fa-edit text-warning"></i></a></div>
                         <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('classe_show', { 'id': classe.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
                         {% if classe.archiver %}

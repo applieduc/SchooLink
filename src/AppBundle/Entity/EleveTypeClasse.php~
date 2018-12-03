@@ -5,13 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Classe
+ * EleveTypeClasse
  *
- * @ORM\Table(name="classe")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ClasseRepository")
+ * @ORM\Table(name="eleve_type_classe")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EleveTypeClasseRepository")
  */
-class Classe
+class EleveTypeClasse
 {
+
 
     public  function __construct()
     {
@@ -20,10 +21,19 @@ class Classe
         $this->archiver=0;
     }
 
+
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eleve",cascade={"persist"})
      */
-    private $ecole;
+    private $eleve;
+
+
+  /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TypeClasse",cascade={"persist"})
+     */
+    private $type_classe;
+
+
 
     /**
      * @var int
@@ -33,13 +43,6 @@ class Classe
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="libelle", type="string", length=255)
-     */
-    private $libelle;
 
     /**
      * @var \DateTime
@@ -55,17 +58,18 @@ class Classe
      */
     private $dateModification;
 
-        /**
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="archiver", type="boolean")
      */
     private $archiver;
-    
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -73,40 +77,16 @@ class Classe
     }
 
     /**
-     * Set libelle
-     *
-     * @param string $libelle
-     *
-     * @return Classe
-     */
-    public function setLibelle($libelle)
-    {
-        $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    /**
-     * Get libelle
-     *
-     * @return string
-     */
-    public function getLibelle()
-    {
-        return $this->libelle;
-    }
-
-    /**
      * Set dateCreation
      *
      * @param \DateTime $dateCreation
      *
-     * @return Classe
+     * @return EleveTypeClasse
      */
     public function setDateCreation($dateCreation)
     {
         $this->dateCreation = $dateCreation;
-
+    
         return $this;
     }
 
@@ -125,12 +105,12 @@ class Classe
      *
      * @param \DateTime $dateModification
      *
-     * @return Classe
+     * @return EleveTypeClasse
      */
     public function setDateModification($dateModification)
     {
         $this->dateModification = $dateModification;
-
+    
         return $this;
     }
 
@@ -145,50 +125,50 @@ class Classe
     }
 
     /**
-     * Set ecole
+     * Set eleve
      *
-     * @param \AppBundle\Entity\Ecole $ecole
+     * @param \AppBundle\Entity\Eleve $eleve
      *
-     * @return Classe
+     * @return EleveTypeClasse
      */
-    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
+    public function setEleve(\AppBundle\Entity\Eleve $eleve = null)
     {
-        $this->ecole = $ecole;
+        $this->eleve = $eleve;
     
         return $this;
     }
 
     /**
-     * Get ecole
+     * Get eleve
      *
-     * @return \AppBundle\Entity\Ecole
+     * @return \AppBundle\Entity\Eleve
      */
-    public function getEcole()
+    public function getEleve()
     {
-        return $this->ecole;
+        return $this->eleve;
     }
 
     /**
-     * Set archiver
+     * Set typeClasse
      *
-     * @param boolean $archiver
+     * @param \AppBundle\Entity\TypeClasse $typeClasse
      *
-     * @return Classe
+     * @return EleveTypeClasse
      */
-    public function setArchiver($archiver)
+    public function setTypeClasse(\AppBundle\Entity\TypeClasse $typeClasse = null)
     {
-        $this->archiver = $archiver;
+        $this->type_classe = $typeClasse;
     
         return $this;
     }
 
     /**
-     * Get archiver
+     * Get typeClasse
      *
-     * @return boolean
+     * @return \AppBundle\Entity\TypeClasse
      */
-    public function getArchiver()
+    public function getTypeClasse()
     {
-        return $this->archiver;
+        return $this->type_classe;
     }
 }

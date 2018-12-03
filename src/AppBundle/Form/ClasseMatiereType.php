@@ -1,7 +1,7 @@
 <?php
 
 namespace AppBundle\Form;
-
+ 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,17 +14,24 @@ class ClasseMatiereType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+    
         $builder->add('coefficient')->add('matiere', EntityType::class, array(
-        'class' => 'AppBundle:Matiere',
-        'choice_label' => 'matiere',
+        'class' => 'AppBundle\Entity\Matiere',
+        'choice_label' => 'libelle',
 
-    ))->add('classe', EntityType::class, array(
+    ));
+    }
+    /*
+     ->add('classe', EntityType::class, array(
             'class' => 'AppBundle:Classe',
             'choice_label' => 'libelle',
 
-        ));
-    }/**
-     * {@inheritdoc}
+        ))
+     */
+    
+    /**
+     * {@i
+     * nheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

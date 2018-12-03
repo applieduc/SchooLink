@@ -70,12 +70,22 @@ class ClasseController extends Controller
     /**
      * Lists all classe entities.
      *
-     * @Route("/", name="classe_index")
+     * id=annee_id
+     * @Route("/{id}", name="classe_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction($id=null,Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $session=$this->get("session");
+        if($id!=null){
+            $annee = $em->getRepository('AppBundle:Annee')->find((int)$id);
+            $session->set('annee',$annee);
+
+        }else{
+            $session->remove('annee');
+        }
+
 
         $classes = $em->getRepository('AppBundle:Classe')->findAll();
 
@@ -109,7 +119,9 @@ class ClasseController extends Controller
         $classe->setArchiver(1);
         $em->persist($classe);
         $em->flush();
-        return $this->redirectToRoute('classe_index');
+        $session=$this->get("session");
+        $annee= $session->get('annee');
+        return $this->redirectToRoute('classe_index',array('id'=>$annee->getId()));
     }
     /**
      * Displays a form to edit an existing classe entity.
@@ -123,6 +135,9 @@ class ClasseController extends Controller
         $classe->setArchiver(0);
         $em->persist($classe);
         $em->flush();
-        return $this->redirectToRoute('classe_index');
+        $session=$this->get("session");
+        $annee= $session->get('annee');
+        return $this->redirectToRoute('classe_index',array('id'=>$annee->getId()));
+  
     }
 }

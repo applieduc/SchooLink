@@ -15,8 +15,6 @@ class TypeClasse
     
     public  function __construct()
     {
-        $this->dateCreation=new \DateTime();
-        $this->dateModification=new \DateTime();
         $this->archiver=0;
     }
     
@@ -144,53 +142,5 @@ class TypeClasse
     public function getClasse()
     {
         return $this->classe;
-    }
-
-    /**
-     * Set dateCreation
-     *
-     * @param \DateTime $dateCreation
-     *
-     * @return TypeClasse
-     */
-    public function setDateCreation($dateCreation)
-    {
-        $this->dateCreation = $dateCreation;
-    
-        return $this;
-    }
-
-    /**
-     * Get dateCreation
-     *
-     * @return \DateTime
-     */
-    public function getDateCreation()
-    {
-        return $this->dateCreation;
-    }
-
-    /**
-     * Set dateModification
-     *
-     * @param \DateTime $dateModification
-     *
-     * @return TypeClasse
-     */
-    public function setDateModification($dateModification)
-    {
-        $this->dateModification = $dateModification;
-    
-        return $this;
-    }
-
-    /**
-     * Get dateModification
-     *
-     * @return \DateTime
-     */
-    public function getDateModification()
-    {
-        return $this->dateModification;
     }
 }

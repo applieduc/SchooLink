@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\ClasseMatiere;
+use AppBundle\Entity\Classe;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -17,113 +18,126 @@ class ClasseMatiereController extends Controller
     /**
      * Lists all classeMatiere entities.
      *
-     * @Route("/", name="class_mat_index")
+     * @Route("/{id}", name="class_mat_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $classeMatieres = $em->getRepository('AppBundle:ClasseMatiere')->findAll();
+        $classeMatieres = $em->getRepository('AppBundle:ClasseMatiere')->findBy(array('classe'=>$id));
 
         return $this->render('classematiere/index.html.twig', array(
             'classeMatieres' => $classeMatieres,
+            'classe_id'=>$id
         ));
     }
 
     /**
      * Creates a new classeMatiere entity.
      *
-     * @Route("/new", name="class_mat_new")
+     * @Route("/new/{id}", name="class_mat_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request,$id)
     {
-        $classeMatiere = new Classematiere();
+        $classeMatiere = new ClasseMatiere();
         $form = $this->createForm('AppBundle\Form\ClasseMatiereType', $classeMatiere);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+           
             $em = $this->getDoctrine()->getManager();
-            $em->persist($classeMatiere);
-            $em->flush();
-
-            return $this->redirectToRoute('class_mat_show', array('id' => $classeMatiere->getId()));
+            $classe= $em->getRepository(Classe::class)->find($id);
+            $classeMatiere->setClasse($classe);
+             $verify=$em->getRepository(ClasseMatiere::class)->findOneBy(array('classe'=>$classe->getId(),'matiere'=>$classeMatiere->getMatiere()->getId()));
+             if($verify==null){
+                $em->persist($classeMatiere);
+                $em->flush();
+            }
+           
+            die();
+            
+            return $this->redirectToRoute('class_mat_show', array('id' => $classeMatiere->getId(),'cl'=>$id));
         }
-
+        
         return $this->render('classematiere/new.html.twig', array(
             'classeMatiere' => $classeMatiere,
             'form' => $form->createView(),
+            'classe_id'=>$id
         ));
     }
 
     /**
+     * $cl===$classe_id
      * Finds and displays a classeMatiere entity.
      *
-     * @Route("/{id}", name="class_mat_show")
+     * @Route("/{id}/{cl}", name="class_mat_show")
      * @Method("GET")
      */
-    public function showAction(ClasseMatiere $classeMatiere)
+    public function showAction(ClasseMatiere $classeMatiere,$cl)
     {
         $deleteForm = $this->createDeleteForm($classeMatiere);
 
         return $this->render('classematiere/show.html.twig', array(
             'classeMatiere' => $classeMatiere,
             'delete_form' => $deleteForm->createView(),
+            'classe_id'=>$cl
         ));
     }
 
     /**
+     * $cl===$classe_id
      * Displays a form to edit an existing classeMatiere entity.
      *
-     * @Route("/{id}/edit", name="class_mat_edit")
+     * @Route("/{id}/edit/{cl}", name="class_mat_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, ClasseMatiere $classeMatiere)
+    public function editAction(Request $request, ClasseMatiere $classeMatiere,$cl)
     {
         $deleteForm = $this->createDeleteForm($classeMatiere);
         $editForm = $this->createForm('AppBundle\Form\ClasseMatiereType', $classeMatiere);
         $editForm->handleRequest($request);
-
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('class_mat_edit', array('id' => $classeMatiere->getId()));
+            return $this->redirectToRoute('class_mat_edit', array('id' => $classeMatiere->getId(), 'cl'=>$cl));
         }
 
         return $this->render('classematiere/edit.html.twig', array(
             'classeMatiere' => $classeMatiere,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'classe_id'=>$cl
         ));
     }
  /**
      * Displays a form to edit an existing classeMatiere entity.
      *
-     * @Route("/{id}/archive", name="class_mat_archive")
+     * @Route("/{id}/archive/{cl}", name="class_mat_archive")
      * @Method({"GET", "POST"})
      */
-    public function archiveAction(Request $request, ClasseMatiere $classeMatiere)
+    public function archiveAction(Request $request, ClasseMatiere $classeMatiere,$cl)
     {
         $em=$this->getDoctrine()->getManager();
         $classeMatiere->setArchiver(1);
         $em->persist($classeMatiere);
         $em->flush();
-        return $this->redirectToRoute('class_mat_index');
+        return $this->redirectToRoute('class_mat_index',array('id'=>$cl));
     }
     /**
      * Displays a form to edit an existing classeMatiere entity.
      *
-     * @Route("/{id}/desarchive", name="class_mat_desarchive")
+     * @Route("/{id}/desarchive/{cl}", name="class_mat_desarchive")
      * @Method({"GET", "POST"})
      */
-    public function desarchiveAction(Request $request, ClasseMatiere $classeMatiere)
+    public function desarchiveAction(Request $request, ClasseMatiere $classeMatiere,$cl)
     {
         $em=$this->getDoctrine()->getManager();
         $classeMatiere->setArchiver(0);
         $em->persist($classeMatiere);
         $em->flush();
-        return $this->redirectToRoute('class_mat_index');
+        return $this->redirectToRoute('class_mat_index',array('id'=>$cl));
     }
 
     /**

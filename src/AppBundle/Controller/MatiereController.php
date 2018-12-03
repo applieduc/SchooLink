@@ -48,7 +48,8 @@ class MatiereController extends Controller
             $em->persist($matiere);
             $em->flush();
 
-            return $this->redirectToRoute('matiere_show', array('id' => $matiere->getId()));
+            return $this->redirectToRoute('matiere_index');
+//            return $this->redirectToRoute('matiere_show', array('id' => $matiere->getId()));
         }
 
         return $this->render('matiere/new.html.twig', array(

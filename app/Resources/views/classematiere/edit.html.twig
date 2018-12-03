@@ -9,14 +9,14 @@
                      <span class="">
                        Matière</span>
                         <span class="pull-right" >
-                        <a href="{{ path('class_mat_index') }}"><i class="fa fa-backward text-dark"></i></a>
-                        <a href="{{ path('class_mat_edit', { 'id': classeMatiere.id }) }}"><i class="fa fa-edit text-warning"></i></a>
-                            {% if classeMatiere.archiver %}
-                                <a href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
-                        {% else %}
-                                <a href="{{ path('class_mat_archive', { 'id': classeMatiere.id }) }}"><i class="fa fa-folder text-danger"></i></a>
-                            {% endif %}
-
+                            <a href="{{ path('class_mat_index',{'id':classe_id}) }}"><i class="fa fa-backward text-dark"></i></a>
+                            <a href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe_id }) }}"><i class="fa fa-edit text-warning"></i></a>
+                                {% if classeMatiere.archiver %}
+                                    <a href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id ,'cl':classe_id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
+                            {% else %}
+                                    <a href="{{ path('class_mat_archive', { 'id': classeMatiere.id ,'cl':classe_id }) }}"><i class="fa fa-folder text-danger"></i></a>
+                                {% endif %}
+    
                     </span>
                     </div>
                 </div>
@@ -30,10 +30,7 @@
                         <label>Coefficient</label>
                         {{ form_widget(edit_form.coefficient,{'attr':{'class':'form-control'}}) }}
                     </div>
-                    <div class="form-group">
-                        <label>classe</label>
-                        {{ form_widget(edit_form.classe,{'attr':{'class':'form-control'}}) }}
-                    </div>
+                    
                     <input type="submit" value="Sauvegarder"  class="btn btn-success"/>
                     {{ form_end(edit_form) }}
                 </div>

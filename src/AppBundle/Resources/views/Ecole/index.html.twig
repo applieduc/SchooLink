@@ -51,7 +51,7 @@
                         {% for annee in annees %}
                         <tr class="text-center">
                             <td>
-                                <a href="#" title="{{annee.dateDebut|date('d-m-Y')}} - {{annee.dateFin|date('d-m-Y')}}">{{annee.dateDebut|date('Y')}} - {{annee.dateFin|date('Y')}}</a>
+                                <a href="{{path('classe_index',{'id':annee.id})}}" title="{{annee.dateDebut|date('d-m-Y')}} - {{annee.dateFin|date('d-m-Y')}}">{{annee.dateDebut|date('Y')}} - {{annee.dateFin|date('Y')}}</a>
                             </td>
                             <td>
                            <div>

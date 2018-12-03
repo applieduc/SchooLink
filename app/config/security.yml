@@ -45,7 +45,7 @@ security:
     - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/adminstration, role: [ROLE_ADMIN_GENERAL] }
+#    - { path: ^/adminstration, role: [ROLE_ADMIN_GENERAL] }
     - { path: ^/ecole, role: [ROLE_CENSEUR] }
     - { path: ^/professeur, role: [ROLE_PROFESSEUR] }
     - { path: ^/parent, role: [ROLE_PARENT] }
