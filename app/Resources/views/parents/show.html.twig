@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Parent</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ parent.id }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{{ parent.dateCreation }}</td>
+            </tr>
+            <tr>
+                <th>Datemodification</th>
+                <td>{{ parent.dateModification }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('parents_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('parents_edit', { 'id': parent.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

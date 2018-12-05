@@ -50,6 +50,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< HEAD
     <orderEntry type="module-library">
       <library name="PHP" type="php">
         <CLASSES>
@@ -144,5 +145,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+=======
+>>>>>>> vR1'
   </component>
 </module>

@@ -3,7 +3,10 @@
 namespace AppBundle\Controller;
 
 
+<<<<<<< HEAD
 use AppBundle\Entity\AdminGen;
+=======
+>>>>>>> vR1'
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,6 +22,7 @@ class AdminGeneralController extends Controller
      */
     public function indexAction()
     {
+<<<<<<< HEAD
 //        $admin=new AdminGen();
 //        $admin->setNom('Admin');
 //        $admin->setPrenom('admin');
@@ -30,6 +34,8 @@ class AdminGeneralController extends Controller
 //        $admin->setRoles(array('ROLE_ADMIN_GENERAL'));
 //        $this->getDoctrine()->getManager()->persist($admin);
 //        $this->getDoctrine()->getManager()->flush();
+=======
+>>>>>>> vR1'
         return $this->render('@App/Administration/index_Admin.html.twig');
     }
 }

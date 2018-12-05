@@ -56,7 +56,10 @@ class ClasseMatiereController extends Controller
                 $em->flush();
             }
            
+<<<<<<< HEAD
             die();
+=======
+>>>>>>> vR1'
             
             return $this->redirectToRoute('class_mat_show', array('id' => $classeMatiere->getId(),'cl'=>$id));
         }

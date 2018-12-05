@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Parents list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datecreation</th>
+                <th>Datemodification</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for parent in parents %}
+            <tr>
+                <td><a href="{{ path('parents_show', { 'id': parent.id }) }}">{{ parent.id }}</a></td>
+                <td>{{ parent.dateCreation }}</td>
+                <td>{{ parent.dateModification }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('parents_show', { 'id': parent.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('parents_edit', { 'id': parent.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('parents_new') }}">Create a new parent</a>
+        </li>
+    </ul>
+{% endblock %}

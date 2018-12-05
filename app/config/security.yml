@@ -8,7 +8,11 @@ security:
         in_memory:
             memory: ~
         fos_userbundle:
+<<<<<<< HEAD
             id: fos_user.user_provider.username
+=======
+            id:  fos_user.user_provider.username_email
+>>>>>>> vR1'
 
     role_hierarchy:
         ROLE_ADMIN_GENERAL:       [ROLE_USER]
@@ -29,7 +33,11 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
+<<<<<<< HEAD
 #                    success_handler: redirect.after.login
+=======
+                success_handler: redirect.after.login
+>>>>>>> vR1'
             remember_me:
                 secret: '%secret%'
 
@@ -45,7 +53,11 @@ security:
     - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+<<<<<<< HEAD
 #    - { path: ^/adminstration, role: [ROLE_ADMIN_GENERAL] }
+=======
+    - { path: ^/adminstration, role: [ROLE_ADMIN_GENERAL] }
+>>>>>>> vR1'
     - { path: ^/ecole, role: [ROLE_CENSEUR] }
     - { path: ^/professeur, role: [ROLE_PROFESSEUR] }
     - { path: ^/parent, role: [ROLE_PARENT] }

@@ -1,0 +1,92 @@
+{% extends 'template/layout.html.twig' %}
+
+{% block menu %}
+
+    {% if is_granted('ROLE_ADMIN_GENERAL') %}
+        {% include'@App/Administration/Partials/_menu_admin.html.twig' %}
+    {% endif %}
+{% endblock %}
+ {% block contenuPrincipal %}
+<div class="row">
+    <div class="col-lg-6 offset-3">
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <div class="card-header">
+                    <h5 class="m-0">Ajout Censeur </h5>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Photo</th>
+                            <th>Createdat</th>
+                            <th>Updatedat</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for censeur in censeurs %}
+                            <tr>
+                                <td><a href="{{ path('censeur_show', { 'id': censeur.id }) }}">{{ censeur.id }}</a></td>
+                                <td>{{ censeur.photo }}</td>
+                                <td>{% if censeur.createdAt %}{{ censeur.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if censeur.updatedAt %}{{ censeur.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <a href="{{ path('censeur_show', { 'id': censeur.id }) }}">show</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('censeur_edit', { 'id': censeur.id }) }}">edit</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ {% endblock %}
+    <h1>Censeurs list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Photo</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for censeur in censeurs %}
+            <tr>
+                <td><a href="{{ path('censeur_show', { 'id': censeur.id }) }}">{{ censeur.id }}</a></td>
+                <td>{{ censeur.photo }}</td>
+                <td>{% if censeur.createdAt %}{{ censeur.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if censeur.updatedAt %}{{ censeur.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('censeur_show', { 'id': censeur.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('censeur_edit', { 'id': censeur.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('censeur_new') }}">Create a new censeur</a>
+        </li>
+    </ul>
+{% endblock %}

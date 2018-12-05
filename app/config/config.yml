@@ -38,6 +38,10 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+<<<<<<< HEAD
+=======
+    form_themes: ['bootstrap_4_layout.html.twig']
+>>>>>>> vR1'
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -77,4 +81,11 @@ fos_user:
     user_class: AppBundle\Entity\User
     from_email:
         address: '%mailer_user%'
+<<<<<<< HEAD
         sender_name: "AquaNote Postman"
+=======
+        sender_name: "AquaNote Postman"
+    registration:
+        form:
+            type: AppBundle\Form\ParentsType
+>>>>>>> vR1'

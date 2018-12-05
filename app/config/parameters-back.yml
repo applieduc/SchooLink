@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: localhost
+    database_port: null
+    database_name: schoolink
+    database_user: root
+    database_password:
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: info@ingo.com
+    mailer_password: null
+    secret: 6b1d9cf84debf6da3d34ad31cde0fdaed8baa339

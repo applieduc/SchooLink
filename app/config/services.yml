@@ -33,3 +33,21 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+<<<<<<< HEAD
+=======
+    user.entity_listener:
+        class: AppBundle\EntityListener\AppEntityListener
+        public: false
+        arguments: ["@security.token_storage"]
+        tags:
+        - { name: "doctrine.orm.entity_listener" }
+
+        ##### Upload Image Manager #############
+    app.file_uploader:
+        class: AppBundle\Manager\FileUploader
+        public: true
+        arguments: ['%files_path%']
+    redirect.after.login:
+            class: AppBundle\Handler\AfterLoginRedirectionHandler
+            arguments: ['@router', '@session']
+>>>>>>> vR1'

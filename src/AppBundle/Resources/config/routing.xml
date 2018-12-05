@@ -4,13 +4,17 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> vR1'
     <route id="app_educ_homepage" path="/">
         <default key="_controller">AppEducBundle:Default:index</default>
     </route>
     <route id="app_educ_signin" path="/signin">
         <default key="_controller">AppEducBundle:Default:login</default>
     </route>
+<<<<<<< HEAD
 
 
     <route id="schools" path="/schools">
@@ -30,4 +34,6 @@
         <default key="_controller">AppEducBundle:Dashboard:saveYear</default>
     </route>
     </route>
+=======
+>>>>>>> vR1'
 </routes>

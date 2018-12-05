@@ -1,0 +1,35 @@
+{% extends 'template/layout.html.twig' %}
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+{% block menu %}
+
+    {% if is_granted('ROLE_CENSEUR') %}
+        {#{% include'@App/Administration/Partials/_menu_admin.html.twig' %}#}
+    {% endif %}
+{% endblock %}
+
+{% block contenuPrincipal %}
+    <div class="row">
+        <div class="col-lg-6 offset-3">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h5 class="m-0">Inscription nouvelle ecole</h5>
+                    </div>
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-success pull-right" type="submit"> Ajouter  </button>
+                    {{ form_end(form) }}
+
+                    {#<ul>#}
+                    {#<li>#}
+                    {#<a href="{{ path('ecole_index') }}">Back to the list</a>#}
+                    {#</li>#}
+                    {#</ul>  #}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
