@@ -14,11 +14,6 @@ class ClasseMatiere
 {
 
 
-    public  function __construct()
-    {
-        $this->archiver=true;
-    }
-
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Classe",cascade={"persist"})
      */
@@ -49,13 +44,6 @@ class ClasseMatiere
     private $coefficient;
 
 
-     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="archiver", type="boolean")
-     */
-    private $archiver;
-
     /**
      * Get id
      *
@@ -65,100 +53,5 @@ class ClasseMatiere
     {
         return $this->id;
     }
-
-    /**
-     * Set coefficient
-     *
-     * @param integer $coefficient
-     *
-     * @return ClasseMatiere
-     */
-    public function setCoefficient($coefficient)
-    {
-        $this->coefficient = $coefficient;
-    
-        return $this;
-    }
-
-    /**
-     * Get coefficient
-     *
-     * @return integer
-     */
-    public function getCoefficient()
-    {
-        return $this->coefficient;
-    }
-
-    /**
-     * Set archiver
-     *
-     * @param boolean $archiver
-     *
-     * @return ClasseMatiere
-     */
-    public function setArchiver($archiver)
-    {
-        $this->archiver = $archiver;
-    
-        return $this;
-    }
-
-    /**
-     * Get archiver
-     *
-     * @return boolean
-     */
-    public function getArchiver()
-    {
-        return $this->archiver;
-    }
-
-    /**
-     * Set classe
-     *
-     * @param \AppBundle\Entity\Classe $classe
-     *
-     * @return ClasseMatiere
-     */
-    public function setClasse(\AppBundle\Entity\Classe $classe = null)
-    {
-        $this->classe = $classe;
-    
-        return $this;
-    }
-
-    /**
-     * Get classe
-     *
-     * @return \AppBundle\Entity\Classe
-     */
-    public function getClasse()
-    {
-        return $this->classe;
-    }
-
-    /**
-     * Set matiere
-     *
-     * @param \AppBundle\Entity\Matiere $matiere
-     *
-     * @return ClasseMatiere
-     */
-    public function setMatiere(\AppBundle\Entity\Matiere $matiere = null)
-    {
-        $this->matiere = $matiere;
-    
-        return $this;
-    }
-
-    /**
-     * Get matiere
-     *
-     * @return \AppBundle\Entity\Matiere
-     */
-    public function getMatiere()
-    {
-        return $this->matiere;
-    }
 }
+

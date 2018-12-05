@@ -1555,7 +1555,7 @@
     CLICK_DATA_API: "click" + ve + Ee,
     KEYDOWN_DATA_API: "keydown" + ve + Ee,
     KEYUP_DATA_API: "keyup" + ve + Ee
-  }, Ce = "disabled", we = "show", Ie = "dropup", De = "dropright", Ae = "dropleft", Se = "dropdown-menu-right", Oe = "position-static", Ne = '[data-toggle="dropdown"]', ke = ".dropdown form", Le = ".dropdown-menu", Pe = ".navbar-nav", xe = ".dropdown-menu .dropdown-item:not(.disabled):not(:disabled)", je = "top-start", Re = "top-end", Me = "bottom-start", He = "bottom-end", We = "right-start", Fe = "left-start", Ue = {
+  }, Ce = "disabled", we = "show", Ie = "dropup", De = "dropright", Ae = "dropleft", Se = "dropdown-menu-right", Oe = "position-static", Ne = '[data-toggle="dropdown"]', ke = ".dropdown form", Le = ".dropdown-menu", Pe = ".navbar-navs", xe = ".dropdown-menu .dropdown-item:not(.disabled):not(:disabled)", je = "top-start", Re = "top-end", Me = "bottom-start", He = "bottom-end", We = "right-start", Fe = "left-start", Ue = {
     offset: 0,
     flip: !0,
     boundary: "scrollParent",
@@ -2314,9 +2314,9 @@
   }, Jn = "dropdown-item", Zn = "active", $n = {
     DATA_SPY: '[data-spy="scroll"]',
     ACTIVE: ".active",
-    NAV_LIST_GROUP: ".nav, .list-group",
-    NAV_LINKS: ".nav-link",
-    NAV_ITEMS: ".nav-item",
+    NAV_LIST_GROUP: ".navs, .list-group",
+    NAV_LINKS: ".navs-link",
+    NAV_ITEMS: ".navs-item",
     LIST_ITEMS: ".list-group-item",
     DROPDOWN: ".dropdown",
     DROPDOWN_ITEMS: ".dropdown-item",
@@ -2431,7 +2431,7 @@
     SHOW: "show" + oi,
     SHOWN: "shown" + oi,
     CLICK_DATA_API: "click" + oi + ".data-api"
-  }, li = "dropdown-menu", ci = "active", fi = "disabled", hi = "fade", ui = "show", di = ".dropdown", pi = ".nav, .list-group", gi = ".active", mi = "> li > .active", _i = '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]', vi = ".dropdown-toggle", Ei = "> .dropdown-menu .active", yi = function () {
+  }, li = "dropdown-menu", ci = "active", fi = "disabled", hi = "fade", ui = "show", di = ".dropdown", pi = ".navs, .list-group", gi = ".active", mi = "> li > .active", _i = '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list"]', vi = ".dropdown-toggle", Ei = "> .dropdown-menu .active", yi = function () {
     function i(t) {
       this._element = t;
     }
