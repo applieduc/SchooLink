@@ -1,0 +1,118 @@
+
+{% extends 'template/layout.html.twig' %}
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+{% block menu %}
+
+    {% if is_granted('ROLE_ADMIN_GENERAL') %}
+        {% include'@App/Administration/Partials/_menu_admin.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block contenuPrincipal %}
+    <div class="row">
+        <div class="col-lg-10 offset-1">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h5 class="m-0">Liste des ecoles</h5>
+                    </div>
+                    <table width="100%">
+                        <thead>
+                        <tr>
+
+                            <th>Nom</th>
+
+                            <th>Telephone</th>
+                            <th>Mail</th>
+
+
+                            <th>Censeur/referent</th>
+                            <th>Conact : Censeur/referent</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ecole in ecoles %}
+                            <tr>
+                                {#<td><a href="{{ path('ecole_show', { 'id': ecole.id }) }}">{{ ecole.id }}</a></td>#}
+                                <td>{{ ecole.nom }}</td>
+
+                                <td>{{ ecole.telephone }}</td>
+                                <td>{{ ecole.mail }}</td>
+
+
+                                <td>{% if ecole.censeur %}{{ ecole.censeur.nom ~" "~ ecole.censeur.prenom }}{% endif %}</td>
+                                <td>{% if ecole.censeur %}{{ ecole.censeur.telephone }}{% endif %}</td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <a href="{{ path('ecole_show', { 'id': ecole.id }) }}">show</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('ecole_edit', { 'id': ecole.id }) }}">edit</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    {#<h1>Ecoles list</h1>#}
+
+    {#<table>#}
+        {#<thead>#}
+            {#<tr>#}
+                {#<th>Id</th>#}
+                {#<th>Nom</th>#}
+                {#<th>Adresse</th>#}
+                {#<th>Telephone</th>#}
+                {#<th>Mail</th>#}
+                {#<th>Codetelephone</th>#}
+                {#<th>Logo</th>#}
+                {#<th>Datecreation</th>#}
+                {#<th>Datemodification</th>#}
+                {#<th>Actions</th>#}
+            {#</tr>#}
+        {#</thead>#}
+        {#<tbody>#}
+        {#{% for ecole in ecoles %}#}
+            {#<tr>#}
+                {#<td><a href="{{ path('ecole_show', { 'id': ecole.id }) }}">{{ ecole.id }}</a></td>#}
+                {#<td>{{ ecole.nom }}</td>#}
+                {#<td>{{ ecole.adresse }}</td>#}
+                {#<td>{{ ecole.telephone }}</td>#}
+                {#<td>{{ ecole.mail }}</td>#}
+                {#<td>{{ ecole.codeTelephone }}</td>#}
+                {#<td>{{ ecole.logo }}</td>#}
+                {#<td>{% if ecole.dateCreation %}{{ ecole.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>#}
+                {#<td>{% if ecole.dateModification %}{{ ecole.dateModification|date('Y-m-d H:i:s') }}{% endif %}</td>#}
+                {#<td>#}
+                    {#<ul>#}
+                        {#<li>#}
+                            {#<a href="{{ path('ecole_show', { 'id': ecole.id }) }}">show</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="{{ path('ecole_edit', { 'id': ecole.id }) }}">edit</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+        {#</tbody>#}
+    {#</table>#}
+
+    {#<ul>#}
+        {#<li>#}
+            {#<a href="{{ path('ecole_new') }}">Create a new ecole</a>#}
+        {#</li>#}
+    {#</ul>#}
+{% endblock %}

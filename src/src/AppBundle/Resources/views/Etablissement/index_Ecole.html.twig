@@ -1,0 +1,9 @@
+{% extends 'template/layout.html.twig' %}
+    {% block menu %}
+        {% include'AppBundle:Etablissement/Partials:_menu_admin.html.twig' %}
+    {% endblock %}
+{% block titrepage %} TABLEAU DE BORD{% endblock %}
+    {% block contenuPrincipal %}
+        {% include 'AppBundle:E_tablissement/TB.html.twig' %}
+
+    {% endblock %}

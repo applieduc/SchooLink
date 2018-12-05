@@ -1,0 +1,81 @@
+{% extends 'template/layout.html.twig' %}
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+{% block menu %}
+
+    {% if is_granted('ROLE_ADMIN_GENERAL') %}
+        {% include'@App/Administration/Partials/_menu_admin.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block contenuPrincipal %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+                    </div>
+
+                    <h3 class="profile-username text-center">{{ ecole.nom }}</h3>
+
+                    <p class="text-muted text-center">{{ ecole.codeTelephone }}</p>
+
+                    <ul class="list-group list-group-unbordered mb-3">
+                        <li class="list-group-item">
+                            <b>Telephone</b> <a class="float-right">{{ ecole.telephone }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Adresse</b> <a class="float-right">{{ ecole.adresse }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Mail</b> <a class="float-right">{{ ecole.mail }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Nombre d'eleves</b> <a class="float-right"> 172</a>
+                        </li>
+                    </ul>
+
+                    <div class="row">
+                        <div class="col-lg-6"><a href="{{ path('ecole_edit', { 'id': ecole.id }) }}" class="btn btn-primary btn-block"><b>Modifier</b></a></div>
+                        <div class="col-lg-6"><a href="#" class="btn btn-danger btn-block"><b>Supprimer</b></a></div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('uploads/images/')}}{{ ecole.censeur.photo}}" alt="User profile picture">
+                    </div>
+
+                    <h3 class="profile-username text-center">Nina Mcintire</h3>
+
+                    <p class="text-muted text-center">Software Engineer</p>
+
+                    <ul class="list-group list-group-unbordered mb-3">
+                        <li class="list-group-item">
+                            <b>Nom et prenoms</b> <a class="float-right">{{ ecole.censeur.nom }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Telephone</b> <a class="float-right">{{ ecole.censeur.telephone }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>adresse</b> <a class="float-right">{{ ecole.censeur.adresse }}</a>
+                        </li>
+                    </ul>
+                    <div class="row">
+                    <div class="col-lg-6"><a href="#" class="btn btn-primary btn-block"><b>Modifier</b></a></div>
+                    <div class="col-lg-6"><a href="#" class="btn btn-danger btn-block"><b>Supprimer</b></a></div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

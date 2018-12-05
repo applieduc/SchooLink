@@ -1,0 +1,107 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SchooLink | connexion </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('build/structure.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href=""><b>School</b>LINK</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            {% if error %}
+                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <p class="login-box-msg">Connectez-vous</p>
+
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+                {% if app.request.hasPreviousSession %}
+                    {% for notice, messages in app.session.flashbag.all() %}
+                        {% for msg in messages %}
+                            <div class="alert alert-{{ notice }}">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong> {{ msg }}.</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.message | trans }}</div>
+                {% endif %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                <div class="form-group has-feedback">
+                    <input type="email" class="form-control" placeholder="Email" name="_username">
+                    <span class="fa fa-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" class="form-control" placeholder="Password" name="_password">
+                    <span class="fa fa-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="checkbox icheck">
+
+                            <label>
+                                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                                <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"  class="btn btn-primary btn-block btn-flat" />
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+
+
+            <p class="mb-1">
+                <a href="#">%ot de passe oublie</a>
+            </p>
+
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{{ asset('build/structure.css') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('build/bootstrap-bundle.js') }}"></script>
+<!-- iCheck -->
+<script src="../../plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass   : 'iradio_square-blue',
+            increaseArea : '20%' // optional
+        })
+    })
+</script>
+</body>
+</html>
+

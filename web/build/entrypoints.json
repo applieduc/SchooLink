@@ -1,0 +1,31 @@
+{
+  "entrypoints": {
+    "structure": {
+      "js": [
+        "/build/runtime.js",
+        "/build/structure.js"
+      ],
+      "css": [
+        "/build/structure.css"
+      ]
+    },
+    "adminlte": {
+      "js": [
+        "/build/runtime.js",
+        "/build/adminlte.js"
+      ]
+    },
+    "demo": {
+      "js": [
+        "/build/runtime.js",
+        "/build/demo.js"
+      ]
+    },
+    "bootstrap-bundle": {
+      "js": [
+        "/build/runtime.js",
+        "/build/bootstrap-bundle.js"
+      ]
+    }
+  }
+}
