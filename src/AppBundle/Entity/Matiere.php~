@@ -5,25 +5,25 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Classe
+ * Matiere
  *
- * @ORM\Table(name="classe")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ClasseRepository")
+ * @ORM\Table(name="matiere")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MatiereRepository")
  */
-class Classe
+class Matiere
 {
-
     public  function __construct()
     {
         $this->dateCreation=new \DateTime();
         $this->dateModification=new \DateTime();
         $this->archiver=0;
     }
-
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
+     * @var boolean
+     *
+     * @ORM\Column(name="archiver", type="boolean")
      */
-    private $ecole;
+    private $archiver;
 
     /**
      * @var int
@@ -55,13 +55,7 @@ class Classe
      */
     private $dateModification;
 
-        /**
-     * @var boolean
-     *
-     * @ORM\Column(name="archiver", type="boolean")
-     */
-    private $archiver;
-    
+
     /**
      * Get id
      *
@@ -77,7 +71,7 @@ class Classe
      *
      * @param string $libelle
      *
-     * @return Classe
+     * @return Matiere
      */
     public function setLibelle($libelle)
     {
@@ -101,7 +95,7 @@ class Classe
      *
      * @param \DateTime $dateCreation
      *
-     * @return Classe
+     * @return Matiere
      */
     public function setDateCreation($dateCreation)
     {
@@ -125,7 +119,7 @@ class Classe
      *
      * @param \DateTime $dateModification
      *
-     * @return Classe
+     * @return Matiere
      */
     public function setDateModification($dateModification)
     {
@@ -145,35 +139,11 @@ class Classe
     }
 
     /**
-     * Set ecole
-     *
-     * @param \AppBundle\Entity\Ecole $ecole
-     *
-     * @return Classe
-     */
-    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
-    {
-        $this->ecole = $ecole;
-    
-        return $this;
-    }
-
-    /**
-     * Get ecole
-     *
-     * @return \AppBundle\Entity\Ecole
-     */
-    public function getEcole()
-    {
-        return $this->ecole;
-    }
-
-    /**
      * Set archiver
      *
      * @param boolean $archiver
      *
-     * @return Classe
+     * @return Matiere
      */
     public function setArchiver($archiver)
     {

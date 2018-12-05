@@ -5,31 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ClasseMatiere
+ * TypeClasse
  *
- * @ORM\Table(name="classe_matiere")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ClasseMatiereRepository")
+ * @ORM\Table(name="type_classe")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TypeClasseRepository")
  */
-class ClasseMatiere
+class TypeClasse
 {
-
-
+    
     public  function __construct()
     {
-        $this->archiver=true;
+        $this->archiver=0;
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Classe",cascade={"persist"})
-     */
-    private $classe;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Matiere",cascade={"persist"})
-     */
-    private $matiere;
-
-
+    
     /**
      * @var int
      *
@@ -39,17 +27,19 @@ class ClasseMatiere
      */
     private $id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Classe",cascade={"persist"})
+     */
+    private $classe;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="coefficient", type="integer")
-     *
+     * @ORM\Column(name="libelle", type="string", length=255)
      */
-    private $coefficient;
+    private $libelle;
 
-
-     /**
+    /**
      * @var boolean
      *
      * @ORM\Column(name="archiver", type="boolean")
@@ -57,37 +47,53 @@ class ClasseMatiere
     private $archiver;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreation", type="datetimetz")
+     */
+    private $dateCreation;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateModification", type="datetimetz")
+     */
+    private $dateModification;
+
+
+    /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
+
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * Set coefficient
+     * Set libelle
      *
-     * @param integer $coefficient
+     * @param string $libelle
      *
-     * @return ClasseMatiere
+     * @return TypeClasse
      */
-    public function setCoefficient($coefficient)
+    public function setLibelle($libelle)
     {
-        $this->coefficient = $coefficient;
+        $this->libelle = $libelle;
     
         return $this;
     }
 
     /**
-     * Get coefficient
+     * Get libelle
      *
-     * @return integer
+     * @return string
      */
-    public function getCoefficient()
+    public function getLibelle()
     {
-        return $this->coefficient;
+        return $this->libelle;
     }
 
     /**
@@ -95,7 +101,7 @@ class ClasseMatiere
      *
      * @param boolean $archiver
      *
-     * @return ClasseMatiere
+     * @return TypeClasse
      */
     public function setArchiver($archiver)
     {
@@ -119,7 +125,7 @@ class ClasseMatiere
      *
      * @param \AppBundle\Entity\Classe $classe
      *
-     * @return ClasseMatiere
+     * @return TypeClasse
      */
     public function setClasse(\AppBundle\Entity\Classe $classe = null)
     {
@@ -136,29 +142,5 @@ class ClasseMatiere
     public function getClasse()
     {
         return $this->classe;
-    }
-
-    /**
-     * Set matiere
-     *
-     * @param \AppBundle\Entity\Matiere $matiere
-     *
-     * @return ClasseMatiere
-     */
-    public function setMatiere(\AppBundle\Entity\Matiere $matiere = null)
-    {
-        $this->matiere = $matiere;
-    
-        return $this;
-    }
-
-    /**
-     * Get matiere
-     *
-     * @return \AppBundle\Entity\Matiere
-     */
-    public function getMatiere()
-    {
-        return $this->matiere;
     }
 }

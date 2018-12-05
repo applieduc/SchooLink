@@ -1,0 +1,48 @@
+
+{% extends 'master.html.twig' %}
+{% block head %} 
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Matiere</h1>
+            </div><!-- /.col -->
+            <!--<div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Starter Page</li>
+                </ol>
+            </div>-->
+            <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        Ajouter une nouvelle Matiere
+                        <span class="pull-right">
+                            <a href="{{ path('matiere_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        <label>Libelle</label>
+                        {{ form_widget(form.libelle,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <input type="submit" value="Ajouter"  class="btn btn-success"/>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

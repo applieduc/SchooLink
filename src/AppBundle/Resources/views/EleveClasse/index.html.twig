@@ -1,0 +1,165 @@
+
+{% extends 'master.html.twig' %}
+
+{% block head %} 
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Eleve Classe</h1>
+            </div><!-- /.col -->
+            <!--<div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Starter Page</li>
+                </ol>
+            </div>-->
+            <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <form action="{{ path('save_type_classe_eleve',{'classe':classe}) }}"  method="post">
+                            <input type="hidden" name="nb_eleves" id="nb" value="2">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="" class="">Type:</label>
+                                    <div class="">
+                                        <input type="text"  name="type" class= "form-control " required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row ">
+
+                                <div class="col-md-12">
+                                    <label for="" class="">Eleves :</label>
+                                    <div class="eleves">
+                                      <div class="row">
+                                         <div class="col-lg-6">
+                                             <select name="eleve1" class= "form-control type form-group" {% if eleves|length >0 %}  required {% endif %}>
+                                                 {% for eleve in eleves %}
+                                                     <option value="{{  eleve.id}}">{{eleve.nom}}</option>
+                                                 {% endfor %}
+                                             </select>
+                                         </div>
+                                          <div class="col-lg-6">
+                                              <select name="eleve2" class= "form-control type form-group">
+                                                  <option value=""></option>
+
+                                                  {% for eleve in eleves %}
+                                                      <option value="{{  eleve.id}}">{{eleve.nom}}</option>
+                                                  {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+
+                                    </div>
+                                    <p class="ml-auto"><button type="button" id="btn" class="btn plus btn-sm bg-success tr_font text-white" title="ajouter une ligne"><i class="fa fa-plus"></i></button></p>
+
+                                </div>
+                            </div>
+
+                            <div class="row" id="periodes">
+
+                            </div>
+
+                            <div class="row my-4">
+                                <div class="col-lg-12 form-group d-flex justify-content-center">
+                                    <p class="mx-1"><button type="button"  id="close" class="btn btn-default btn-sm tr_font" >Annuler</button></p>
+                                    <p class="mx-1"><button type="submit" id="btn" class="btn btn-sm bg-success tr_font text-white" >valider</button></p>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+        </div>
+        <div class="col-6 offset-1">
+            <div class="card">
+                <div class="card-header">
+                   <div class="row">
+                       <h3 class="card-title">Eleve Classe</h3>
+                   </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table  class="table table-bordered datatable table-striped">
+                        <thead>
+                        <tr class="text-center">
+                            <th>Classe</th>
+                            <th>Effectif</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in classes_type %}
+                        <tr class="text-center">
+
+                            <td>{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</td>
+                            <td>{{ item.eff }}</td>
+                            <td>
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="#" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                {% if item.type_classe.archiver %}
+                                    <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="#"><i class="fa fa-folder-open-o text-success"></i></a></div>
+                                {% else %}
+                                    <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="#"><i class="fa fa-folder text-danger"></i></a></div>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        var i=2;
+        $('.plus').click(function () {
+            i=i+2;
+            $('.eleves').append(' <div class="row">\n' +
+                '                                         <div class="col-lg-6">\n' +
+                '                                             <select name="eleve'+(i-1)+'" class= "form-control type form-group"  required>\n' +
+                '                                                 {% for eleve in eleves %}\n' +
+                '                                                     <option value="{{  eleve.id}}">{{ eleve.nom }}</option>\n' +
+                '                                                 {% endfor %}\n' +
+                '                                             </select>\n' +
+                '                                         </div>\n' +
+                '                                          <div class="col-lg-6">\n' +
+                '                                              <select  name="eleve'+i+'" class= "form-control type form-group">\n' +
+                '                                                  {% for eleve in eleves %}\n' +
+                '                                                      <option value="{{  eleve.id}}">{{ eleve.nom }}</option>\n' +
+                '                                                  {% endfor %}\n' +
+                '                                              </select>\n' +
+                '                                          </div>\n' +
+                '                                      </div>');
+
+            $('#nb').val(i);
+            
+        });
+    </script>
+{% endblock %}

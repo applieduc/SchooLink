@@ -55,7 +55,7 @@ class Classe
      */
     private $dateModification;
 
-        /**
+     /**
      * @var boolean
      *
      * @ORM\Column(name="archiver", type="boolean")
@@ -166,29 +166,5 @@ class Classe
     public function getEcole()
     {
         return $this->ecole;
-    }
-
-    /**
-     * Set archiver
-     *
-     * @param boolean $archiver
-     *
-     * @return Classe
-     */
-    public function setArchiver($archiver)
-    {
-        $this->archiver = $archiver;
-    
-        return $this;
-    }
-
-    /**
-     * Get archiver
-     *
-     * @return boolean
-     */
-    public function getArchiver()
-    {
-        return $this->archiver;
     }
 }

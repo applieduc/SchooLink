@@ -12,6 +12,19 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Matiere
 {
+    public  function __construct()
+    {
+        $this->dateCreation=new \DateTime();
+        $this->dateModification=new \DateTime();
+        $this->archiver=0;
+    }
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="archiver", type="boolean")
+     */
+    private $archiver;
+
     /**
      * @var int
      *
@@ -124,5 +137,30 @@ class Matiere
     {
         return $this->dateModification;
     }
-}
 
+    /**
+     * Set archiver
+     *
+     * @param boolean $archiver
+     *
+     * @return Matiere
+     */
+    public function setArchiver($archiver)
+    {
+        $this->archiver = $archiver;
+    
+        return $this;
+    }
+
+    /**
+     * Get archiver
+     *
+     * @return boolean
+     */
+    public function getArchiver()
+    {
+        return $this->archiver;
+    }
+
+  
+}

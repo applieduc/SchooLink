@@ -297,28 +297,4 @@ class Eleve
     {
         return $this->classe;
     }
-
-    /**
-     * Set archiver
-     *
-     * @param boolean $archiver
-     *
-     * @return Eleve
-     */
-    public function setArchiver($archiver)
-    {
-        $this->archiver = $archiver;
-    
-        return $this;
-    }
-
-    /**
-     * Get archiver
-     *
-     * @return boolean
-     */
-    public function getArchiver()
-    {
-        return $this->archiver;
-    }
 }
