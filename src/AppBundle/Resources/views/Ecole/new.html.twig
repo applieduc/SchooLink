@@ -41,13 +41,13 @@
                                 <div class="col-md-6">
                                     <label for="" class="">Debut :</label>
                                     <div class="">
-                                        <input type="text"  name="debut" class= "form-control " required>
+                                        <input type="text"  name="debut" class= "form-control dba" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="">Fin :</label>
                                     <div class="">
-                                        <input type="text" name="fin" class= "form-control"  required>
+                                        <input type="text" name="fin" class= "form-control dfa"  required>
                                     </div>
                                 </div>
                             </div>
@@ -188,14 +188,18 @@
     <script>
         $('.form').submit(function (e) {
 
-            var debut=$('.fv .db').val().split("-");
-            var fin=$(' .fv .df').val().split("-");
-            if ( !verifyDateDebut(fin))
+            var debut=$('.dba').val().split("-");
+            var fin=$('.dfa').val().split("-");
+            if ( !verifyDateDebut(debut))
             {
+                $('.dba').addClass('border-red');
+                $('.dfa').addClass('border-red');
                 e.preventDefault();
 
                 // $('#projet').submit();
             }
+            $('.dba').removeClass('border-red');
+            $('.dfa').removeClass('border-red');
             // alert(verifyDateFin(debut,fin));
             if( !verifyDateFin(debut,fin)){
                 e.preventDefault();

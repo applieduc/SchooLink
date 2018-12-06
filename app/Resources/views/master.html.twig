@@ -19,6 +19,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap4.css') }}">
     <!-- Google Font: Source Sans Pro -->
+
+    <style>
+        .border-red{
+            border: 1px solid indianred;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -200,6 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
 
     function verifyDateDebut(date) {
+        alert(new Date(date[2],date[1],date[0]));
         if(new Date()<= new Date(date[2],date[1],date[0])){
 
             $(".error").html("");
