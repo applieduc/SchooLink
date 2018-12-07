@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Classe;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -55,6 +56,9 @@ class ClasseController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
+            $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
+
+            $classe->setEcole($censeur->getEcole());
             $em->persist($classe);
             $em->flush();
 
@@ -85,9 +89,10 @@ class ClasseController extends Controller
         }else{
             $session->remove('annee');
         }
+        $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
 
 
-        $classes = $em->getRepository('AppBundle:Classe')->findAll();
+        $classes = $em->getRepository('AppBundle:Classe')->findBy(array('ecole'=>$censeur->getEcole()->getId()));
 
         return $this->render('classe/index.html.twig', array(
             'classes' => $classes,

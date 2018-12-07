@@ -1,0 +1,96 @@
+{% extends 'master.html.twig' %}
+{% block head %} 
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Eleve</h1>
+            </div><!-- /.col -->
+            <!--<div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Starter Page</li>
+                </ol>
+            </div>-->
+            <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="">
+                         {% if eleve.archiver %}
+                             <i class="fa fa-circle text-danger"></i>
+                        {% else %}
+                             <i class="fa fa-circle text-success"></i>
+                         {% endif %}
+                        Information personnelle</span>
+                    <span class="pull-right" >
+                        <a href="{{ path('eleve_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        <a href="{{ path('eleve_edit', { 'id': eleve.id }) }}"><i class="fa fa-edit text-warning"></i></a>
+                        {% if eleve.archiver %}
+                            <a href="{{ path('eleve_desarchive', { 'id': eleve.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
+                        {% else %}
+                            <a href="{{ path('eleve_archive', { 'id': eleve.id }) }}"><i class="fa fa-folder text-danger"></i></a>
+                        {% endif %}
+
+                    </span>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2">   <img src="{{ asset('assets/img/avatar/profile.png') }}" class="img-circle img-fluid" ></div>
+                    <div class="col-10 d-flex justify-content-center"><table>
+                            <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ eleve.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ eleve.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Prenom</th>
+                                <td>{{ eleve.prenom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Sexe</th>
+                                <td>{{ eleve.sexe }}</td>
+                            </tr>
+                            <tr>
+                                <th>Datenaissance</th>
+                                <td>{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Photo</th>
+                                <td>{{ eleve.photo }}</td>
+                            </tr>
+                            <tr>
+                                <th>Datecreation</th>
+                                <td>{{ eleve.dateCreation |date('Y-m-d H:i:s')}}</td>
+                            </tr>
+                            <tr>
+                                <th>Datemodification</th>
+                                <td>{{ eleve.dateModification |date('Y-m-d H:i:s')}}</td>
+                            </tr>
+                            <tr>
+                                <th>Statut</th>
+                                <td>{% if eleve.archiver %}<span class="badge badge-danger">Non actif</span>{% else %}<span class="badge badge-success">Actif</span>{% endif %}</td>
+                            </tr>
+                            </tbody>
+                        </table></div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

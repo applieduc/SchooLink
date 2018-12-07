@@ -19,11 +19,7 @@ class EleveType extends AbstractType
                 'Masculin' =>true ,
                 'Feminin' => false,
             ),
-            ))->add('dateNaissance')->add('photo')->add('classe', EntityType::class, array(
-        'class' => 'AppBundle:Classe',
-        'choice_label' => 'libelle',
-
-    ));
+            ))->add('dateNaissance')->add('photo');
     }/**
      * {@inheritdoc}
      */

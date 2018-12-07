@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Matiere;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,8 +24,9 @@ class MatiereController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
 
-        $matieres = $em->getRepository('AppBundle:Matiere')->findAll();
+        $matieres = $em->getRepository('AppBundle:Matiere')->findBy(array('ecole'=>$censeur->getEcole()->getId()));
 
         return $this->render('matiere/index.html.twig', array(
             'matieres' => $matieres,
@@ -45,6 +47,8 @@ class MatiereController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
+            $matiere->setEcole($censeur->getEcole());
             $em->persist($matiere);
             $em->flush();
 

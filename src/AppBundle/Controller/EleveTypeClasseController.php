@@ -40,6 +40,37 @@ class EleveTypeClasseController extends Controller
         ));
     }
 
+    /**
+     * Lists all eleve entities.
+     *
+     * @Route("/classe_type/{type}", name="show_type_edit")
+     * @Method("GET")
+     */
+    public function show_editAction(TypeClasse $type)
+    {
+
+        return $this->render('AppBundle:EleveClasse:edit.html.twig', array(
+            'type' => $type,
+
+
+        ));
+    }
+    /**
+     * Lists all eleve entities.
+     *
+     * @Route("/classe_type_edit/{type}", name="type_edit")
+     * @Method("GET")
+     */
+    public function type_editAction(Request $request,TypeClasse $type)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $type->setLibelle($request->get('classe'));
+        $em->persist($type);
+        $em->flush();
+        return $this->redirectToRoute('eleve_classe_index',array("classe"=>$type->getClasse()->getId()));
+
+    }
+
     private function get_classes_type($classe){
         $annee=$this->get('session')->get('annee');
         $em = $this->getDoctrine()->getManager();
@@ -137,5 +168,7 @@ class EleveTypeClasseController extends Controller
            }
 
         }
+        return $this->redirectToRoute('eleve_classe_index');
+
     }
 }

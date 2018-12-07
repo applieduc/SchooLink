@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Classe;
 use AppBundle\Entity\Eleve;
+use AppBundle\Entity\EleveTypeClasse;
+use AppBundle\Entity\TypeClasse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -12,38 +14,24 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Eleve controller.
  *
- * @Route("eleve")
+ * @Route("eleve_type")
  */
-class EleveController extends Controller
+class Eleve2Controller extends Controller
 {
     /**
      * Lists all eleve entities.
      *
-     * @Route("/", name="eleve_index")
+     * @Route("/{classeTpe}", name="eleve_type_index")
      * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction(TypeClasse $classeTpe)
     {
         $em = $this->getDoctrine()->getManager();
-        $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
+        $eleve_type=$em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$classeTpe->getId()));
+        return $this->render('AppBundle:EleveClasse:eleve_index.html.twig', array(
+            'eleves_type' => $eleve_type,
+            'classeType'=>$classeTpe,
 
-        $eleve = new Eleve();
-        $form = $this->createForm('AppBundle\Form\EleveType', $eleve);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $eleve->setEcole($censeur->getEcole());
-            $em->persist($eleve);
-            $em->flush();
-
-            return $this->redirectToRoute('eleve_index');
-        }
-        $eleves = $em->getRepository('AppBundle:Eleve')->findBy(array("ecole"=>$censeur->getEcole()));
-
-        return $this->render('eleve/index.html.twig', array(
-            'eleves' => $eleves,
-            'form' => $form->createView()
         ));
     }
 
@@ -85,17 +73,43 @@ class EleveController extends Controller
     /**
      * Finds and displays a eleve entity.
      *
-     * @Route("/{id}", name="eleve_show")
+     * @Route("/new_eleve_in_classe/{classeType}", name="new_eleve_in_classe")
      * @Method("GET")
      */
-    public function showAction(Eleve $eleve)
+    public function showAction(TypeClasse $typeClasse)
     {
-        $deleteForm = $this->createDeleteForm($eleve);
 
-        return $this->render('eleve/show.html.twig', array(
-            'eleve' => $eleve,
-            'delete_form' => $deleteForm->createView(),
+        $em=$this->getDoctrine()->getManager();
+        return $this->render('AppBundle:EleveClasse:eleve_index.html.twig', array(
+            'eleves' => ,
+            'classeType'=>$classeTpe,
+
         ));
+    }
+
+    private function get_eleve($classe){
+        $annee=$this->get('session')->get('annee');
+        $em = $this->getDoctrine()->getManager();
+        $eleves = $em->getRepository('AppBundle:Eleve')->findBy(array('archiver' =>false,'classe'=>$classe));
+
+        $eleves_not_classe=array();
+        $i=0;
+        foreach ($eleves as $val) {
+            $eleve = $em->getRepository('AppBundle:EleveTypeClasse')->findOneBy(array('eleve' =>$val->getId(),'archiver'=>false));
+
+            if($eleve!=null && $eleve->getDateCreation() <$annee->getDateDebut()){
+
+                $eleves_not_classe[$i]=$val;
+                $i++;
+            }elseif ($eleve==null){
+                $eleves_not_classe[$i]=$val;
+                $i++;
+            }
+
+
+        }
+
+        return $eleves_not_classe;
     }
 
     /**

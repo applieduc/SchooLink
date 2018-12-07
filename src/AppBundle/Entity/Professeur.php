@@ -3,16 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use AppBundle\Traits\Identifiers;
 /**
  * Professeur
  *
  * @ORM\Table(name="professeur")
+ * @ORM\EntityListeners("AppBundle\EntityListener\AppEntityListener")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProfesseurRepository")
  */
-class Professeur extends User
+class Professeur
 {
-
+    use Identifiers;
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Compte",cascade={"persist"})
      *
@@ -35,57 +36,41 @@ class Professeur extends User
      */
     private $codeProf;
 
-
-
-
     /**
      * @var string
      *
-     * @ORM\Column(name="photo", type="string",nullable=true)
-     */
-    private $photo;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255,nullable=true)
+     * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prenom", type="string", length=255,nullable=true)
+     * @ORM\Column(name="prenom", type="string", length=255)
      */
     private $prenom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telephone", type="string", length=255,nullable=true)
+     * @ORM\Column(name="telephone", type="string", length=255)
      */
     private $telephone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse", type="string", length=255,nullable=true)
+     * @ORM\Column(name="adresse", type="string", length=255)
      */
     private $adresse;
-
-
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="dateCreation", type="datetimetz")
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
-    private $dateCreation;
+    private $email;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateModification", type="datetimetz")
-     */
-    private $dateModification;
+
 
 
     /**
@@ -123,94 +108,22 @@ class Professeur extends User
     }
 
     /**
-     * Set dateCreation
-     *
-     * @param \DateTime $dateCreation
-     *
-     * @return Professeur
-     */
-    public function setDateCreation($dateCreation)
-    {
-        $this->dateCreation = $dateCreation;
-
-        return $this;
-    }
-
-    /**
-     * Get dateCreation
-     *
      * @return \DateTime
      */
-    public function getDateCreation()
+    public function getCreatedAt()
     {
-        return $this->dateCreation;
+        return $this->createdAt;
     }
 
     /**
-     * Set dateModification
-     *
-     * @param \DateTime $dateModification
-     *
-     * @return Professeur
+     * @param \DateTime $createdAt
      */
-    public function setDateModification($dateModification)
+    public function setCreatedAt($createdAt)
     {
-        $this->dateModification = $dateModification;
-
-        return $this;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * Get dateModification
-     *
-     * @return \DateTime
-     */
-    public function getDateModification()
-    {
-        return $this->dateModification;
-    }
-
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     *
-     * @return Professeur
-     */
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
-    
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return string
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    /**
-     * Set nom
-     *
-     * @param string $nom
-     *
-     * @return Professeur
-     */
-    public function setNom($nom)
-    {
-        $this->nom = $nom;
-    
-        return $this;
-    }
-
-    /**
-     * Get nom
-     *
      * @return string
      */
     public function getNom()
@@ -219,22 +132,14 @@ class Professeur extends User
     }
 
     /**
-     * Set prenom
-     *
-     * @param string $prenom
-     *
-     * @return Professeur
+     * @param string $nom
      */
-    public function setPrenom($prenom)
+    public function setNom($nom)
     {
-        $this->prenom = $prenom;
-    
-        return $this;
+        $this->nom = $nom;
     }
 
     /**
-     * Get prenom
-     *
      * @return string
      */
     public function getPrenom()
@@ -243,22 +148,14 @@ class Professeur extends User
     }
 
     /**
-     * Set telephone
-     *
-     * @param string $telephone
-     *
-     * @return Professeur
+     * @param string $prenom
      */
-    public function setTelephone($telephone)
+    public function setPrenom($prenom)
     {
-        $this->telephone = $telephone;
-    
-        return $this;
+        $this->prenom = $prenom;
     }
 
     /**
-     * Get telephone
-     *
      * @return string
      */
     public function getTelephone()
@@ -267,22 +164,14 @@ class Professeur extends User
     }
 
     /**
-     * Set adresse
-     *
-     * @param string $adresse
-     *
-     * @return Professeur
+     * @param string $telephone
      */
-    public function setAdresse($adresse)
+    public function setTelephone($telephone)
     {
-        $this->adresse = $adresse;
-    
-        return $this;
+        $this->telephone = $telephone;
     }
 
     /**
-     * Get adresse
-     *
      * @return string
      */
     public function getAdresse()
@@ -291,26 +180,30 @@ class Professeur extends User
     }
 
     /**
-     * Set compte
-     *
-     * @param \AppBundle\Entity\Compte $compte
-     *
-     * @return Professeur
+     * @param string $adresse
      */
-    public function setCompte(\AppBundle\Entity\Compte $compte = null)
+    public function setAdresse($adresse)
     {
-        $this->compte = $compte;
-    
-        return $this;
+        $this->adresse = $adresse;
     }
 
     /**
-     * Get compte
-     *
-     * @return \AppBundle\Entity\Compte
+     * @return string
      */
-    public function getCompte()
+    public function getEmail()
     {
-        return $this->compte;
+        return $this->email;
     }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+
+
 }
+

@@ -21,7 +21,13 @@ class Eleve
         $this->photo="prpfile.png";
     }
 
-   
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"}, inversedBy="eleves")
+     *
+     */
+    private $ecole;
+
     /**
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Classe",cascade={"persist"})
@@ -320,5 +326,29 @@ class Eleve
     public function getArchiver()
     {
         return $this->archiver;
+    }
+
+    /**
+     * Set ecole
+     *
+     * @param \AppBundle\Entity\Ecole $ecole
+     *
+     * @return Eleve
+     */
+    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
+    {
+        $this->ecole = $ecole;
+    
+        return $this;
+    }
+
+    /**
+     * Get ecole
+     *
+     * @return \AppBundle\Entity\Ecole
+     */
+    public function getEcole()
+    {
+        return $this->ecole;
     }
 }

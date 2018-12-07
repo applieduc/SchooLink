@@ -18,6 +18,12 @@ class Matiere
         $this->dateModification=new \DateTime();
         $this->archiver=0;
     }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
+     */
+    private $ecole;
+
     /**
      * @var boolean
      *
@@ -161,4 +167,6 @@ class Matiere
     {
         return $this->archiver;
     }
+
+  
 }

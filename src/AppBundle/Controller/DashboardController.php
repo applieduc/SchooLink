@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Annee;
+use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Periode;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,8 @@ class DashboardController extends Controller
     {
 
         $em=$this->getDoctrine()->getManager();
-        $annees=$em->getRepository(Annee::class)->findBy(array(),array('id'=>'DESC'));
+        $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
+        $annees=$em->getRepository(Annee::class)->findBy(array('ecole'=>$censeur->getEcole()->getId()),array('id'=>'DESC'));
         $enc=$em->getRepository(Annee::class)->findBy(array('cloture'=>false));
         // replace this example code with whatever you need
         return $this->render('AppBundle:Ecole:index.html.twig',array('annees'=>$annees,'enc'=>$enc));
@@ -43,11 +45,6 @@ class DashboardController extends Controller
 
         
     }
-
-    /**
-     * @Route("/save", name="save")
-     */
-
     private function compare_with_now($date){
         return  $date >= new \DateTime();
     }
@@ -55,10 +52,18 @@ class DashboardController extends Controller
         return  $date2 > $date;
     }
 
+    /**
+     * @Route("/save", name="save")
+     */
+
+
+
     public function  saveYearAction(Request $request){
         $em=$this->getDoctrine()->getManager();
         $anne=new Annee();
         $type=$request->get('type');
+        $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
+
         $anne->setDateDebut(new \DateTime($request->get('debut')));
         if ((int)$type===0){
             $anne->setTypePeriode('Trimestre');
@@ -66,6 +71,7 @@ class DashboardController extends Controller
             $anne->setTypePeriode('Semestre');
         }
         $anne->setDateFin(new \DateTime($request->get('fin')));
+        $anne->setEcole($censeur->getEcole());
         $anne->setCloture(false);
         $em->persist($anne);
         $em->flush();

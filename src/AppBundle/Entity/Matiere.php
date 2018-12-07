@@ -18,6 +18,12 @@ class Matiere
         $this->dateModification=new \DateTime();
         $this->archiver=0;
     }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
+     */
+    private $ecole;
+
     /**
      * @var boolean
      *
@@ -163,4 +169,28 @@ class Matiere
     }
 
   
+
+    /**
+     * Set ecole
+     *
+     * @param \AppBundle\Entity\Ecole $ecole
+     *
+     * @return Matiere
+     */
+    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
+    {
+        $this->ecole = $ecole;
+    
+        return $this;
+    }
+
+    /**
+     * Get ecole
+     *
+     * @return \AppBundle\Entity\Ecole
+     */
+    public function getEcole()
+    {
+        return $this->ecole;
+    }
 }

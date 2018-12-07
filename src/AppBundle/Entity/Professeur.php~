@@ -35,44 +35,6 @@ class Professeur extends User
      */
     private $codeProf;
 
-
-
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="photo", type="string",nullable=true)
-     */
-    private $photo;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255,nullable=true)
-     */
-    private $nom;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=255,nullable=true)
-     */
-    private $prenom;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="telephone", type="string", length=255,nullable=true)
-     */
-    private $telephone;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=255,nullable=true)
-     */
-    private $adresse;
-
-
     /**
      * @var \DateTime
      *
@@ -169,5 +131,28 @@ class Professeur extends User
     {
         return $this->dateModification;
     }
-}
 
+    /**
+     * Set compte
+     *
+     * @param \AppBundle\Entity\Compte $compte
+     *
+     * @return Professeur
+     */
+    public function setCompte(\AppBundle\Entity\Compte $compte = null)
+    {
+        $this->compte = $compte;
+
+        return $this;
+    }
+
+    /**
+     * Get compte
+     *
+     * @return \AppBundle\Entity\Compte
+     */
+    public function getCompte()
+    {
+        return $this->compte;
+    }
+}

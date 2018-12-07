@@ -108,10 +108,10 @@
                         {% for item in classes_type %}
                         <tr class="text-center">
 
-                            <td>{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</td>
+                            <td><a href="{{ path('eleve_type_index',{'classeTpe':item.type_classe.id}) }}">{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</a></td>
                             <td>{{ item.eff }}</td>
                             <td>
-                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="#" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('show_type_edit',{'type':item.type_classe.id}) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
                                 {% if item.type_classe.archiver %}
                                     <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="#"><i class="fa fa-folder-open-o text-success"></i></a></div>
                                 {% else %}

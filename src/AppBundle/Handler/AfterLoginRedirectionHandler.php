@@ -71,7 +71,7 @@ class AfterLoginRedirectionHandler implements AuthenticationSuccessHandlerInterf
 
         }elseif(in_array('ROLE_CENSEUR', $rolesTab, true)){
             $msg = "Vous êtes connecté en tant que censeur";
-            $redirection  = new RedirectResponse($this->router->generate('homepage_admin'));
+            $redirection  = new RedirectResponse($this->router->generate('schools'));
 
         }elseif(in_array('ROLE_INVESTISSEUR', $rolesTab, true)){
 

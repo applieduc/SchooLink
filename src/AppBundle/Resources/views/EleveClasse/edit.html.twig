@@ -26,72 +26,23 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <h3 class="card-title">Année Académique</h3>
+                            <h3 class="card-title">Modification</h3>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form action="{{ path('edit',{'id':annee.id}) }}"  method="post">
+                        <form action="{{ path('type_edit',{'type':type.id}) }}"  method="post">
                             <div class="row">
 
-                                <div class="col-md-6">
-                                    <label for="" class="">Date Debut :</label>
+                                <div class="col-md-12">
+                                    <label for="" class="">Type Classe :</label>
                                     <div class="">
-                                        <input type="text" value="{{annee.dateDebut|date('d-m-Y')}}"  name="debut" class= "form-control " required>
+                                        <input type="text" value="{{type.libelle}}"  name="classe" class= "form-control " required>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="" class="">Date Fin :</label>
-                                    <div class="">
-                                        <input type="text" value="{{annee.dateFin |date('d-m-Y')}}" name="fin" class= "form-control" required>
-                                    </div>
-                                </div>
+
                             </div>
 
-                            <div class="row" id="periodes">
-                                    {% if(annee.typePeriode=="Trimestre") %}
-
-                                       {% for periode in periodes %}
-
-                                           <div class="col-lg-12">
-                                               <label for="" class="">Trimestre {{ loop.index }} :</label>
-                                           </div>
-                                           <div class="container-fluid row">
-                                               <div class="col-md-6">
-                                                   <div class="">
-                                                       <input type="text" name="debutT{{ loop.index }}" value="{{ periode.dateDebut|date('d-m-Y') }}" placeholder="date debut" class= "form-control nom" >
-                                                   </div>
-                                               </div>
-                                               <div class="col-md-6">
-                                                   <div class="">
-                                                       <input type="text" name="finT{{ loop.index }}" value="{{ periode.dateFin|date('d-m-Y') }}" placeholder="date fin" class= "form-control nom" >
-                                                   </div>
-                                               </div>
-                                           </div>
-
-                                        {% endfor %}
-
-                                {% else %}
-                                {% for periode in periodes %}
-                                    <div class="col-lg-12">
-                                        <label for="" class="">Semestre {{ loop.index }} :</label>
-                                    </div>
-                                    <div class="container-fluid row">
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="debutS{{ loop.index }}" value="{{ periode.dateDebut|date('d-m-Y') }}" placeholder="date debut" class= "form-control nom" >
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="finS{{ loop.index }}" value="{{ periode.dateFin|date('d-m-Y') }}" placeholder="date fin" class= "form-control nom" >
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-
-                                    {% endif %}
-                            </div>
 
                             <div class="row my-4">
                                 <div class="col-lg-12 form-group d-flex justify-content-center">
