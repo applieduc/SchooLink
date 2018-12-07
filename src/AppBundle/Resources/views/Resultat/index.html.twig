@@ -1,0 +1,149 @@
+
+{% extends 'master.html.twig' %}
+{% block head %}
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Résultat éleve</h1>
+                </div><!-- /.col -->
+                <!--<div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Starter Page</li>
+                    </ol>
+                </div>-->
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-3">
+            <h5>Option de recherche</h5>
+            <div class="card">
+                <div class="card-header">
+                    Fiche de note
+                </div>
+                <div class="card-body">
+                    <form action="{{ path('fiche_note') }}" method="post">
+                        <div class="form-group">
+                            <label>Type de classe</label>
+                            <select class="form-control" name="tc">
+                                {% for i in tc %}
+                                <option value="{{ i.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
+                                    {% endfor %}
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label>Matière</label>
+                                                    <select class="form-control" name="cm">
+                            {% for i in cm %}
+                                <option value="{{ i.matiere.id }}">{{ i.matiere.libelle }}</option>
+                            {% endfor %}
+                                                    </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label>Période</label>
+                            <select class="form-control" name="p">
+                                {% for i in periode %}
+                                <option value="{{ i.id }}">1e semestre
+                                    ({{ i.dateDebut | date("d-m-Y") }} {{ i.dateFin | date("d-m-Y") }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <input type="submit" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                   Bulletin
+                </div>
+                <div class="card-body">
+                    <form action="{{ path('bulletin') }}" method="post">
+                        <div class="form-group">
+                            <label>Type de classe</label>
+                            <select class="form-control" name="tc">
+                                {% for i in tc %}
+                                <option value="{{ i.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
+                                    {% endfor %}
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label>Période</label>
+                            <select class="form-control" name="p">
+                                {% for i in periode %}
+                                <option value="{{ i.id }}">1e semestre
+                                    ({{ i.dateDebut | date("d-m-Y") }} {{ i.dateFin | date("d-m-Y") }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <input type="submit" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Récentes notes </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Elève</th>
+                            <th>Type</th>
+                            <th>Notes</th>
+                            <th>Matière</th>
+                            <th>Classe</th>
+                            <th>Professeur</th>
+                            <th>Période</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for i in notes %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ i.eleve.prenom }} {{ i.eleve.nom }}</td>
+                                <td>{{ i.type }}</td>
+                                <td>{{ i.note }}</td>
+                                <td>{{ i.classeMatiereProfesseurAnnee.classematiere.matiere.libelle }}</td>
+                                <td>{{ i.classeMatiereProfesseurAnnee.classematiere.classe.libelle }} {{ i.classeMatiereProfesseurAnnee.typeclasse.classe.libelle }}</td>
+                                <td>{#  {{ i.classeMatiereProfesseurAnnee.professeur.nom}}#} nom prof</td>
+                                <td>{{ i.periode.id }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+
+    <!-- /.card -->
+{% endblock %}

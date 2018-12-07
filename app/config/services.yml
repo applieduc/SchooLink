@@ -44,7 +44,7 @@ services:
     app.file_uploader:
         class: AppBundle\Manager\FileUploader
         public: true
-        arguments: ['%files_path%']
+        arguments: ['je_ne_sais_pas']
     redirect.after.login:
             class: AppBundle\Handler\AfterLoginRedirectionHandler
             arguments: ['@router', '@session']

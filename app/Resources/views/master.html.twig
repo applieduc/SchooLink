@@ -133,6 +133,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 Eleve
                             </p>
                         </a>
+                        <a href="{{path('resultat_index')}}" class="nav-link">
+                            <i class="nav-icon fa fa-th"></i>
+                            <p>
+                                Résultat
+                            </p>
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -223,6 +229,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script>
     $(function () {
         $('table').DataTable();
+    });
+
+</script>
+<script>
+    $(function () {
+        $("#example1").DataTable();
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
+        });
     });
 </script>
 </body>

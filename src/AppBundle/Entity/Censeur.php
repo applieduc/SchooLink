@@ -34,7 +34,7 @@ class Censeur extends User
 
     /**
      * @var string
-     * @Assert\File(mimeTypes={ "image/jpeg", "image/png", "image/jpg" })
+     *
      *
      * @ORM\Column(name="photo", type="string")
      */
