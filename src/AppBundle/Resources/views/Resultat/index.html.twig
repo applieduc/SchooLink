@@ -31,28 +31,28 @@
                     <form action="{{ path('fiche_note') }}" method="post">
                         <div class="form-group">
                             <label>Type de classe</label>
-                            <select class="form-control" name="tc">
+                            <select class="form-control" name="tc" id="type">
                                 {% for i in tc %}
-                                <option value="{{ i.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
+                                <option value="{{ i.id }}" rel="{{ i.classe.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
                                     {% endfor %}
                             </select>
 
                         </div>
                         <div class="form-group">
                             <label>Matière</label>
-                                                    <select class="form-control" name="cm">
-                            {% for i in cm %}
-                                <option value="{{ i.matiere.id }}">{{ i.matiere.libelle }}</option>
-                            {% endfor %}
-                                                    </select>
+                            <select class="form-control" name="cm" id="mat">
+                            {#{% for i in cm %}#}
+                                {#<option value="{{ i.matiere.id }}">{{ i.matiere.libelle }}</option>#}
+                            {#{% endfor %}#}
+                            </select>
 
                         </div>
                         <div class="form-group">
                             <label>Période</label>
                             <select class="form-control" name="p">
                                 {% for i in periode %}
-                                <option value="{{ i.id }}">1e semestre
-                                    ({{ i.dateDebut | date("d-m-Y") }} {{ i.dateFin | date("d-m-Y") }})</option>
+                                <option title="{{ i.dateDebut | date("d-m-Y") }} au  {{ i.dateFin | date("d-m-Y") }}" value="{{ i.id }}">{{ annee.typePeriode }} {{ loop.index }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -81,8 +81,8 @@
                             <label>Période</label>
                             <select class="form-control" name="p">
                                 {% for i in periode %}
-                                <option value="{{ i.id }}">1e semestre
-                                    ({{ i.dateDebut | date("d-m-Y") }} {{ i.dateFin | date("d-m-Y") }})</option>
+                                    <option title="{{ i.dateDebut | date("d-m-Y") }} au  {{ i.dateFin | date("d-m-Y") }}" value="{{ i.id }}">{{ annee.typePeriode }} {{ loop.index }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -129,15 +129,7 @@
                         {% endfor %}
 
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
-                        </tr>
-                        </tfoot>
+
                     </table>
                 </div>
                 <!-- /.card-body -->
@@ -146,4 +138,53 @@
     </div>
 
     <!-- /.card -->
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('#type').change(function () {
+            var id=$(this).val();
+            var form=new FormData();
+            form.append('type',id);
+            $.ajax({
+                type:"POST",
+                dataType:"json",
+                data:form,
+                url:"{{ path('get_matiere_with_typeClasse')}}",
+                cache: false,
+                contentType:false,
+                processData:false,
+                success:function (data) {
+                    $('#mat').html('');
+                    for (var i=0;i<data.mats.length;i++){
+                        $('#mat').append('<option value="'+data.mats[i].id+'">'+data.mats[i].libelle+'</option>')
+                    }
+                }
+
+
+            });
+        });
+        $(document).ready(function () {
+            var id=$('#type').val();
+            var form=new FormData();
+            form.append('type',id);
+            $.ajax({
+                type:"POST",
+                dataType:"json",
+                data:form,
+                url:"{{ path('get_matiere_with_typeClasse')}}",
+                cache: false,
+                contentType:false,
+                processData:false,
+                success:function (data) {
+                    $('#mat').html('');
+                    for (var i=0;i<data.mats.length;i++){
+                        $('#mat').append('<option value="'+data.mats[i].id+'">'+data.mats[i].lib+'</option>')
+                    }
+                }
+
+
+            });
+        });
+    </script>
 {% endblock %}

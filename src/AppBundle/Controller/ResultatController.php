@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Annee;
+use AppBundle\Entity\Censeur;
+use AppBundle\Entity\Classe;
 use AppBundle\Entity\ClasseMatiere;
 use AppBundle\Entity\ClasseMatiereProfesseurAnnee;
 use AppBundle\Entity\Eleve;
@@ -10,6 +13,7 @@ use AppBundle\Entity\Note;
 use AppBundle\Entity\Periode;
 use AppBundle\Entity\Professeur;
 use AppBundle\Entity\TypeClasse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -29,21 +33,52 @@ class ResultatController extends Controller
      */
     public function indexAction(Request $request)
     {
+
         $em=$this->getDoctrine()->getManager();
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+
         $notes=$em->getRepository(Note::class)->findAll();
-        $tc=$em->getRepository(TypeClasse::class)->findAll();
+        $tc=$em->getRepository(Classe::class)->findBy(array('ecole'=>$ecole->getId()));
+        $t=array();
+        $i=0;
+        foreach ($tc as $c){
+            $t[$i]=$em->getRepository(TypeClasse::class)->findOneBy(array('classe'=>$c->getId()));
+            $i++;
+        }
         $cm=$em->getRepository(ClasseMatiere::class)->findAll();
-       $periode=$em->getRepository(Periode::class)->findAll();
+       $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>$annee->getId()));
         return $this->render('AppBundle:Resultat:index.html.twig', array(
             'notes'=>$notes,
-            'tc'=>$tc,
-            'cm'=>$cm,
+            'tc'=>$t,
+            'annee'=>$annee,
             'periode'=>$periode
 
             ));
     }
 
 
+    /**
+     * Lists all eleve entities.
+     *
+     * @Route("/get_matiere_with_typeClasse", name="get_matiere_with_typeClasse")
+     * @Method("POST")
+     */
+    public function getMatiereClasseAction(Request $request){
+        $em=$this->getDoctrine()->getManager();
+
+        $type=$em->getRepository(TypeClasse::class)->find((int)$request->get('type'));
+        $mat=$em->getRepository(ClasseMatiere::class)->findBy(array('classe'=>$type->getClasse()->getId()));
+         $matieres=array();
+         $i=0;
+         foreach ($mat as $value){
+             $matieres[$i]['lib']=$value->getMatiere()->getLibelle();
+             $matieres[$i]['id']=$value->getMatiere()->getId();
+             $i++;
+         }
+        return new Response(json_encode(array('mats'=>$matieres)));
+    }
     /**
      * Lists all eleve entities.
      *
@@ -60,8 +95,12 @@ class ResultatController extends Controller
         $tc=$em->getRepository(TypeClasse::class)->find($tci);
         $cm=$em->getRepository(ClasseMatiere::class)->find($cmi);
         $p=$em->getRepository(Periode::class)->find($pi);
-        $classprof=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('type_classe'=>$tci,'classe_matiere'=>$cmi))[0];
-        $prof=$em->getRepository(Professeur::class)->find($classprof->getProfesseur()->getId());
+        $classprof=null;
+        if(sizeof($em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('type_classe'=>$tci,'classe_matiere'=>$cmi)))>0){
+            $classprof=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('type_classe'=>$tci,'classe_matiere'=>$cmi))[0];
+            $prof=$em->getRepository(Professeur::class)->find($classprof->getProfesseur()->getId());
+
+        }
         $eleve=$em->getRepository(EleveTypeClasse::class)->findBy(array("type_classe"=>$tci));
 
         $em=$this->getDoctrine()->getManager();

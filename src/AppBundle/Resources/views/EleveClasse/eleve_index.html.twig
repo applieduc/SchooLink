@@ -24,7 +24,7 @@
         <div class="card-header">
             <h3 class="card-title">Liste des élèves de la
                 {#<a type="button" href="#eleve_modal" class="btn btn-primary btn-sm pull-right rounded" data-toggle="modal">Ajouter</a>#}
-                <a type="button" href="{{ path('add_in_class',{'classeType':classeType.id}) }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>
+                <a type="button" href="{{ path('add_in_class_type',{'classeType':classeType.id}) }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>
             </h3>
         </div>
         <!-- /.card-header -->
@@ -52,7 +52,7 @@
                         <td>{% if eleve_type.eleve.dateNaissance %}{{ eleve_type.eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
                         <td>
                             <div class=" row d-column justify-content-center">
-                                <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('remove_eleve_in_classe', { 'id': eleve_type.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                                <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('remove_eleve_in_classeType', { 'id': eleve_type.id }) }}"><i class="fa fa-remove text-danger"></i></a></div>
 
                             </div>
                             {#<div class="dropdown navbar">

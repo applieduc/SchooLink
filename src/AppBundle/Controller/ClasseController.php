@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Annee;
 use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Classe;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -82,13 +83,13 @@ class ClasseController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $session=$this->get("session");
-        if($id!=null){
-            $annee = $em->getRepository('AppBundle:Annee')->find((int)$id);
-            $session->set('annee',$annee);
 
-        }else{
-            $session->remove('annee');
-        }
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+
+        $session->set('annee',$annee);
+
         $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
 
 

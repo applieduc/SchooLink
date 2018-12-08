@@ -121,25 +121,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 Classe
                             </p>
                         </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{path('matiere_index')}}" class="nav-link">
                             <i class="nav-icon fa fa-th"></i>
                             <p>
                                 Matiere
                             </p>
                         </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{path('eleve_index')}}" class="nav-link">
                             <i class="nav-icon fa fa-th"></i>
                             <p>
                                 Eleve
                             </p>
                         </a>
-                        <a href="{{path('resultat_index')}}" class="nav-link">
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{path('ecole_professeur_index')}}" class="nav-link">
                             <i class="nav-icon fa fa-th"></i>
                             <p>
-                                Résultat
+                                Professeur
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{path('resultat_index')}}" class="nav-link">
+                            <i class="nav-icon fa fa-th"></i>
+                            <p>
+                                Notes
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('fos_user_security_logout') }}" class="nav-link">
+                           Deconnexion
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -234,15 +254,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </script>
 <script>
     $(function () {
-        $("#example1").DataTable();
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
+        // $("#example1").DataTable();
+        // $('#example2').DataTable({
+        //     "paging": true,
+        //     "lengthChange": false,
+        //     "searching": false,
+        //     "ordering": true,
+        //     "info": true,
+        //     "autoWidth": false
+        // });
     });
 </script>
 </body>

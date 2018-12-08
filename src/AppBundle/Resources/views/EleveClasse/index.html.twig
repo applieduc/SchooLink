@@ -108,7 +108,7 @@
                         {% for item in classes_type %}
                         <tr class="text-center">
 
-                            <td><a href="{{ path('eleve_type_index',{'classeTpe':item.type_classe.id}) }}">{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</a></td>
+                            <td><a href="{{ path('eleve_type_index',{'classeType':item.type_classe.id}) }}">{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</a></td>
                             <td>{{ item.eff }}</td>
                             <td>
                                 <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('show_type_edit',{'type':item.type_classe.id}) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>

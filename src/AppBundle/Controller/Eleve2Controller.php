@@ -21,16 +21,16 @@ class Eleve2Controller extends Controller
     /**
      * Lists all eleve entities.
      *
-     * @Route("/{classeTpe}", name="eleve_type_index")
+     * @Route("/{classeType}", name="eleve_type_index")
      * @Method("GET")
      */
-    public function indexAction(TypeClasse $classeTpe)
+    public function indexAction(TypeClasse $classeType)
     {
         $em = $this->getDoctrine()->getManager();
-        $eleve_type=$em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$classeTpe->getId()));
+        $eleve_type=$em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$classeType->getId()));
         return $this->render('AppBundle:EleveClasse:eleve_index.html.twig', array(
             'eleves_type' => $eleve_type,
-            'classeType'=>$classeTpe,
+            'classeType'=>$classeType,
 
         ));
     }
@@ -38,51 +38,37 @@ class Eleve2Controller extends Controller
     /**
      * Creates a new eleve entity.
      *
-     * @Route("/new", name="eleve_new")
+     * @Route("/save_new_eleve_in_classe/{classeType}", name="save_new_eleve_in_classe")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request,TypeClasse $classeType)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $eleve = new Eleve();
-        $form = $this->createForm('AppBundle\Form\EleveType', $eleve);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
-            $eleve->setEcole($censeur->getEcole());
-            $eleve->setClasse($em->getRepository(Classe::class)->find((int)$request->get('classe')));
-            $em->persist($eleve);
-            $em->flush();
-
-            return $this->redirectToRoute('eleve_index');
-
-//            return $this->redirectToRoute('eleve_show', array('id' => $eleve->getId()));
-        }
-        $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
-        $classes=$em->getRepository(Classe::class)->findBy(array('ecole'=>$censeur->getEcole()->getId()));
-
-        return $this->render('eleve/new.html.twig', array(
-            'eleve' => $eleve,
-            'classes' => $classes,
-            'form' => $form->createView(),
-        ));
+        $elve=new EleveTypeClasse();
+        $elve->setEleve($em->getRepository(Eleve::class)->find($request->get('eleve')));
+        $elve->setTypeClasse($classeType);
+        $elve->setArchiver(0);
+        $elve->setDateCreation(new \DateTime());
+        $elve->setDateModification(new \DateTime());
+        $em->persist($elve);
+        $em->flush();
+        return $this->redirectToRoute('eleve_type_index',array('classeType'=>$classeType->getId()));
     }
 
     /**
      * Finds and displays a eleve entity.
      *
-     * @Route("/new_eleve_in_classe/{classeType}", name="new_eleve_in_classe")
+     * @Route("/add_in_class_type/{classeType}", name="add_in_class_type")
      * @Method("GET")
      */
-    public function showAction(TypeClasse $typeClasse)
+    public function showAction(TypeClasse $classeType)
     {
 
         $em=$this->getDoctrine()->getManager();
-        return $this->render('AppBundle:EleveClasse:eleve_index.html.twig', array(
-            'eleves' => ,
-            'classeType'=>$classeTpe,
+		$eleves=$this->get_eleve($classeType->getClasse());
+        return $this->render('AppBundle:EleveClasse:new_eleve_in_classe.html.twig', array(
+            'eleves' =>$eleves,
+            'classeType'=>$classeType,
 
         ));
     }
@@ -178,22 +164,18 @@ class Eleve2Controller extends Controller
     /**
      * Deletes a eleve entity.
      *
-     * @Route("/{id}", name="eleve_delete")
+     * @Route("/remove_eleve_in_classeType/{id}", name="remove_eleve_in_classeType")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Eleve $eleve)
+    public function deleteAction(Request $request, $id)
     {
+        $em=$this->getDoctrine()->getManager();
+        $elct=$em->getRepository(EleveTypeClasse::class)->find((int)$id);
+        $type=$elct->getTypeClasse();
+        $em->remove($elct);
+        $em->flush();
 
-        $form = $this->createDeleteForm($eleve);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($eleve);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('eleve_index');
+        return $this->redirectToRoute('eleve_type_index',array('classeType'=>$type->getId()));
     }
 
     /**
