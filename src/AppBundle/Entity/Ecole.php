@@ -86,7 +86,7 @@ class Ecole
 
     /**
      *
-     * @OneToOne(targetEntity="Censeur", mappedBy="ecole")
+     * @OneToOne(targetEntity="Censeur", mappedBy="ecole",cascade={"persist"})
      *
      */
      private $censeur;

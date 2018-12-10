@@ -35,7 +35,7 @@ class ClasseMatiereProfesseurAnnee
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Professeur",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Professeur",inversedBy="enseignement",cascade={"persist"})
      */
     private $professeur;
 
@@ -149,4 +149,7 @@ class ClasseMatiereProfesseurAnnee
     {
         return $this->annee;
     }
+
+
+
 }

@@ -35,13 +35,16 @@
                     <div class=" row d-column justify-content-center">
                         <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe_id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
                         <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('class_mat_show', { 'id': classeMatiere.id ,'cl':classe_id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
-                        {% if classeMatiere.archiver %}
+                          {% if classeMatiere.archiver %}
                         <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id ,'cl':classe_id}) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
 {% else %}
     <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('class_mat_archive', { 'id': classeMatiere.id,'cl':classe_id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
                         {% endif %}
+                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('enseignement_new', { 'id': classeMatiere.id}) }}" rel="#"><i class="fa fa-user-circle text-info"></i></a></div>
+
                     </div>
                 </td>
+
             </tr>
         {% endfor %}
         </tbody>

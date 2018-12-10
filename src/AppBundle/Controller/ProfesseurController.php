@@ -24,7 +24,7 @@ class ProfesseurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $professeurs = $em->getRepository('AppBundle:Professeur')->findAll();
+        $professeurs = $em->getRepository('AppBundle:Professeur')->findBy(['createdBy'=> $this->getUser()]);
 
         return $this->render('professeur/index.html.twig', array(
             'professeurs' => $professeurs,

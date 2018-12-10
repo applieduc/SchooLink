@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Classematiereprofesseurannees list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for classeMatiereProfesseurAnnee in classeMatiereProfesseurAnnees %}
+            <tr>
+                <td><a href="{{ path('classematiereprofesseurannee_show', { 'id': classeMatiereProfesseurAnnee.id }) }}">{{ classeMatiereProfesseurAnnee.id }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('classematiereprofesseurannee_show', { 'id': classeMatiereProfesseurAnnee.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('classematiereprofesseurannee_edit', { 'id': classeMatiereProfesseurAnnee.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('classematiereprofesseurannee_new') }}">Create a new classeMatiereProfesseurAnnee</a>
+        </li>
+    </ul>
+{% endblock %}
