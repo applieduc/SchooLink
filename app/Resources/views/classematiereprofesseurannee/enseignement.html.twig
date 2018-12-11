@@ -115,7 +115,57 @@
             <!-- /.card -->
         </div>
     </div>
-    <div class="row"></div>
+    <div class="row">
+
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <h3 class="card-title">Liste de ses enseignements </h3>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Classe </th>
+                            <th>Matiere</th>
+
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for matiere in matieres %}
+                            <tr>
+                                <td><a href="{{ path('matiere_show', { 'id': matiere.id }) }}">{{ matiere.id }}</a></td>
+                                <td>{{ matiere.libelle }}</td>
+                                <td>{{ matiere.dateCreation | date('Y-m-d H:i:s')}}</td>
+                                <td>{% if matiere.archiver %}<span class="badge badge-danger">Obselète</span>{% else %}<span class="badge badge-success">Enseignée</span>{% endif %}</td>
+                                <td>
+                                    <div class=" row d-column justify-content-center">
+                                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('matiere_edit', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                        <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('matiere_show', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                                        {% if matiere.archiver %}
+                                            <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('matiere_desarchive', { 'id': matiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
+                                        {% else %}
+                                            <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+    </div>
     <div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-body" style="position:absolute;
                                 left: 50%;
