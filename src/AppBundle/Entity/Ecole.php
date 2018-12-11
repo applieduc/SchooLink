@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Traits\Identifiers;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -71,18 +72,9 @@ class Ecole
     private $logo;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime", length=255)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EcoleProfesseur", mappedBy="ecole")
      */
-    private $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updatedAt", type="datetime", length=255)
-     */
-    private $updatedAt;
+    private $ecoleProf;
 
     /**
      *
@@ -97,6 +89,7 @@ class Ecole
     public function __construct()
     {
         $this->codeTelephone = 'ab';
+        $this->ecoleProf = new ArrayCollection();
     }
 
 
@@ -279,4 +272,42 @@ class Ecole
     {
         return $this->censeur;
     }
+
+
+    /**
+     * Add ecoleProf
+     *
+     * @param \AppBundle\Entity\EcoleProfesseur $ecoleProf
+     *
+     * @return mixed
+     */
+    public function addEcoleProf(\AppBundle\Entity\EcoleProfesseur $ecoleProf)
+    {
+        $this->ecoleProf[] = $ecoleProf;
+
+        return $this;
+    }
+
+    /**
+     * Remove vente
+     *
+     * @param \AppBundle\Entity\EcoleProfesseur $ecoleProf
+     */
+    public function removeEcoleProf(\AppBundle\Entity\EcoleProfesseur $ecoleProf)
+    {
+        $this->ecoleProf->removeElement($ecoleProf);
+    }
+
+    /**
+     * Get vente
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEcoleProf()
+    {
+        return $this->ecoleProf;
+    }
+
+
+
 }

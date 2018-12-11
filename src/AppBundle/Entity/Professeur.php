@@ -76,6 +76,11 @@ class Professeur
     private $enseignement;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EcoleProfesseur", mappedBy="professeur")
+     */
+    private $profecole;
+
+    /**
      * @var string
      *
      */
@@ -84,6 +89,7 @@ class Professeur
     public function __construct()
     {
         $this->enseignement = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->profecole = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -260,6 +266,40 @@ class Professeur
     public function getEnseignement()
     {
         return $this->enseignement;
+    }
+
+    /**
+     * Add profecole
+     *
+     * @param \AppBundle\Entity\EcoleProfesseur $profecole
+     *
+     * @return mixed
+     */
+    public function addProfecole(\AppBundle\Entity\EcoleProfesseur $profecole)
+    {
+        $this->profecole[] = $profecole;
+
+        return $this;
+    }
+
+    /**
+     * Remove vente
+     *
+     * @param \AppBundle\Entity\EcoleProfesseur $profecole
+     */
+    public function removeProfecole(\AppBundle\Entity\EcoleProfesseur $profecole)
+    {
+        $this->profecole->removeElement($profecole);
+    }
+
+    /**
+     * Get vente
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProfecole()
+    {
+        return $this->profecole;
     }
 
 

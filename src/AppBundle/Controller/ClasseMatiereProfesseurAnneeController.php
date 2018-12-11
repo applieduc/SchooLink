@@ -33,6 +33,24 @@ class ClasseMatiereProfesseurAnneeController extends Controller
     }
 
     /**
+     * Lists all classeMatiereProfesseurAnnee entities.
+     *
+     * @Route("/infos-prof", name="enseignement_index2")
+     * @Method("GET")
+     */
+    public function testAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+    $profInfos = $em->getRepository('AppBundle:Professeur')->EtablisementProf();
+
+        return $this->render('classematiereprofesseurannee/index.html.twig', array(
+            'profinfos' => $profInfos,
+        ));
+    }
+
+
+    /**
      * Creates a new classeMatiereProfesseurAnnee entity.
      *
      * @Route("/{id}/new", name="enseignement_new")
@@ -73,6 +91,7 @@ class ClasseMatiereProfesseurAnneeController extends Controller
         $session = new  Session();
         $anne = $session->get('annee');
         $em = $this->getDoctrine()->getManager();
+
         $classeMatiereProfesseurAnnee = new Classematiereprofesseurannee();
         $form = $this->createForm('AppBundle\Form\ClasseMatiereProfesseurAnneeType', $classeMatiereProfesseurAnnee,['user'=>$this->getUser(),'nature'=>'prof' ]);
         $prof = $em->getRepository('AppBundle:Professeur')->findOneBy(['id'=>$id]);
@@ -82,10 +101,12 @@ class ClasseMatiereProfesseurAnneeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $classeMatiereProfesseurAnnee->setProfesseur($prof);
             // $classeMatiereProfesseurAnnee->setAnnee($anne);
+            $typeclasse = $em->getRepository('AppBundle:TypeClasse')->findOneBy(['id'=>$request->get('typeclasse')]);
+            $classeMatiereProfesseurAnnee->setTypeClasse($typeclasse);
             $em->persist($classeMatiereProfesseurAnnee);
             $em->flush();
 
-            return $this->redirectToRoute('enseignement_prof_new', array('id' => $classeMatiereProfesseurAnnee->getId()));
+            return $this->redirectToRoute('enseignement_prof_new', array('id' => $id));
         }
 
         return $this->render('classematiereprofesseurannee/enseignement.html.twig', array(

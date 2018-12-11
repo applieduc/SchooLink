@@ -39,4 +39,30 @@ class AjaxController extends Controller
 
 
     }
+
+    /**
+     *
+     * @Route("/type-classe/{id}",name="type-classe",options={"expose"=true})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listTypeClasse($id)
+    {
+        // Get Entity manager and repository
+        $em = $this->getDoctrine()->getManager();
+        $typeclasses = $em->getRepository('AppBundle:TypeClasse')->findBy(['classe'=>$id,'archiver'=>false]);
+
+        $responseArray = array();
+        foreach($typeclasses as $typeclasse){
+            $responseArray[] = array(
+                "id" => $typeclasse->getId(),
+                "libelle" => $typeclasse->getLibelle(),
+            );
+        }
+
+
+        return new JsonResponse($responseArray);
+
+
+    }
 }

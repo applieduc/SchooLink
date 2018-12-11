@@ -19,7 +19,7 @@ class ProfesseurType extends AbstractType
             ->add('telephone')
             ->add('email')
             ->add("adresse")
-            ->add('codeProf')
+         //   ->add('codeProf')
 
             //->add('compte')
         ;

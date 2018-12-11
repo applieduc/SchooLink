@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EcoleProfesseur;
 use AppBundle\Entity\Professeur;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -44,11 +45,36 @@ class ProfesseurController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $id = null;
             $em = $this->getDoctrine()->getManager();
-            $em->persist($professeur);
+            $ecole_prof = new EcoleProfesseur();
+            $data = $form->getData();
+            //On verifie si le prof existe deja
+            $profexiste = $em->getRepository('AppBundle:Professeur')->findOneBy(['nom'=>$data->getNom(),'prenom'=>$data->getPrenom(),'telephone'=>$data->getTelephone()]);
+            if(!$profexiste){
+                // le professeur n'existe on le sauvgarde
+                $codeprof = strtoupper("PROF-" . substr(sha1(uniqid(mt_rand(), true)), 0, 4));
+                $professeur->setCodeProf($codeprof);
+
+                $ecole_prof->setEcole($this->getUser()->getEcole());
+                $ecole_prof->setProfesseur($professeur);
+
+                $em->persist($professeur);
+                $em->persist($ecole_prof);
+                $id  = $professeur->getId();
+            }
+            else {
+                // le professeur existe deja; on lui attribue sa nouvelle ecole
+
+                $ecole_prof->setEcole($this->getUser()->getEcole());
+                $ecole_prof->setProfesseur($profexiste);
+                $id = $profexiste->getId();
+                $em->persist($ecole_prof);
+            }
+
             $em->flush();
 
-            return $this->redirectToRoute('ecole_professeur_show', array('id' => $professeur->getId()));
+            return $this->redirectToRoute('enseignement_prof_new', array('id' => $id));
         }
 
         return $this->render('professeur/new.html.twig', array(
