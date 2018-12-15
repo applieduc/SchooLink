@@ -70,6 +70,28 @@ class Professeur
      */
     private $email;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ClasseMatiereProfesseurAnnee", mappedBy="professeur",cascade={"persist"})
+     */
+    private $enseignement;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EcoleProfesseur", mappedBy="professeur")
+     */
+    private $profecole;
+
+    /**
+     * @var string
+     *
+     */
+    private $Identite;
+
+    public function __construct()
+    {
+        $this->enseignement = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->profecole = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 
 
 
@@ -201,6 +223,83 @@ class Professeur
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+
+
+    public function getIdentite(){
+
+        return strtoupper($this->nom) . " " . $this->prenom;
+    }
+
+
+
+    /**
+     * Add detailsFiche
+     *
+     * @param \AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement
+     *
+     * @return mixed
+     */
+    public function addEnseignement(\AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement)
+    {
+        $this->enseignement[] = $enseignement;
+
+        return $this;
+    }
+
+    /**
+     * Remove detailsFiche
+     *
+     * @param \AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement
+     */
+    public function removeEnseignement(\AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement)
+    {
+        $this->enseignement->removeElement($enseignement);
+    }
+
+    /**
+     * Get detailsFiche
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEnseignement()
+    {
+        return $this->enseignement;
+    }
+
+    /**
+     * Add profecole
+     *
+     * @param \AppBundle\Entity\EcoleProfesseur $profecole
+     *
+     * @return mixed
+     */
+    public function addProfecole(\AppBundle\Entity\EcoleProfesseur $profecole)
+    {
+        $this->profecole[] = $profecole;
+
+        return $this;
+    }
+
+    /**
+     * Remove vente
+     *
+     * @param \AppBundle\Entity\EcoleProfesseur $profecole
+     */
+    public function removeProfecole(\AppBundle\Entity\EcoleProfesseur $profecole)
+    {
+        $this->profecole->removeElement($profecole);
+    }
+
+    /**
+     * Get vente
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProfecole()
+    {
+        return $this->profecole;
     }
 
 

@@ -1,0 +1,247 @@
+
+{% extends 'master.html.twig' %}
+
+{% block head %} 
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Enseignement</h1>
+            </div><!-- /.col -->
+            <!--<div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Starter Page</li>
+                </ol>
+            </div>-->
+            <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Professeur</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="card-body box-profile">
+                            {#<div class="text-center">#}
+                                {#<img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">#}
+                            </div>
+
+                            <h3 class="profile-username text-center">{{ professeur.identite }}</h3>
+
+                            <p class="text-muted text-center">{{ professeur.codeProf }}</p>
+
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Telephone</b> <a class="float-right">{{ professeur.telephone }}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Adresse</b> <a class="float-right">{{ professeur.adresse }}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Mail</b> <a class="float-right">{{ professeur.email }}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Nombre d'eleves</b> <a class="float-right"> 172</a>
+                                </li>
+                            </ul>
+
+                            {#<div class="row">#}
+                                {#<div class="col-lg-6"><a href="{{ path('ecole_edit', { 'id': ecole.id }) }}" class="btn btn-primary btn-block"><b>Modifier</b></a></div>#}
+                                {#<div class="col-lg-6"><a href="#" class="btn btn-danger btn-block"><b>Supprimer</b></a></div>#}
+                            {#</div>#}
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                   <div class="row">
+                       <h3 class="card-title">Matiere classe</h3>
+                   </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        <label class="required">Selectionnez la classe :</label>
+                        <select name="classe"
+                                onchange="loadTypeClasse(this), loadMatiereByClasse(this)"
+
+                                class="form-control select2"
+                                id="classe">
+                            <option value="" selected>Selectionnez ...</option>
+                            {% for cl in classes %}
+                                <option value="{{ cl.id }}"
+
+                                >{{ cl.libelle }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Selectionnez le type de classe :</label>
+                        <select name="typeclasse"
+
+
+                                class="form-control select2"
+                                id="typeclasse">
+                            <option value="" selected>Selectionnez le type de classe ...</option>
+                            {#{% for cl in classes %}#}
+                                {#<option value="{{ cl.id }}"#}
+
+                                {#>{{ cl.libelle }}</option>#}
+                            {#{% endfor %}#}
+                        </select>
+                    </div>
+                    {{ form_widget(form) }}
+
+                    <button class="btn btn-success pull-right" type="submit"> Ajouter  </button>
+                    {{ form_end(form) }}
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <h3 class="card-title">Liste de ses enseignements </h3>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Classe </th>
+                            <th>Matiere</th>
+
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for matiere in matieres %}
+                            <tr>
+                                <td><a href="{{ path('matiere_show', { 'id': matiere.id }) }}">{{ matiere.id }}</a></td>
+                                <td>{{ matiere.libelle }}</td>
+                                <td>{{ matiere.dateCreation | date('Y-m-d H:i:s')}}</td>
+                                <td>{% if matiere.archiver %}<span class="badge badge-danger">Obselète</span>{% else %}<span class="badge badge-success">Enseignée</span>{% endif %}</td>
+                                <td>
+                                    <div class=" row d-column justify-content-center">
+                                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('matiere_edit', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                        <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('matiere_show', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                                        {% if matiere.archiver %}
+                                            <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('matiere_desarchive', { 'id': matiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
+                                        {% else %}
+                                            <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+    </div>
+    <div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-body" style="position:absolute;
+                                left: 50%;
+                                top: 50%;
+                                width: 200px;
+                                margin-left: -100px;
+                                margin-top: -100px;
+                                background-color: rgba(0, 0, 0, 0);
+                                ">
+            <div class="progress progress-striped active"
+                 style="text-align: center; height: 100px; background-color: rgba(0, 0, 0, 0);">
+                <div class="bar">
+                    <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw" style="color: #f5f5f5;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+    <script>
+        function loadMatiereByClasse(classe) {
+            var classe_id = $(classe).val();
+            // Si le département et l'autoécole ne sont pas vide?
+            if (classe != "") {
+                // Récupérer les autoécoles de son département pour qu'il puisse faire le choix
+                // by ajax
+               // $('#pleaseWaitDialog').modal('show');
+                $.ajax({
+                    url: Routing.generate('matiere-classe', {'id': classe_id}),
+                    type: 'GET',
+                    success: function (data) {
+                     //  $('#pleaseWaitDialog').modal('hide');
+                        var matiere = $('#appbundle_classematiereprofesseurannee_classe_matiere');
+                       matiere.html("");
+                        matiere.find('select').remove()
+                       matiere.append("<option value='' selected>Sélectionnez la matiere...</option>");
+                        for (var key in data) {
+                            var value = data[key];
+                            matiere.append("<option value='" + value.id + "'>" + value.libelle + "</option>");
+                        }
+                        // candidat.trigger('change');
+                    }
+                })
+            }
+        }
+        function loadTypeClasse(classe) {
+            var classe_id = $(classe).val();
+            // Si le département et l'autoécole ne sont pas vide?
+            if (classe != "") {
+                // Récupérer les autoécoles de son département pour qu'il puisse faire le choix
+                // by ajax
+                // $('#pleaseWaitDialog').modal('show');
+                $.ajax({
+                    url: Routing.generate('type-classe', {'id': classe_id}),
+                    type: 'GET',
+                    success: function (data) {
+                        //  $('#pleaseWaitDialog').modal('hide');
+                        var matiere = $('#typeclasse');
+                        matiere.html("");
+                        matiere.find('select').remove()
+                        matiere.append("<option value='' selected>Sélectionnez le type ...</option>");
+                        for (var key in data) {
+                            var value = data[key];
+                            matiere.append("<option value='" + value.id + "'>" + value.libelle + "</option>");
+                        }
+                        // candidat.trigger('change');
+                    }
+                })
+            }
+        }
+    </script>
+{% endblock %}

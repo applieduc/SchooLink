@@ -1,43 +1,112 @@
-{% extends 'base.html.twig' %}
+{#{% extends 'master.html.twig' %}#}
 
-{% block body %}
-    <h1>Professeurs list</h1>
+{#{% block body %}#}
+    {#<h1>Professeurs list</h1>#}
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Codeprof</th>
-                <th>Datecreation</th>
-                <th>Datemodification</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for professeur in professeurs %}
-            <tr>
-                <td><a href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}">{{ professeur.id }}</a></td>
-                <td>{{ professeur.codeProf }}</td>
-                <td>{{ professeur.dateCreation }}</td>
-                <td>{{ professeur.dateModification }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('ecole_professeur_edit', { 'id': professeur.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {#<table>#}
+        {#<thead>#}
+            {#<tr>#}
+                {#<th>Id</th>#}
+                {#<th>Codeprof</th>#}
+                {#<th>Datecreation</th>#}
+                {#<th>Datemodification</th>#}
+                {#<th>Actions</th>#}
+            {#</tr>#}
+        {#</thead>#}
+        {#<tbody>#}
+        {#{% for professeur in professeurs %}#}
+            {#<tr>#}
+                {#<td><a href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}">{{ professeur.id }}</a></td>#}
+                {#<td>{{ professeur.codeProf }}</td>#}
+                {#<td>{{ professeur.dateCreation }}</td>#}
+                {#<td>{{ professeur.dateModification }}</td>#}
+                {#<td>#}
+                    {#<ul>#}
+                        {#<li>#}
+                            {#<a href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}">show</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="{{ path('ecole_professeur_edit', { 'id': professeur.id }) }}">edit</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+        {#</tbody>#}
+    {#</table>#}
 
-    <ul>
-        <li>
-            <a href="{{ path('ecole_professeur_new') }}">Create a new professeur</a>
-        </li>
-    </ul>
+    {#<ul>#}
+        {#<li>#}
+            {#<a href="{{ path('ecole_professeur_new') }}">Create a new professeur</a>#}
+        {#</li>#}
+    {#</ul>#}
+{#{% endblock %}#}
+{% extends 'master.html.twig' %}
+{% block head %}
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Professeurs</h1>
+                </div><!-- /.col -->
+                <!--<div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Starter Page</li>
+                    </ol>
+                </div>-->
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="card mb-5">
+        <div class="card-header">
+            <h3 class="card-title">Liste des professeurs
+                {#<a type="button" href="#eleve_modal" class="btn btn-primary btn-sm pull-right rounded" data-toggle="modal">Ajouter</a>#}
+                <a type="button" href="{{ path('ecole_professeur_new') }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>
+            </h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Nom prenom(s) </th>
+                    <th>Contact</th>
+                    <th>E-mail</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for professeur in professeurs %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        {#<td><a href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}">{{ professeur.id }}</a></td>#}
+                        <td>{{ professeur.identite }}</td>
+                        <td>{{ professeur.telephone}}</td>
+                        <td>{{ professeur.email }}</td>
+                        <td>
+                            <div class=" row d-column justify-content-center">
+                                <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('ecole_professeur_edit', { 'id': professeur.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                                {#{% if matiere.archiver %}#}
+                                    {#<div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('matiere_desarchive', { 'id': matiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>#}
+                                {#{% else %}#}
+                                    {#<div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>#}
+                                {#{% endif %}#}
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('enseignement_prof_new', { 'id': professeur.id }) }}" rel="#"><i class="fa fa-bookmark-o text-primary"></i></a></div>
+
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 {% endblock %}

@@ -1,35 +1,47 @@
-{% extends 'template/layout.html.twig' %}
-{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
-{% block menu %}
+{% extends 'master.html.twig' %}
+{% block head %}
 
-    {% if is_granted('ROLE_CENSEUR') %}
-        {#{% include'@App/Administration/Partials/_menu_admin.html.twig' %}#}
-    {% endif %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Nouveau professeur</h1>
+                </div><!-- /.col -->
+                <!--<div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Starter Page</li>
+                    </ol>
+                </div>-->
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
 {% endblock %}
-
-{% block contenuPrincipal %}
+{% block content %}
     <div class="row">
-        <div class="col-lg-6 offset-3">
-            <div class="card card-primary card-outline">
-                <div class="card-body">
-                    <div class="card-header">
-                        <h5 class="m-0">Inscription nouvelle ecole</h5>
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        Ajouter un nouveau professeur
+                        <span class="pull-right">
+                            <a href="{{ path('ecole_professeur_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        </span>
                     </div>
+                </div>
+                <div class="card-body">
 
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
                     <button class="btn btn-success pull-right" type="submit"> Ajouter  </button>
                     {{ form_end(form) }}
 
-                    {#<ul>#}
-                    {#<li>#}
-                    {#<a href="{{ path('ecole_index') }}">Back to the list</a>#}
-                    {#</li>#}
-                    {#</ul>  #}
                 </div>
+
             </div>
         </div>
-    </div>
 
+    </div>
 {% endblock %}
 
