@@ -10,11 +10,20 @@
 
 {% block contenuPrincipal %}
     <div class="row">
+       
         <div class="col-lg-10 offset-1">
             <div class="card card-primary card-outline">
                 <div class="card-body">
                     <div class="card-header">
                         <h5 class="m-0">Liste des ecoles</h5>
+                        <div>
+                        <a href="{{ path('ecole_new') }}" class="btn btn-sm btn-primary">
+                               Ajouter une ecole
+                            </a>
+                            <a href="{{ path('censeur_new') }}" class="btn btn-sm btn-primary">
+                                   Ajouter un censeur
+                                </a>    
+                        </div>
                     </div>
                     <table width="100%">
                         <thead>
