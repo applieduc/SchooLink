@@ -36,6 +36,13 @@ class Periode
     private $dateDebut;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="nom_periode", type="string")
+     */
+    private $nom_periode;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_fin", type="datetimetz")
@@ -124,5 +131,28 @@ class Periode
     {
         return $this->dateFin;
     }
-}
 
+    /**
+     * Set annee
+     *
+     * @param \AppBundle\Entity\Annee $annee
+     *
+     * @return Periode
+     */
+    public function setAnnee(\AppBundle\Entity\Annee $annee = null)
+    {
+        $this->annee = $annee;
+    
+        return $this;
+    }
+
+    /**
+     * Get annee
+     *
+     * @return \AppBundle\Entity\Annee
+     */
+    public function getAnnee()
+    {
+        return $this->annee;
+    }
+}

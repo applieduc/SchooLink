@@ -20,20 +20,27 @@ class EcoleProfesseur
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-     /**
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole", inversedBy="ecoleProf")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $ecole;
-     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Professeur")
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Professeur", inversedBy="profecole",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $professeur;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -41,23 +48,7 @@ class EcoleProfesseur
     }
 
     /**
-     * Set ecole
-     *
-     * @param \AppBundle\Entity\Ecole $ecole
-     *
-     * @return EcoleProfesseur
-     */
-    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
-    {
-        $this->ecole = $ecole;
-    
-        return $this;
-    }
-
-    /**
-     * Get ecole
-     *
-     * @return \AppBundle\Entity\Ecole
+     * @return mixed
      */
     public function getEcole()
     {
@@ -65,26 +56,28 @@ class EcoleProfesseur
     }
 
     /**
-     * Set professeur
-     *
-     * @param \AppBundle\Entity\Professeur $professeur
-     *
-     * @return EcoleProfesseur
+     * @param mixed $ecole
      */
-    public function setProfesseur(\AppBundle\Entity\Professeur $professeur = null)
+    public function setEcole($ecole)
     {
-        $this->professeur = $professeur;
-    
-        return $this;
+        $this->ecole = $ecole;
     }
 
     /**
-     * Get professeur
-     *
-     * @return \AppBundle\Entity\Professeur
+     * @return mixed
      */
     public function getProfesseur()
     {
         return $this->professeur;
     }
+
+    /**
+     * @param mixed $professeur
+     */
+    public function setProfesseur($professeur)
+    {
+        $this->professeur = $professeur;
+    }
+
 }
+

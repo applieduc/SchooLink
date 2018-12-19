@@ -35,6 +35,13 @@ class NotificationCenseur
      */
     private $statut;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="vu", type="boolean")
+     */
+    private $vu;
+
 
     /**
      * @var int

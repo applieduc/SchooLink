@@ -74,7 +74,7 @@ class Ecole
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\EcoleProfesseur", mappedBy="ecole")
      */
-    private $ecoleProf;
+   /*  private $ecoleProf*/
 
     /**
      *
@@ -271,41 +271,6 @@ class Ecole
     public function getCenseur()
     {
         return $this->censeur;
-    }
-
-
-    /**
-     * Add ecoleProf
-     *
-     * @param \AppBundle\Entity\EcoleProfesseur $ecoleProf
-     *
-     * @return mixed
-     */
-    public function addEcoleProf(\AppBundle\Entity\EcoleProfesseur $ecoleProf)
-    {
-        $this->ecoleProf[] = $ecoleProf;
-
-        return $this;
-    }
-
-    /**
-     * Remove vente
-     *
-     * @param \AppBundle\Entity\EcoleProfesseur $ecoleProf
-     */
-    public function removeEcoleProf(\AppBundle\Entity\EcoleProfesseur $ecoleProf)
-    {
-        $this->ecoleProf->removeElement($ecoleProf);
-    }
-
-    /**
-     * Get vente
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEcoleProf()
-    {
-        return $this->ecoleProf;
     }
 
 

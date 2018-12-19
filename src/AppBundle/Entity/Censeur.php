@@ -22,7 +22,6 @@ class Censeur extends User
      */
     private $ecole;
 
-
     /**
      * @var int
      *
@@ -31,6 +30,24 @@ class Censeur extends User
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password_mobile", type="string")
+     */
+    private $password_mobile;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email_mobile", type="string", length=255, nullable=true)
+     */
+    private $email_mobile;
+
+
+
+
 
 
     /**
@@ -243,4 +260,53 @@ class Censeur extends User
     }
 
 
+
+
+    /**
+     * Set passwordMobile
+     *
+     * @param string $passwordMobile
+     *
+     * @return Censeur
+     */
+    public function setPasswordMobile($passwordMobile)
+    {
+        $this->password_mobile = $passwordMobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get passwordMobile
+     *
+     * @return string
+     */
+    public function getPasswordMobile()
+    {
+        return $this->password_mobile;
+    }
+
+    /**
+     * Set emailMobile
+     *
+     * @param string $emailMobile
+     *
+     * @return Censeur
+     */
+    public function setEmailMobile($emailMobile)
+    {
+        $this->email_mobile = $emailMobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get emailMobile
+     *
+     * @return string
+     */
+    public function getEmailMobile()
+    {
+        return $this->email_mobile;
+    }
 }

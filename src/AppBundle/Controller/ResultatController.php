@@ -36,9 +36,12 @@ class ResultatController extends Controller
 
         $em=$this->getDoctrine()->getManager();
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
-
+          
         $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-
+        $id=0;
+      if ($annee!=null){
+          $id=$annee->getId();
+      }
         $notes=$em->getRepository(Note::class)->findAll();
         $tc=$em->getRepository(Classe::class)->findBy(array('ecole'=>$ecole->getId()));
         $t=array();
@@ -48,7 +51,7 @@ class ResultatController extends Controller
             $i++;
         }
         $cm=$em->getRepository(ClasseMatiere::class)->findAll();
-       $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>$annee->getId()));
+       $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>0));
         return $this->render('AppBundle:Resultat:index.html.twig', array(
             'notes'=>$notes,
             'tc'=>$t,

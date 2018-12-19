@@ -33,8 +33,10 @@
                             <label>Type de classe</label>
                             <select class="form-control" name="tc" id="type">
                                 {% for i in tc %}
+                                    {% if i!=null %}
                                 <option value="{{ i.id }}" rel="{{ i.classe.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
-                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
                             </select>
 
                         </div>
@@ -72,7 +74,9 @@
                             <label>Type de classe</label>
                             <select class="form-control" name="tc">
                                 {% for i in tc %}
+                                {% if i!=null %}
                                 <option value="{{ i.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
+                                {% endif %}
                                     {% endfor %}
                             </select>
 

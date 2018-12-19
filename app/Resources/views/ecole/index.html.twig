@@ -42,6 +42,7 @@
                         </thead>
                         <tbody>
                         {% for ecole in ecoles %}
+                            {% if ecole.censeur !=null %}
                             <tr>
                                 {#<td><a href="{{ path('ecole_show', { 'id': ecole.id }) }}">{{ ecole.id }}</a></td>#}
                                 <td>{{ ecole.nom }}</td>
@@ -63,6 +64,7 @@
                                     </ul>
                                 </td>
                             </tr>
+                        {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
