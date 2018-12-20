@@ -31,6 +31,19 @@ abstract class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="show_password", type="string")
+     */
+    private $show_password;
 
 
+    public function hash($password){
+
+    $options = [
+    'cost' => 13
+     ];
+        $passwordhash = password_hash($password, PASSWORD_BCRYPT, $options);
+    }
 }

@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $em=$this->getDoctrine()->getManager();
         $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
         $annees=$em->getRepository(Annee::class)->findBy(array('ecole'=>$censeur->getEcole()->getId()),array('id'=>'DESC'));
-        $enc=$em->getRepository(Annee::class)->findBy(array('cloture'=>false));
+        $enc=$em->getRepository(Annee::class)->findBy(array('cloture'=>false,'ecole'=>$censeur->getEcole()->getId()));
         // replace this example code with whatever you need
         return $this->render('AppBundle:Ecole:index.html.twig',array('annees'=>$annees,'enc'=>$enc));
     }
@@ -80,30 +80,38 @@ class DashboardController extends Controller
         if ((int)$type===0){
             $periode1=new Periode();
             $periode1->setAnnee($annee);
+            $periode1->setAnnee($annee);
+            $periode1->setNomPeriode('Trimestre 1');
             $periode1->setDateDebut(new \DateTime($request->get('debutT1')));
             $periode1->setDateFin(new \DateTime($request->get('finT1')));
             $em->persist($periode1);
 
             $periode2=new Periode();
             $periode2->setAnnee($annee);
+            $periode2->setNomPeriode('Trimestre 2');
+
             $periode2->setDateDebut(new \DateTime($request->get('debutT2')));
             $periode2->setDateFin(new \DateTime($request->get('finT2')));
             $em->persist($periode2);
 
             $periode3=new Periode();
             $periode3->setAnnee($annee);
+            $periode3->setNomPeriode('Trimestre 3');
             $periode3->setDateDebut(new \DateTime($request->get('debutT3')));
             $periode3->setDateFin(new \DateTime($request->get('finT3')));
             $em->persist($periode3);
         }else{
             $periode1=new Periode();
             $periode1->setAnnee($annee);
+            $periode1->setNomPeriode('Semestre 1');
+
             $periode1->setDateDebut(new \DateTime($request->get('debutS1')));
             $periode1->setDateFin(new \DateTime($request->get('finS1')));
             $em->persist($periode1);
 
             $periode2=new Periode();
             $periode2->setAnnee($annee);
+            $periode2->setNomPeriode('Semestre 2');
             $periode2->setDateDebut(new \DateTime($request->get('debutS2')));
             $periode2->setDateFin(new \DateTime($request->get('finS2')));
             $em->persist($periode2);

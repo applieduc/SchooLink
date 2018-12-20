@@ -37,7 +37,6 @@ class EcoleProfesseur
      * @ORM\Column(type="integer")
      */
 
-
     /**
      * Get id
      *

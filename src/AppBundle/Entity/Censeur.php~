@@ -22,7 +22,6 @@ class Censeur extends User
      */
     private $ecole;
 
-
     /**
      * @var int
      *
@@ -32,10 +31,28 @@ class Censeur extends User
      */
     protected $id;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password_mobile", type="string")
+     */
+    private $password_mobile;
 
     /**
      * @var string
-     * @Assert\File(mimeTypes={ "image/jpeg", "image/png", "image/jpg" })
+     *
+     * @ORM\Column(name="email_mobile", type="string", length=255, nullable=true)
+     */
+    private $email_mobile;
+
+
+
+
+
+
+    /**
+     * @var string
+     *
      *
      * @ORM\Column(name="photo", type="string")
      */
@@ -241,6 +258,7 @@ class Censeur extends User
     {
         $this->ecole = $ecole;
     }
+
 
 
 }

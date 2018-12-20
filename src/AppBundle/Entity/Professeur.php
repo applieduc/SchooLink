@@ -39,6 +39,13 @@ class Professeur
     /**
      * @var string
      *
+     * @ORM\Column(name="password_mobile", type="string")
+     */
+    private $password_mobile;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
@@ -304,5 +311,52 @@ class Professeur
 
 
 
-}
 
+    /**
+     * Set compte
+     *
+     * @param \AppBundle\Entity\Compte $compte
+     *
+     * @return Professeur
+     */
+    public function setCompte(\AppBundle\Entity\Compte $compte = null)
+    {
+        $this->compte = $compte;
+    
+        return $this;
+    }
+
+    /**
+     * Get compte
+     *
+     * @return \AppBundle\Entity\Compte
+     */
+    public function getCompte()
+    {
+        return $this->compte;
+    }
+
+    /**
+     * Set passwordMobile
+     *
+     * @param string $passwordMobile
+     *
+     * @return Professeur
+     */
+    public function setPasswordMobile($passwordMobile)
+    {
+        $this->password_mobile = $passwordMobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get passwordMobile
+     *
+     * @return string
+     */
+    public function getPasswordMobile()
+    {
+        return $this->password_mobile;
+    }
+}

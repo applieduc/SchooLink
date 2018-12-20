@@ -48,22 +48,33 @@ class CenseurController extends Controller
             $censeur->setRoles(array('ROLE_CENSEUR'));
 
               $file = $censeur->getPhoto();
-
             if ($file) {
                 $fileName = $this->get('app.file_uploader')->upload($file);
                 $censeur->setPhoto($fileName);
+
             }
+            $censeur->setPasswordMobile($this->hash($form->getData()->getPassword()));
+            $censeur->setEmailMobile($form->getData()->getEmail());
             $em = $this->getDoctrine()->getManager();
             $em->persist($censeur);
             $em->flush();
 
-            return $this->redirectToRoute('censeur_show', array('id' => $censeur->getId()));
+            return $this->redirectToRoute('ecole_index');
+//            return $this->redirectToRoute('censeur_show', array('id' => $censeur->getId()));
         }
 
         return $this->render('censeur/new.html.twig', array(
             'censeur' => $censeur,
             'form' => $form->createView(),
         ));
+    }
+    public function hash($password){
+
+        $options = [
+            'cost' => 13
+        ];
+        $passwordhash = password_hash($password, PASSWORD_BCRYPT, $options);
+        return $passwordhash;
     }
 
     /**

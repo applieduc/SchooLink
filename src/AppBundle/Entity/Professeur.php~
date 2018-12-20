@@ -3,16 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use AppBundle\Traits\Identifiers;
 /**
  * Professeur
  *
  * @ORM\Table(name="professeur")
+ * @ORM\EntityListeners("AppBundle\EntityListener\AppEntityListener")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProfesseurRepository")
  */
-class Professeur extends User
+class Professeur
 {
-
+    use Identifiers;
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Compte",cascade={"persist"})
      *
@@ -36,18 +37,69 @@ class Professeur extends User
     private $codeProf;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="dateCreation", type="datetimetz")
+     * @ORM\Column(name="password_mobile", type="string")
      */
-    private $dateCreation;
+    private $password_mobile;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="dateModification", type="datetimetz")
+     * @ORM\Column(name="nom", type="string", length=255)
      */
-    private $dateModification;
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=255)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telephone", type="string", length=255)
+     */
+    private $telephone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=255)
+     */
+    private $adresse;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ClasseMatiereProfesseurAnnee", mappedBy="professeur",cascade={"persist"})
+     */
+    private $enseignement;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EcoleProfesseur", mappedBy="professeur")
+     */
+    private $profecole;
+
+    /**
+     * @var string
+     *
+     */
+    private $Identite;
+
+    public function __construct()
+    {
+        $this->enseignement = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->profecole = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
 
 
     /**
@@ -85,51 +137,203 @@ class Professeur extends User
     }
 
     /**
-     * Set dateCreation
-     *
-     * @param \DateTime $dateCreation
-     *
-     * @return Professeur
+     * @return \DateTime
      */
-    public function setDateCreation($dateCreation)
+    public function getCreatedAt()
     {
-        $this->dateCreation = $dateCreation;
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * @param string $prenom
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @param string $telephone
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * @param string $adresse
+     */
+    public function setAdresse($adresse)
+    {
+        $this->adresse = $adresse;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+
+
+    public function getIdentite(){
+
+        return strtoupper($this->nom) . " " . $this->prenom;
+    }
+
+
+
+    /**
+     * Add detailsFiche
+     *
+     * @param \AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement
+     *
+     * @return mixed
+     */
+    public function addEnseignement(\AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement)
+    {
+        $this->enseignement[] = $enseignement;
 
         return $this;
     }
 
     /**
-     * Get dateCreation
+     * Remove detailsFiche
      *
-     * @return \DateTime
+     * @param \AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement
      */
-    public function getDateCreation()
+    public function removeEnseignement(\AppBundle\Entity\ClasseMatiereProfesseurAnnee $enseignement)
     {
-        return $this->dateCreation;
+        $this->enseignement->removeElement($enseignement);
     }
 
     /**
-     * Set dateModification
+     * Get detailsFiche
      *
-     * @param \DateTime $dateModification
-     *
-     * @return Professeur
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setDateModification($dateModification)
+    public function getEnseignement()
     {
-        $this->dateModification = $dateModification;
+        return $this->enseignement;
+    }
+
+    /**
+     * Add profecole
+     *
+     * @param \AppBundle\Entity\EcoleProfesseur $profecole
+     *
+     * @return mixed
+     */
+    public function addProfecole(\AppBundle\Entity\EcoleProfesseur $profecole)
+    {
+        $this->profecole[] = $profecole;
 
         return $this;
     }
 
     /**
-     * Get dateModification
+     * Remove vente
      *
-     * @return \DateTime
+     * @param \AppBundle\Entity\EcoleProfesseur $profecole
      */
-    public function getDateModification()
+    public function removeProfecole(\AppBundle\Entity\EcoleProfesseur $profecole)
     {
-        return $this->dateModification;
+        $this->profecole->removeElement($profecole);
+    }
+
+    /**
+     * Get vente
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProfecole()
+    {
+        return $this->profecole;
+    }
+
+
+
+
+    /**
+     * Set showPassword
+     *
+     * @param string $showPassword
+     *
+     * @return Professeur
+     */
+    public function setShowPassword($showPassword)
+    {
+        $this->show_password = $showPassword;
+    
+        return $this;
+    }
+
+    /**
+     * Get showPassword
+     *
+     * @return string
+     */
+    public function getShowPassword()
+    {
+        return $this->show_password;
     }
 
     /**
@@ -142,7 +346,7 @@ class Professeur extends User
     public function setCompte(\AppBundle\Entity\Compte $compte = null)
     {
         $this->compte = $compte;
-
+    
         return $this;
     }
 

@@ -55,7 +55,8 @@ class ProfesseurController extends Controller
                 // le professeur n'existe on le sauvgarde
                 $codeprof = strtoupper("PROF-" . substr(sha1(uniqid(mt_rand(), true)), 0, 4));
                 $professeur->setCodeProf($codeprof);
-
+                $professeur->setPasswordMobile($this->hash($form->getData()->getPassword()));
+                $professeur->setEmailMobile($form->getData()->getEmail());
                 $ecole_prof->setEcole($this->getUser()->getEcole());
                 $ecole_prof->setProfesseur($professeur);
 
@@ -81,6 +82,15 @@ class ProfesseurController extends Controller
             'professeur' => $professeur,
             'form' => $form->createView(),
         ));
+    }
+
+    public function hash($password){
+
+        $options = [
+            'cost' => 13
+        ];
+        $passwordhash = password_hash($password, PASSWORD_BCRYPT, $options);
+        return $passwordhash;
     }
 
     /**
