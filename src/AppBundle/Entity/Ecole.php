@@ -72,9 +72,9 @@ class Ecole
     private $logo;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EcoleProfesseur", mappedBy="ecole")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Professeur",inversedBy="ecole",cascade={"persist"})
      */
-    private $ecoleProf;
+    private $professeur;
 
     /**
      *
