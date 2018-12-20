@@ -219,7 +219,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('build/adminlte.js') }}"></script>
 <script>
     function verifyDateFin(debut,fin) {
-        if(new Date(debut[2],debut[1],debut[0])<=new Date(fin[2],fin[1],fin[0])){
+        if(new Date(debut[2],debut[1]-1,debut[0])<=new Date(fin[2],fin[1]-1,fin[0])){
             $(".error").html("");
             return true
         }else {
@@ -230,7 +230,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
 
     function betweenDates(debut,date,fin) {
-        if(new Date(debut[2],debut[1],debut[0])<new Date(date[2],date[1],date[0])<new Date(fin[2],fin[1],fin[0])){
+        if(new Date(debut[2],debut[1]-1,debut[0])<new Date(date[2],date[1]-1,date[0])<new Date(fin[2],fin[1]-1,fin[0])){
             $(".error").html("");
             return true
         }else {
@@ -241,8 +241,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
 
     function verifyDateDebut(date) {
-        alert(new Date(date[2],date[1],date[0]));
-        if(new Date()<= new Date(date[2],date[1],date[0])){
+        alert(new Date(date[2],date[1]-1,date[0]));
+        if(new Date()<= new Date(date[2],date[1]-1,date[0])){
 
             $(".error").html("");
             return true
