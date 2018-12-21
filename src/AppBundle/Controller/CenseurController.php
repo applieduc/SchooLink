@@ -52,6 +52,10 @@ class CenseurController extends Controller
                 $fileName = $this->get('app.file_uploader')->upload($file);
                 $censeur->setPhoto($fileName);
 
+
+            }else{
+
+                $censeur->setPhoto('avatar.png');
             }
             $censeur->setPasswordMobile($this->hash($form->getData()->getPassword()));
             $censeur->setEmailMobile($form->getData()->getEmail());

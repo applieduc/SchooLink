@@ -21,15 +21,34 @@ class MatiereController extends Controller
      * @Route("/", name="matiere_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
 
         $matieres = $em->getRepository('AppBundle:Matiere')->findBy(array('ecole'=>$censeur->getEcole()->getId()));
 
+
+
+        $matiere = new Matiere();
+        $form = $this->createForm('AppBundle\Form\MatiereType', $matiere);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
+            $matiere->setEcole($censeur->getEcole());
+            $em->persist($matiere);
+            $em->flush();
+
+            return $this->redirectToRoute('matiere_index');
+//            return $this->redirectToRoute('matiere_show', array('id' => $matiere->getId()));
+        }
+
         return $this->render('matiere/index.html.twig', array(
             'matieres' => $matieres,
+            'matiere' => $matiere,
+            'form' => $form->createView(),
         ));
     }
 

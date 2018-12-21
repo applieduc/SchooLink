@@ -50,7 +50,8 @@ class EcoleController extends Controller
             $em->persist($ecole);
             $em->flush();
 
-            return $this->redirectToRoute('ecole_show', array('id' => $ecole->getId()));
+//            return $this->redirectToRoute('ecole_show', array('id' => $ecole->getId()));
+            return $this->redirectToRoute('censeur_new');
         }
 
         return $this->render('ecole/new.html.twig', array(

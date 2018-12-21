@@ -23,11 +23,11 @@
 {% block content %}
 <section class="content">
     <div class="row">
-        <div class="col-8 offset-2">
+        <div class="col-10 offset-1">
             <div class="card">
                 <div class="card-header">
                    <div class="row">
-                       <h3 class="card-title">Années Académique</h3>
+                       <h3 class="card-title">Liste des années Académique</h3>
                       
                            <a href="{{ path('new_school',{'id':0}) }}" id="new" class="btn  btn-primary ml-auto btn-flat text-white {{ enc|length > 0 ? 'disabled' :''}}"   >
                            <i class="fa fa-plus"></i>
@@ -43,6 +43,7 @@
                         <thead>
                         <tr class="text-center">
                             <th>Année Académique</th>
+                            <th>Periode</th>
                             <th>Statut</th>
                             <th>Actions</th>
                         </tr>
@@ -54,13 +55,16 @@
                                 <a href="{{path('classe_index',{'id':annee.id})}}" title="{{annee.dateDebut|date('d-m-Y')}} - {{annee.dateFin|date('d-m-Y')}}">{{annee.dateDebut|date('Y')}} - {{annee.dateFin|date('Y')}}</a>
                             </td>
                             <td>
-                           <div>
-                               {% if annee.cloture ==0 %}
-                               <span class="badge badge-success badge-flat px-3 py-2">En cours</span>
-                               {% else %}
-                               <span class="badge badge-danger badge-flat px-3 py-2">Cloturer</span>
-                               {% endif %}
-                           </div>
+                                {{annee.typePeriode}}
+                            </td>
+                            <td>
+                               <div>
+                                   {% if annee.cloture ==0 %}
+                                   <span class="badge badge-success badge-flat px-3 py-2">En cours</span>
+                                   {% else %}
+                                   <span class="badge badge-danger badge-flat px-3 py-2">Cloturer</span>
+                                   {% endif %}
+                               </div>
                             </td>
                             <td>
                               <div class="row d-flex  justify-content-center">

@@ -21,15 +21,38 @@ class ClasseMatiereController extends Controller
      * @Route("/{id}", name="class_mat_index")
      * @Method("GET")
      */
-    public function indexAction($id)
+    public function indexAction(Request $request,$id)
     {
         $em = $this->getDoctrine()->getManager();
 
         $classeMatieres = $em->getRepository('AppBundle:ClasseMatiere')->findBy(array('classe'=>$id));
 
+
+
+        $classeMatiere = new ClasseMatiere();
+        $form = $this->createForm('AppBundle\Form\ClasseMatiereType', $classeMatiere);
+        $form->handleRequest($request);
+        $classe= $em->getRepository(Classe::class)->find($id);
+        if ($form->isSubmitted() && $form->isValid()) {
+           
+            $em = $this->getDoctrine()->getManager();
+            $classe= $em->getRepository(Classe::class)->find($id);
+            $classeMatiere->setClasse($classe);
+             $verify=$em->getRepository(ClasseMatiere::class)->findOneBy(array('classe'=>$classe->getId(),'matiere'=>$classeMatiere->getMatiere()->getId()));
+             if($verify==null){
+                $em->persist($classeMatiere);
+                $em->flush();
+            }
+           
+            
+            return $this->redirectToRoute('class_mat_index', array('id' =>$id ));
+        }
+        
         return $this->render('classematiere/index.html.twig', array(
             'classeMatieres' => $classeMatieres,
-            'classe_id'=>$id
+            'classe'=>$classe,
+            'classeMatiere' => $classeMatiere,
+            'form' => $form->createView(),
         ));
     }
 

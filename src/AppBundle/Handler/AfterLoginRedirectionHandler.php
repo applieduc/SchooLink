@@ -63,7 +63,7 @@ class AfterLoginRedirectionHandler implements AuthenticationSuccessHandlerInterf
 
             $msg = "Vous êtes connecté en tant que Administrateur General";
 
-            $redirection  = new RedirectResponse($this->router->generate('adminstration_homepage'));
+            $redirection  = new RedirectResponse($this->router->generate('ecole_index'));
           //  $this->event->setResponse($redirection);
 
           //  $msg = "Vous êtes connecté en tant service commercial";

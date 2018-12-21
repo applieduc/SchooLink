@@ -19,7 +19,7 @@ class EleveType extends AbstractType
                 'Masculin' =>true ,
                 'Feminin' => false,
             ),
-            ))->add('dateNaissance')->add('photo');
+            ));
     }/**
      * {@inheritdoc}
      */

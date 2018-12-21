@@ -1,11 +1,32 @@
 {% extends 'master.html.twig' %}
+{% block head %} 
 
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Matières par Classe</h1>
+            </div><!-- /.col -->
+            <!--<div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Starter Page</li>
+                </ol>
+            </div>-->
+            <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
 {% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-8">
 <div class="card mb-5">
     <div class="card-header">
-        <h3 class="card-title">Liste des matières par classe
+        <h3 class="card-title">Liste des matières de la {{classe.libelle}}
             {#<a type="button" href="#eleve_modal" class="btn btn-primary btn-sm pull-right rounded" data-toggle="modal">Ajouter</a>#}
-            <a type="button" href="{{ path('class_mat_new',{ 'id': classe_id }) }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>
+            {#<a type="button" href="{{ path('class_mat_new',{ 'id': classe.id }) }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>#}
         </h3>
     </div>
     <!-- /.card-header -->
@@ -17,7 +38,6 @@
                 <th>Id</th>
                 <th>Matière</th>
                 <th>Coefficient</th>
-                <th>Classe</th>
                 <th>Statut</th>
                 <th>Actions</th>
             </tr>
@@ -26,19 +46,19 @@
         {% for classeMatiere in classeMatieres %}
 
             <tr>
-                <td><a href="{{ path('class_mat_show', { 'id': classeMatiere.id,'cl':classe_id }) }}">{{ classeMatiere.id}}</a></td>
+                <td><a href="{{ path('class_mat_show', { 'id': classeMatiere.id,'cl':classe.id }) }}">{{ classeMatiere.id}}</a></td>
                 <td>{{ classeMatiere.matiere.libelle }}</td>
                 <td>{{ classeMatiere.coefficient }}</td>
-                <td>{{ classeMatiere.classe.libelle }}</td>
+        
                 <td>{% if classeMatiere.archiver %}<span class="badge badge-danger">Matière non enseignée</span>{% else %}<span class="badge badge-success">Matière enseignée</span>{% endif %}</td>
                 <td>
                     <div class=" row d-column justify-content-center">
-                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe_id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
-                        <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('class_mat_show', { 'id': classeMatiere.id ,'cl':classe_id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                        <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('class_mat_show', { 'id': classeMatiere.id ,'cl':classe.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
                           {% if classeMatiere.archiver %}
-                        <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id ,'cl':classe_id}) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
+                        <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id ,'cl':classe.id}) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
 {% else %}
-    <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('class_mat_archive', { 'id': classeMatiere.id,'cl':classe_id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+    <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('class_mat_archive', { 'id': classeMatiere.id,'cl':classe.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
                         {% endif %}
                         <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('enseignement_new', { 'id': classeMatiere.id}) }}" rel="#"><i class="fa fa-user-circle text-info"></i></a></div>
 
@@ -52,4 +72,32 @@
 
     </div>
     </div>
+</div>
+<div class="col-4">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">
+               Ajouter une nouvelle matière
+                <span class="pull-right">
+                    {#<a href="{{ path('class_mat_index',{'id':classe.id}) }}"><i class="fa fa-backward text-dark"></i></a>#}
+                </span>
+            </div>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="form-group">
+                <label>Matiere</label>
+                {{ form_widget(form.matiere,{'attr':{'class':'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                <label>Coefficient</label>
+                {{ form_widget(form.coefficient,{'attr':{'class':'form-control'}}) }}
+            </div>
+            <input type="submit" value="Ajouter"  class="btn btn-success"/>
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+</div>
+</div></section>
 {% endblock %}

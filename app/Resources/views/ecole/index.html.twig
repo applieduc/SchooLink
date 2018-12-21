@@ -15,14 +15,16 @@
             <div class="card card-primary card-outline">
                 <div class="card-body">
                     <div class="card-header">
-                        <h5 class="m-0">Liste des ecoles</h5>
-                        <div>
-                        <a href="{{ path('ecole_new') }}" class="btn btn-sm btn-primary">
-                               Ajouter une ecole
-                            </a>
-                            <a href="{{ path('censeur_new') }}" class="btn btn-sm btn-primary">
-                                   Ajouter un censeur
-                                </a>    
+                        <div class="row">
+                            <h5 class="m-0">Liste des ecoles</h5>
+                            <div class="offset-md-8">
+                                <a href="{{ path('ecole_new') }}" class="btn btn-sm btn-primary">
+                                    Ajouter une ecole
+                                </a>
+                                {#<a href="{{ path('censeur_new') }}" class="btn btn-sm btn-primary">#}
+                                    {#Ajouter un censeur#}
+                                {#</a>#}
+                            </div>
                         </div>
                     </div>
                     <table width="100%">
@@ -31,13 +33,13 @@
 
                             <th>Nom</th>
 
-                            <th>Telephone</th>
-                            <th>Mail</th>
+                            <th class="text-center">Telephone</th>
+                            <th class="text-center">Mail</th>
 
 
-                            <th>Censeur/referent</th>
-                            <th>Conact : Censeur/referent</th>
-                            <th>Actions</th>
+                            <th class="text-center">Censeur/referent</th>
+                            <th class="text-center">Conact : Censeur/referent</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -47,21 +49,16 @@
                                 {#<td><a href="{{ path('ecole_show', { 'id': ecole.id }) }}">{{ ecole.id }}</a></td>#}
                                 <td>{{ ecole.nom }}</td>
 
-                                <td>{{ ecole.telephone }}</td>
-                                <td>{{ ecole.mail }}</td>
+                                <td class="text-center">{{ ecole.telephone }}</td>
+                                <td class="text-center">{{ ecole.mail }}</td>
 
 
-                                <td>{% if ecole.censeur %}{{ ecole.censeur.nom ~" "~ ecole.censeur.prenom }}{% endif %}</td>
-                                <td>{% if ecole.censeur %}{{ ecole.censeur.telephone }}{% endif %}</td>
-                                <td>
-                                    <ul>
-                                        <li>
-                                            <a href="{{ path('ecole_show', { 'id': ecole.id }) }}">show</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('ecole_edit', { 'id': ecole.id }) }}">edit</a>
-                                        </li>
-                                    </ul>
+                                <td class="text-center">{% if ecole.censeur %}{{ ecole.censeur.nom ~" "~ ecole.censeur.prenom }}{% endif %}</td>
+                                <td class="text-center">{% if ecole.censeur %}{{ ecole.censeur.telephone }}{% endif %}</td>
+                                <td class="text-center" style="padding: 4px">
+
+                                <a class="btn-sm btn-info "  style="margin: 2px" href="{{ path('ecole_show', { 'id': ecole.id }) }}">info</a>
+                                {#<a class="btn-sm btn-warning" style="margin: 2px" href="{{ path('ecole_edit', { 'id': ecole.id }) }}">modifier</a>#}
                                 </td>
                             </tr>
                         {% endif %}
