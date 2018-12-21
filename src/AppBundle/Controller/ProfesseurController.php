@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\EcoleProfesseur;
+use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Professeur;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,11 +25,11 @@ class ProfesseurController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $professeurs = $em->getRepository('AppBundle:Professeur')->findBy(['createdBy'=> $this->getUser()]);
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+        $ecole_professeurs = $em->getRepository('AppBundle:EcoleProfesseur')->findBy(['ecole'=> $ecole->getId()]);
 
         return $this->render('professeur/index.html.twig', array(
-            'professeurs' => $professeurs,
+            'ecole_professeurs' => $ecole_professeurs,
         ));
     }
 
@@ -118,7 +119,6 @@ class ProfesseurController extends Controller
      */
     public function editAction(Request $request, Professeur $professeur)
     {
-        $deleteForm = $this->createDeleteForm($professeur);
         $editForm = $this->createForm('AppBundle\Form\ProfesseurType', $professeur);
         $editForm->handleRequest($request);
 
@@ -131,26 +131,46 @@ class ProfesseurController extends Controller
         return $this->render('professeur/edit.html.twig', array(
             'professeur' => $professeur,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+           
         ));
     }
 
     /**
-     * Deletes a professeur entity.
+     *  a professeur entity.
      *
-     * @Route("/{id}", name="ecole_professeur_delete")
-     * @Method("DELETE")
+     * @Route("archiv/{id}", name="ecole_professeur_archive")
+     *  @Method({"GET"})
      */
-    public function deleteAction(Request $request, Professeur $professeur)
+    public function archiveAction(Request $request, Professeur $professeur)
     {
-        $form = $this->createDeleteForm($professeur);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($professeur);
+            $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+            $ecole_prof=$em->getRepository(EcoleProfesseur::class)->findOneBy(array('ecole'=>$ecole->getId(),'professeur'=>$professeur->getId()));
+            $ecole_prof->setArchiver(true);
+            $em->persist($ecole_prof);
             $em->flush();
-        }
+        
+
+        return $this->redirectToRoute('ecole_professeur_index');
+    }
+
+     /**
+     *  a professeur entity.
+     *
+     * @Route("desarchiv/{id}", name="ecole_professeur_desarchive")
+     *  @Method({"GET"})
+     */
+    public function desarchiveAction(Request $request, Professeur $professeur)
+    {
+
+            $em = $this->getDoctrine()->getManager();
+            $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+            $ecole_prof=$em->getRepository(EcoleProfesseur::class)->findOneBy(array('ecole'=>$ecole->getId(),'professeur'=>$professeur->getId()));
+            $ecole_prof->setArchiver(false);
+            $em->persist($ecole_prof);
+            $em->flush();
+        
 
         return $this->redirectToRoute('ecole_professeur_index');
     }

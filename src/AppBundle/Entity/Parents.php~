@@ -18,12 +18,7 @@ class Parents extends User
      */
     private $compte;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code_prof", type="string", length=255)
-     */
-    private $codeProf;
+    
 
     /**
      * @var string
@@ -197,5 +192,151 @@ class Parents extends User
     public function getShowPassword()
     {
         return $this->show_password;
+    }
+
+
+
+    /**
+     * Set passwordMobile
+     *
+     * @param string $passwordMobile
+     *
+     * @return Parents
+     */
+    public function setPasswordMobile($passwordMobile)
+    {
+        $this->password_mobile = $passwordMobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get passwordMobile
+     *
+     * @return string
+     */
+    public function getPasswordMobile()
+    {
+        return $this->password_mobile;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     *
+     * @return Parents
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+    
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set prenom
+     *
+     * @param string $prenom
+     *
+     * @return Parents
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+    
+        return $this;
+    }
+
+    /**
+     * Get prenom
+     *
+     * @return string
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * Set telephone
+     *
+     * @param string $telephone
+     *
+     * @return Parents
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+    
+        return $this;
+    }
+
+    /**
+     * Get telephone
+     *
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * Set adresse
+     *
+     * @param string $adresse
+     *
+     * @return Parents
+     */
+    public function setAdresse($adresse)
+    {
+        $this->adresse = $adresse;
+    
+        return $this;
+    }
+
+    /**
+     * Get adresse
+     *
+     * @return string
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * Set emailMobile
+     *
+     * @param string $emailMobile
+     *
+     * @return Parents
+     */
+    public function setEmailMobile($emailMobile)
+    {
+        $this->email_mobile = $emailMobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get emailMobile
+     *
+     * @return string
+     */
+    public function getEmailMobile()
+    {
+        return $this->email_mobile;
     }
 }

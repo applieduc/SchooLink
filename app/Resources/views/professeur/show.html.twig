@@ -1,40 +1,65 @@
-{% extends 'base.html.twig' %}
+{% extends 'master.html.twig' %}
+{% block head %}
 
-{% block body %}
-    <h1>Professeur</h1>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Professeurs</h1>
+                </div><!-- /.col -->
+                <!--<div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Starter Page</li>
+                    </ol>
+                </div>-->
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+{% endblock %}
+{% block content %}
+<div class="row">
+        <div class="col-lg-6  offset-3">
+        
+            <div class="card card-primary card-outline">
+                    <div class="card-header">
+                            <div class="card-title">
+                               Informations professeur
+                                <span class="pull-right">
+                                    <a href="{{ path('ecole_professeur_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                <div class="card-body box-profile">
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('uploads/images/avatar.png')}}" alt="User profile picture">
+                    </div>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ professeur.id }}</td>
-            </tr>
-            <tr>
-                <th>Codeprof</th>
-                <td>{{ professeur.codeProf }}</td>
-            </tr>
-            <tr>
-                <th>Datecreation</th>
-                <td>{{ professeur.dateCreation }}</td>
-            </tr>
-            <tr>
-                <th>Datemodification</th>
-                <td>{{ professeur.dateModification }}</td>
-            </tr>
-        </tbody>
-    </table>
+                    <h3 class="profile-username text-center">{{ professeur.prenom }} {{ professeur.nom }}</h3>
 
-    <ul>
-        <li>
-            <a href="{{ path('ecole_professeur_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('ecole_professeur_edit', { 'id': professeur.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                    <p class="text-muted text-center">Enseignant</p>
+
+                    <ul class="list-group list-group-unbordered mb-3">
+                    
+                        <li class="list-group-item">
+                            <b>Email</b> <a class="float-right"> {{ professeur.email }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Telephone</b> <a class="float-right">{{ professeur.telephone }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>adresse</b> <a class="float-right">{{ professeur.adresse }}</a>
+                        </li>
+                    </ul>
+                    <div class="row">
+                    <div class="col-lg-4 offset-4"><a href="{{ path('ecole_professeur_edit', { 'id': professeur.id }) }}" class="btn btn-primary btn-block"><b>Modifier</b></a></div>
+                    {#<div class="col-lg-6"><a href="" class="btn btn-danger btn-block" ><b>Supprimer</b></a></div>#}
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
 {% endblock %}

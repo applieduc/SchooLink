@@ -18,12 +18,7 @@ class Parents extends User
      */
     private $compte;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code_prof", type="string", length=255)
-     */
-    private $codeProf;
+    
 
     /**
      * @var string
@@ -199,29 +194,7 @@ class Parents extends User
         return $this->show_password;
     }
 
-    /**
-     * Set codeProf
-     *
-     * @param string $codeProf
-     *
-     * @return Parents
-     */
-    public function setCodeProf($codeProf)
-    {
-        $this->codeProf = $codeProf;
-    
-        return $this;
-    }
 
-    /**
-     * Get codeProf
-     *
-     * @return string
-     */
-    public function getCodeProf()
-    {
-        return $this->codeProf;
-    }
 
     /**
      * Set passwordMobile
