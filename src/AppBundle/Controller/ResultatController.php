@@ -75,10 +75,66 @@ class ResultatController extends Controller
             'notes'=>$notes,
             'tc'=>$t,
             'annee'=>$annee,
+            'classe'=>$classes[0]->getLibelle(),
             'periode'=>$periode,
             'tab'=>$this->fiche($tabClasse[0][0]['type'],$matiere[0]->getId(),1)
 
             ));
+    }
+
+    /**
+     * Lists all eleve entities.
+     *
+     * @Route("/filter/{typeId}/{matiereId}/{periodeId}/{classeId}", name="resultat_index_filtre")
+     * @Method("GET")
+     */
+    public function indexFiltreAction($typeId,$matiereId,$periodeId,$classeId)
+    {
+
+        $em=$this->getDoctrine()->getManager();
+        $classes=$em->getRepository(Classe::class)->findAll();
+        $tabClasse=array();
+
+        for ($i=0; $i<sizeof($classes);$i++)
+        {
+            $type=$em->getRepository(TypeClasse::class)->findBy(array('classe'=>$classes[$i]->getId()));
+            for($j=0; $j<sizeof($type);$j++)
+            {
+                $tabClasse[$i][$j]['classe']=$classes[$i]->getLibelle()." ".$type[$j]->getLibelle();
+                $tabClasse[$i][$j]['type']=$type[$j]->getId();
+            }
+        }
+        $matiere=$em->getRepository(ClasseMatiere::class)->findBy(array('classe'=>$classeId));
+
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+
+
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $id=0;
+        if ($annee!=null){
+            $id=$annee->getId();
+        }
+        $notes=$em->getRepository(Note::class)->findAll();
+        $tc=$em->getRepository(Classe::class)->findBy(array('ecole'=>$ecole->getId()));
+        $t=array();
+        $i=0;
+        foreach ($tc as $c){
+            $t[$i]=$em->getRepository(TypeClasse::class)->findOneBy(array('classe'=>$c->getId()));
+            $i++;
+        }
+
+        $cm=$em->getRepository(ClasseMatiere::class)->findAll();
+        $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>0));
+        return $this->render('AppBundle:Resultat:index.html.twig', array(
+            'matiere'=>$matiere,
+            'tabClasse'=>$tabClasse,
+            'notes'=>$notes,
+            'tc'=>$t,
+            'annee'=>$annee,
+            'periode'=>$periode,
+            'tab'=>$this->fiche($typeId,$matiereId,$periodeId)
+
+        ));
     }
 
 
@@ -128,11 +184,29 @@ class ResultatController extends Controller
 
         $em=$this->getDoctrine()->getManager();
             $tab=array();
+            $allInterro=$em->getRepository(Note::class)->typeInterro($classprof->getId());
+            $allDevoir=$em->getRepository(Note::class)->typeDevoir($classprof->getId());
             for ($i=0; $i<sizeof($eleve);$i++)
             {
-                $notes_interro=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"interro"));
-                $notes_devoir=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"devoir"));
-               if ($notes_interro==null)
+                $totalInterro=0;
+                $totalDevoir=0;
+                for ($n=0; $n<sizeof($allInterro);$n++)
+                {
+                    $actif=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>$allInterro[$n]))[0]->getNote();
+
+                    $tab[$i][$allInterro[$n]]=$actif;
+                    $totalInterro+=$actif;
+                }
+                for ($n=0; $n<sizeof($allDevoir);$n++)
+                {
+                    $actif=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>$allInterro[$n]))[0]->getNote();
+                    $tab[$i][$allDevoir[$n]]=$actif;
+                    $totalDevoir+=$actif;
+                }
+
+               // $notes_interro=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"interro"));
+              //  $notes_devoir=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"devoir"));
+             /*  if ($notes_interro==null)
                {
                    $tab[$i]['interro1']=0;
                    $tab[$i]['interro2']=0;
@@ -140,20 +214,13 @@ class ResultatController extends Controller
                    if (isset($notes_interro[0])) $tab[$i]['interro1']=$notes_interro[0]->getNote();
                    if (isset($notes_interro[1]) )$tab[$i]['interro2']=$notes_interro[1]->getNote();
                    if (!isset($notes_interro[1]) )$tab[$i]['interro2']=0;
-               }
-               $moyint=($tab[$i]['interro1']+$tab[$i]['interro2'])/2;
+               }*/
+
+
+               $moyint=($totalInterro)/2;
                 $tab[$i]['MINT']=substr($moyint,0,4);;
-                if ($notes_devoir==null)
-                {
-                    $tab[$i]['devoir1']=0;
-                    $tab[$i]['devoir2']=0;
-                }else{
-                    if (isset($notes_devoir[0])) $tab[$i]['devoir1']=$notes_devoir[0]->getNote();
-                    if (isset($notes_devoir[1]) )$tab[$i]['devoir2']=$notes_devoir[1]->getNote();
-                    if (!isset($notes_devoir[1]) )$tab[$i]['devoir2']=0;
-                }
                 $tab[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
-                $moy=($moyint+$tab[$i]['devoir1']+$tab[$i]['devoir2'])/3;
+                $moy=($moyint+$totalDevoir)/3;
                 $tab[$i]['Moy']=substr($moy,0,4);
                 $tab[$i]['MoyC']=substr( $moy*$cm->getCoefficient(),0,4);
             }
@@ -242,6 +309,7 @@ class ResultatController extends Controller
         $cmi=$cm;
         $pi=$p;
 
+
         $em=$this->getDoctrine()->getManager();
         $tc=$em->getRepository(TypeClasse::class)->find($tci);
         $cm=$em->getRepository(ClasseMatiere::class)->find($cmi);
@@ -256,37 +324,40 @@ class ResultatController extends Controller
 
         $em=$this->getDoctrine()->getManager();
         $tab=array();
+        $allInterro=$em->getRepository(Note::class)->typeInterro($classprof->getId());
+        $allDevoir=$em->getRepository(Note::class)->typeDevoir($classprof->getId());
         for ($i=0; $i<sizeof($eleve);$i++)
         {
-            $notes_interro=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"interro"));
-            $notes_devoir=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"devoir"));
-            if ($notes_interro==null)
+            $totalInterro=0;
+            $totalDevoir=0;
+            for ($n=0; $n<sizeof($allInterro);$n++)
             {
-                $tab[$i]['interro1']=0;
-                $tab[$i]['interro2']=0;
-            }else{
-                if (isset($notes_interro[0])) $tab[$i]['interro1']=$notes_interro[0]->getNote();
-                if (isset($notes_interro[1]) )$tab[$i]['interro2']=$notes_interro[1]->getNote();
-                if (!isset($notes_interro[1]) )$tab[$i]['interro2']=0;
+                $actif=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>"validé",'type'=>$allInterro[$n]));
+
+                $tab[$i]['interro_name'][$n]=$actif[0]->getType();
+                $tab[$i]['interro_note'][$n]=$actif[0]->getNote();
+                $totalInterro+=$actif[0]->getNote();
             }
-            $moyint=($tab[$i]['interro1']+$tab[$i]['interro2'])/2;
+            for ($n=0; $n<sizeof($allDevoir);$n++)
+            {
+
+                $actif=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>"validé",'type'=>$allDevoir[$n]));
+                $tab[$i]['devoir_name'][$n]=$actif[0]->getType();
+                $tab[$i]['devoir_note'][$n]=$actif[0]->getNote();
+                $totalDevoir+=$actif[0]->getNote();
+            }
+            $moyint=($totalInterro)/sizeof($allInterro);
             $tab[$i]['MINT']=substr($moyint,0,4);;
-            if ($notes_devoir==null)
-            {
-                $tab[$i]['devoir1']=0;
-                $tab[$i]['devoir2']=0;
-            }else{
-                if (isset($notes_devoir[0])) $tab[$i]['devoir1']=$notes_devoir[0]->getNote();
-                if (isset($notes_devoir[1]) )$tab[$i]['devoir2']=$notes_devoir[1]->getNote();
-                if (!isset($notes_devoir[1]) )$tab[$i]['devoir2']=0;
-            }
             $tab[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
-            $moy=($moyint+$tab[$i]['devoir1']+$tab[$i]['devoir2'])/3;
+            $moy=($moyint+$totalDevoir)/3;
             $tab[$i]['Moy']=substr($moy,0,4);
             $tab[$i]['MoyC']=substr( $moy*$cm->getCoefficient(),0,4);
         }
 
-        return array('tab'=>$tab,
+        return array(
+            'tab'=>$tab,
+            'allInterro'=>$allInterro,
+            'allDevoir'=>$allDevoir,
             'tc'=>$tc,
             'cm'=>$cm,
             'p'=>$p,
