@@ -55,12 +55,9 @@
                     </div>
                     <div class="form-group">
                         <label>Date de naissance</label>
-                        {{ form_widget(form.dateNaissance,{'attr':{'class':'form-control'}}) }}
+                        <input type="text" class="form-control date" name="dateNaiss" >
                     </div>
-                    <div class="form-group">
-                        <label>Photo</label>
-                        {{ form_widget(form.photo,{'attr':{'class':'form-control'}}) }}
-                    </div>
+
                     <div class="form-group">
                         <label>Classe</label>
                         <select name="classe" id="classe" class="form-control">

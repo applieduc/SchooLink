@@ -95,8 +95,32 @@ class ClasseController extends Controller
 
         $classes = $em->getRepository('AppBundle:Classe')->findBy(array('ecole'=>$censeur->getEcole()->getId()));
 
+
+
+
+        $classe = new Classe();
+        $form = $this->createForm('AppBundle\Form\ClasseType', $classe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
+
+            $classe->setEcole($censeur->getEcole());
+            $em->persist($classe);
+            $em->flush();
+
+            return $this->redirectToRoute('classe_show', array('id' => $classe->getId()));
+        }
+
+//        return $this->render('classe/new.html.twig', array(
+//
+//        ));
         return $this->render('classe/index.html.twig', array(
             'classes' => $classes,
+            'classe' => $classe,
+            'form' => $form->createView(),
         ));
     }
 

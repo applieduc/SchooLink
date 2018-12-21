@@ -30,10 +30,19 @@ class EleveTypeClasseController extends Controller
     public function indexAction(Request $request,$classe)
     {
         $em = $this->getDoctrine()->getManager();
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
 
+        if($annee==null){
+            $this->get('session')->getFlashBag()->set('info','Vous n\'avez aucune année académique en cours');
+            return $this->redirectToRoute('classe_index');
+
+         }  
         $eleves=$this->get_eleve($classe);
         $classes_type=$this->get_classes_type($classe);
 
+         
+        
         return $this->render('AppBundle:EleveClasse:index.html.twig', array(
             'eleves' => $eleves,
             'classe'=>$classe,
@@ -150,7 +159,9 @@ class EleveTypeClasseController extends Controller
         }
 
         $session=$this->get("session");
-        $annee= $session->get('annee');
+       
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+
         $classe_typ_selct='';
        $classe_typ=$em->getRepository(TypeClasse::class)->findBy(array('libelle'=>$request->get('type'),'classe'=>$classe->getId()));
        foreach ($classe_typ as $item){

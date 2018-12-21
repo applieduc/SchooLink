@@ -5,7 +5,20 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Classe</h1>
+                <h1 class="m-2 text-dark">Classe</h1>
+
+              {% if app.session.getFlashBag.has('info') %}
+              {% for flashMessage in app.session.flashbag.get('info') %}
+
+              
+                <div class="alert alert-danger">
+                    <span class="T">  {{ flashMessage |raw }}</span>
+                </div>
+            
+             
+          
+               {% endfor %}
+              {% endif %}
             </div><!-- /.col -->
             <!--<div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -19,11 +32,14 @@
 </div>
 {% endblock %}
 {% block content %}
-<div class="card mb-5">
+<section class="content">
+    <div class="row">
+        <div class="col-8">
+          <div class="card mb-5">
     <div class="card-header">
         <h3 class="card-title">Liste des classes
             {#<a type="button" href="#eleve_modal" class="btn btn-primary btn-sm pull-right rounded" data-toggle="modal">Ajouter</a>#}
-            <a type="button" href="{{ path('classe_new') }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>
+            {#<a type="button" href="{{ path('classe_new') }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>#}
         </h3>
     </div>
     <!-- /.card-header -->
@@ -47,9 +63,9 @@
                 <td>
                     <div class=" row d-column justify-content-center">
 
-                        {% if(app.session.get('annee')!=null) %}
+                       
                         <div class="">  <a class="dropdown-item modif btn btn-sm btn-secondary" title="Liste des matieres" href="{{ path('class_mat_index', { 'id': classe.id }) }}" rel="#"><i class="fa fa-list text-secondary"></i></a></div>
-                        {% endif %}
+                       
                         <div class="">      <a href="{{ path('classe_edit', { 'id': classe.id }) }}"><i class="fa fa-edit text-warning"></i></a></div>
                         <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('classe_show', { 'id': classe.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
                         {% if classe.archiver %}
@@ -66,4 +82,27 @@
 
     </div>
 </div>
+        </div>
+        <div class="col-lg-4 ">
+            <div class="card card-primary card-outline">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h5 class="m-0">Nouvelle Classe</h5>
+                    </div>
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-success pull-right" type="submit"> Ajouter  </button>
+                    {{ form_end(form) }}
+
+                    {#<ul>#}
+                    {#<li>#}
+                    {#<a href="{{ path('ecole_index') }}">Back to the list</a>#}
+                    {#</li>#}
+                    {#</ul>  #}
+                </div>
+            </div>
+        </div>
+
+    </div></section>
 {% endblock %}

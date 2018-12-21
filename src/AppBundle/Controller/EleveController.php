@@ -64,6 +64,8 @@ class EleveController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
             $eleve->setEcole($censeur->getEcole());
+            $eleve->setDateNaissance(new \Datetime($request->get('dateNaiss')));
+            
             $eleve->setClasse($em->getRepository(Classe::class)->find((int)$request->get('classe')));
             $em->persist($eleve);
             $em->flush();
@@ -114,9 +116,11 @@ class EleveController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $eleve->setDateModification(new \DateTime());
+            $eleve->setPhoto('avatar.png');
             $eleve->setClasse($em->getRepository(Classe::class)->find((int)$request->get('classe')));
-
-           $em->flush();
+            $eleve->setDateNaissance(new \Datetime($request->get('dateNaiss')));
+            $em->persist($eleve);
+            $em->flush();
 
             return $this->redirectToRoute('eleve_edit', array('id' => $eleve->getId()));
         }
