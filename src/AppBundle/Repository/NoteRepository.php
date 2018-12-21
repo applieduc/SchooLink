@@ -18,6 +18,13 @@ class NoteRepository extends \Doctrine\ORM\EntityRepository
         $state->execute(array($id));
 
         return $state->fetchAll();
+    } public function typeR($id)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="non validé" ');
+        $state->execute(array($id));
+
+        return $state->fetchAll();
     }
 
 

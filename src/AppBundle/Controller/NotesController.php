@@ -29,28 +29,28 @@ class NotesController extends Controller
     /**
      * Lists all notes entities.
      *
-     * @Route("/", name="notes_index")
+     * @Route("/{id}", name="notes_index")
      * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction($id)
     {
         $em=$this->getDoctrine()->getManager();
-        $classes=$em->getRepository(Classe::class)->findAll();
-        $tabClasse=array();
         $cm=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findAll();
-        for ($i=0; $i<sizeof($classes);$i++)
-        {
-            $tabClasse[$i]['type']=$em->getRepository(TypeClasse::class)->findBy(array('classe'=>$classes[$i]->getId()));
-            $tabClasse[$i]['classe']=$classes[$i]->getLibelle();
-        }
-        $matiere=$em->getRepository(ClasseMatiere::class)->findBy(array('classe'=>$classes[0]->getId()));
+if ($id==1)
+{
+    return $this->render('AppBundle:Notes:index.html.twig', array(
 
-        return $this->render('AppBundle:Notes:index.html.twig', array(
-            'matiere'=>$matiere,
-            'tabClasse'=>$tabClasse,
-            'noteNV'=>$this->noteNonValide(),
-            'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
-        ));
+        'noteNV'=>$this->noteNonValide(),
+        'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
+    ));
+
+}else{
+    return $this->render('AppBundle:Notes:index.html.twig', array(
+        'noteR'=>$this->noteRejet   (),
+        'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
+    ));
+}
+
     }
 
     private function  noteNonValide()
@@ -77,9 +77,53 @@ class NotesController extends Controller
 
                 for ($j=0;$j<sizeof($typeNV);$j++)
                 {
-                    $note=$em->getRepository(Note::class)->getNV($cm[$i]->getId(),$typeNV[$j]['type']);
+                    $note=$em->getRepository(Note::class)->findBy(array('classe_matiere_professeur_annee'=>$cm[$i]->getId(),'type'=>$typeNV[$j]['type']));
 
                     $tabNAV[$k]['note'][$j]=$note;
+                    //    $tabNAV[$k]['notetype']['type']=$typeNV[$j]['type'];
+
+                    // if($i==0)$tabNAV[$k]['periode']=$note[0]->getPeriode()->getNomPeriode();
+
+                }
+                $k++;
+            }
+
+        }
+        return $tabNAV;
+    }
+    private function  noteRejet()
+    {
+        $em=$this->getDoctrine()->getManager();
+        $cm=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findAll();
+        $tabNAV=array();
+        $k=0;
+        for ($i=0;$i<sizeof($cm);$i++)
+        {
+            $typeNV=$em->getRepository(Note::class)->typeR($cm[$i]->getId());
+
+            if($typeNV != null)
+            {
+
+
+                $tabNAV[$k]['annee']=$cm[$i]->getAnnee()->getDateDebut()->format("d-m-Y H:i:s").'-'.$cm[$i]->getAnnee()->getDateFin()->format("d-m-Y H:i:s");
+                $tabNAV[$k]['professeur']=$cm[$i]->getProfesseur()->getNom().'-'.$cm[$i]->getProfesseur()->getPrenom();
+                $tabNAV[$k]['classe']=$cm[$i]->getTypeClasse()->getClasse()->getLibelle().' '.$cm[$i]->getTypeClasse()->getLibelle();
+                $tabNAV[$k]['matiere']=$cm[$i]->getClasseMatiere()->getMatiere()->getLibelle();
+                $tabNAV[$k]['coefficient']=$cm[$i]->getClasseMatiere()->getCoefficient();
+                $tabNAV[$k]['effectif']=sizeof($em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$cm[$i]->getTypeClasse()->getId())));
+                $tabNAV[$k]['idCm']=$cm[$i]->getId();
+
+                for ($j=0;$j<sizeof($typeNV);$j++)
+                {
+                    $note=$em->getRepository(Note::class)->findBy(array('classe_matiere_professeur_annee'=>$cm[$i]->getId(),'type'=>$typeNV[$j]['type']));
+
+                    for ($l=0;$l<sizeof($note);$l++)
+                    {
+                        $tabNAV[$k]['note'][$j][$l]['valeur']=$note[$l]->getNote();
+                        $tabNAV[$k]['note'][$j][$l]['type']=$note[$l]->getType();
+                        $el=$em->getRepository(Eleve::class)->find($note[$l]->getEleve());
+                        $tabNAV[$k]['note'][$j][$l]['eleve']=$el->getPrenom().'  '.$el->getNom();
+                    }
                     //    $tabNAV[$k]['notetype']['type']=$typeNV[$j]['type'];
 
                     // if($i==0)$tabNAV[$k]['periode']=$note[0]->getPeriode()->getNomPeriode();
@@ -113,7 +157,7 @@ class NotesController extends Controller
         $tab=array();
         for ($i=0; $i<sizeof($eleve);$i++)
         {
-            $notes_interro=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"interro"));
+            $notes_interro=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>"validé",'type'=>"interro"));
             $notes_devoir=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"devoir"));
             if ($notes_interro==null)
             {
@@ -168,13 +212,13 @@ class NotesController extends Controller
         }
 
         $em->flush();
-       return $this->redirectToRoute('notes_index');
+       return $this->redirectToRoute('notes_index',array('id'=>1));
     }
 
     /**
      * Lists all notes entities.
      *
-     * @Route("/notes/validation/{idCm}/{type}", name="notes_rejet")
+     * @Route("/notes/rejet/{idCm}/{type}", name="notes_rejet")
      * @Method("GET")
      */
     public  function RejetNoteAction($idCm,$type)
@@ -190,6 +234,7 @@ class NotesController extends Controller
         }
 
         $em->flush();
-        return $this->redirectToRoute('notes_index');
+        return $this->redirectToRoute('notes_index',array('id'=>2));
     }
+
 }
