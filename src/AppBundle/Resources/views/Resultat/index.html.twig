@@ -1,7 +1,6 @@
 
 {% extends 'master.html.twig' %}
 {% block head %}
-
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -20,6 +19,95 @@
     </div>
 {% endblock %}
 {% block content %}
+{{ dump(tab) }}
+    <div class="row">
+        <div class="col-3">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="list-group">
+                        <li class="list-header">Classes</li>
+                        {% set m=0 %}
+                        {% for i in tabClasse %}
+                            {% for l in i %}
+                                <li class="list-group-item {% if m==0 %}active{% endif %} ">{{ l.classe }}</li>
+                                {% set m=1 %}
+                            {% endfor%}
+                        {% endfor%}
+                    </ul>
+                </div>
+                <div class="col-12">
+                    <ul class="list-group">
+                        <li class="list-header">Matières</li>
+                        {% for i in matiere %}
+                                <li class="list-group-item {% if loop.first %}active{% endif %}  ">{{ i.matiere.libelle }}</li>
+                        {% endfor%}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+<div class="col-9">
+    <div class="card">
+        <div class="card-header">
+            <h6><b>Fiche de note</b></h6>
+            <h6><b>Matiere</b> :{{ tab['cm'].matiere.libelle }}</h6>
+            <h6><b>Coefficient</b> :{{tab['cm'] .coefficient }}</h6>
+            <h6><b>Classe</b> :{{ tab['tc'] .classe.libelle }}{{tab['tc'] .libelle }}</h6>
+            <h6><b>Effectif</b> :{{ tab['el'] | length }}</h6>
+            <h6><b>Période</b> :{% if tab['p'] .id ==1 %}1er semestre{% else %}2 Semestre{% endif %}</h6>
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">notes des éleves</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Elève</th>
+                                <th>Interro1</th>
+                                <th>Interro2</th>
+                                <th>Moy.Int</th>
+                                <th>Devoir1</th>
+                                <th>Devoir2</th>
+                                <th>Moy/20</th>
+                                <th>Moy coeff</th>
+                                <th>Obs.</th>
+                            </tr>
+                            </thead>
+                            <tbody style="overflow: scroll; width: 100px">
+
+                            {% for i in tab['tab'] %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ i['eleve']}}</td>
+                                    <td>{{ i['interro1'] }}</td>
+                                    <td>{{ i['interro2']}}</td>
+                                    <td>{{i['MINT']}}</td>
+                                    <td>{{i['devoir1'] }}</td>
+                                    <td>{{ i['devoir2'] }}</td>
+                                    <td>{{ i['Moy'] }}</td>
+                                    <td>{{ i['MoyC'] }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+
     <div class="row">
         <div class="col-3">
             <h5>Option de recherche</h5>

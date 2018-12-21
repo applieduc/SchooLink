@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Présentation  fiche  de  notes</h1>
+                    <h1 class="m-0 text-dark">Gestionnaire de  notes</h1>
                 </div><!-- /.col -->
                 <!--<div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -20,27 +20,14 @@
     </div>
 {% endblock %}
 {% block content %}
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="fiche-tab" data-toggle="tab" href="#fiche" role="tab" aria-controls="fiche" aria-selected="true">Fiche de notes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="note-tab" data-toggle="tab" href="#note" role="tab" aria-controls="note" aria-selected="false">Notes en attentes de validation <span class="badge badge-danger"></span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="fiche" role="tabpanel" aria-labelledby="fiche-tab">di</div>
-        <div class="tab-pane fade" id="note" role="tabpanel" aria-labelledby="note-tab">..bfb.</div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">.fuzh..</div>
+    <div align="center" style="margin-bottom: 40px" >
+        <a href="{{ path('notes_index',{'id':1}) }}" class="btn  {% if noteNV is defined %}btn-primary {% else %}btn-default {% endif %}  ">En attente de validation</a>
+        <a href="{{ path('notes_index',{'id':2}) }}" class="btn {% if noteR is defined %}btn-primary {% else %}btn-default {% endif %} ">Rejeté</a>
     </div>
-
-    <div class="row">
-
-    </div>
-{{ dump(noteNV) }}
+    {% if noteNV is defined %}
+        {% if noteNV == null %}
+            <h1 class="text-muted text-center">Aucune note en  attente de validation</h1>
+            {% endif %}
 {% for i in noteNV %}
     <div class="col-12">
         <div class="card">
@@ -66,25 +53,26 @@
                                 <tr>
                                     <th>N°</th>
                                     <th>Elève</th>
-                                    <th>{{ l[0].type }}</th>
+                                    <th>{{ l[0]['type'] }}</th>
                                     <th>Obs.</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                            {% for k in l %}
-                                <tr>
+
+                                {% for k in l %}
+                                    <tr>
                                     <td>{{ loop.index }}</td>
-                                    <td>{{ k.note }}</td>
-                                    <td>{{ k.note}}</td>
+                                    <td>{{ k['eleve'] }}</td>
+                                    <td>{{ k['valeur'] }}</td>
                                     <td></td>
-                                </tr>{% endfor %}
+                                    </tr>{% endfor %}
                                 </tbody>
                                 <tfoot>
                                 </tfoot>
                             </table>
                             <div align="center">
-                               <a href="{{ path('notes_rejet',{'idCm':i['idCm'],'type': l[0].type }) }}" onclick="return confirm('voulez-vous vraiment rejeter ces notes ?')" class="btn btn-danger"> Rejeter cette composition </a>
-                               <a href="{{ path('notes_validation',{'idCm':i['idCm'],'type': l[0].type }) }}" onclick="return confirm('voulez-vous vraiment valider ces notes ?')" class="btn btn-success"> Valider cette composition </a>
+                               <a href="{{ path('notes_rejet',{'idCm':i['idCm'],'type': l[0]['type'] }) }}" onclick="return confirm('voulez-vous vraiment rejeter ces notes ?')" class="btn btn-danger"> Rejeter cette composition </a>
+                               <a href="{{ path('notes_validation',{'idCm':i['idCm'],'type': l[0]['type'] }) }}" onclick="return confirm('voulez-vous vraiment valider ces notes ?')" class="btn btn-success"> Valider cette composition </a>
                             </div>
                         </div>
 
@@ -96,4 +84,64 @@
         </div>
     </div>
     {% endfor %}
+{% else %}
+    {% if noteR == null %}
+        <h1 class="text-muted text-center">Aucune note en  attente de validation</h1>
+    {% endif %}
+    {% for i in noteR %}
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6><b>Note Rejeter</b></h6>
+                    <h6><b>Professeur</b> : {{ i['professeur'] }}</h6>
+                    <h6><b>Matiere</b> :{{ i['matiere'] }}</h6>
+                    <h6><b>Coefficient</b> : {{ i['coefficient'] }}</h6>
+                    <h6><b>Classe</b> : {{ i['classe'] }}</h6>
+                    <h6><b>Effectif</b> :{{ i['effectif'] }}</h6>
+                    <h6><b>Période</b> : 1 semestre</h6>
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">notes des éleves</h3>
+                            </div>
+                            <!-- /.card-header -->
+
+                            {% for l in i['note'] %}
+                                <div class="card-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Elève</th>
+                                            <th>{{ l[0]['type'] }}</th>
+                                            <th>Obs.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for k in l %}
+                                            <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ k['eleve'] }}</td>
+                                            <td>{{ k['valeur'] }}</td>
+                                            <td></td>
+                                            </tr>{% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                        </tfoot>
+                                    </table>
+                                    <div align="center">
+                                        <a href="{{ path('notes_validation',{'idCm':i['idCm'],'type': l[0]['type'] }) }}" onclick="return confirm('voulez-vous vraiment valider ces notes ?')" class="btn btn-success"> Valider cette composition </a>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}
