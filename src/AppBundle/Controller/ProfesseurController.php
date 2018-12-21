@@ -55,8 +55,8 @@ class ProfesseurController extends Controller
                 // le professeur n'existe on le sauvgarde
                 $codeprof = strtoupper("PROF-" . substr(sha1(uniqid(mt_rand(), true)), 0, 4));
                 $professeur->setCodeProf($codeprof);
-                $professeur->setPasswordMobile($this->hash($form->getData()->getPassword()));
-                $professeur->setEmailMobile($form->getData()->getEmail());
+                $professeur->setPasswordMobile($this->hash($form->getData()->getPrenom()));
+                $professeur->setEmail($form->getData()->getEmail());
                 $ecole_prof->setEcole($this->getUser()->getEcole());
                 $ecole_prof->setProfesseur($professeur);
 
@@ -71,11 +71,12 @@ class ProfesseurController extends Controller
                 $ecole_prof->setProfesseur($profexiste);
                 $id = $profexiste->getId();
                 $em->persist($ecole_prof);
+                return $this->redirectToRoute('enseignement_prof_new', array('id' => $id));
             }
 
             $em->flush();
 
-            return $this->redirectToRoute('enseignement_prof_new', array('id' => $id));
+
         }
 
         return $this->render('professeur/new.html.twig', array(

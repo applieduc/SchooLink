@@ -139,8 +139,10 @@ class EleveTypeClasseController extends Controller
 
     public function save_type_classe_eleve(Request $request,Classe $classe)
     {
+
         $em = $this->getDoctrine()->getManager();
         $classe_type=$em->getRepository(TypeClasse::class)->findOneBy(array('libelle'=>$request->get('type'),'classe'=>$classe->getId()));
+
         if ($classe_type==null){
             $classe_type=new TypeClasse();
             $classe_type->setClasse($classe);
@@ -174,7 +176,7 @@ class EleveTypeClasseController extends Controller
            }
 
         }
-        return $this->redirectToRoute('eleve_classe_index');
+        return $this->redirectToRoute('eleve_classe_index',array('classe'=>$classe->getId()));
 
     }
 }

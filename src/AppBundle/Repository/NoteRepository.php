@@ -10,4 +10,23 @@ namespace AppBundle\Repository;
  */
 class NoteRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function typeNV($id)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="mise en attente" ');
+        $state->execute(array($id));
+
+        return $state->fetchAll();
+    }
+
+
+    public function getNV($id,$type)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select  * from note where classe_matiere_professeur_annee_id=? and statut="mise en attente" and type=?');
+        $state->execute(array($id, $type));
+
+        return $state->fetchAll();
+    }
 }

@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Note
 {
+    public function __construct(){
+        $this->etat=true;
+    }
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eleve",cascade={"persist"})
@@ -90,6 +93,14 @@ class Note
      * @ORM\Column(name="statut", type="string")
      */
     private $statut;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="etat", type="boolean")
+     */
+    private $etat;
 
     /**
      * Get id
@@ -315,5 +326,29 @@ class Note
     public function getClasseMatiereProfesseurAnnee()
     {
         return $this->classe_matiere_professeur_annee;
+    }
+
+    /**
+     * Set etat
+     *
+     * @param boolean $etat
+     *
+     * @return Note
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+    
+        return $this;
+    }
+
+    /**
+     * Get etat
+     *
+     * @return boolean
+     */
+    public function getEtat()
+    {
+        return $this->etat;
     }
 }
