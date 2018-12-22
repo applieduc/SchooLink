@@ -1,0 +1,67 @@
+
+{% extends 'master.html.twig' %}
+
+{% block head %} 
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Notifications</h1>
+            </div><!-- /.col -->    
+         <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="card">
+                <div class="card-header">
+                   <div class="row">
+                       <h3 class="card-title">Liste Notifications</h3>
+                        
+                            
+                        </ul>
+                    
+                   </div>
+                </div>
+
+
+                <!-- /.card-header -->
+                <div class="card-body">
+            
+                    {% for notif in noti %}
+                
+                        <p style="word-wrap: break-word">
+                            <i class="fa fa-circle-o"></i>  
+                                {{notif.message}}
+                        </p>
+
+                    
+                    {% endfor %}
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+ 
+
+</section>
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+
+
+        $('.edit').click(function () {
+         
+        });
+    </script>
+{% endblock %}

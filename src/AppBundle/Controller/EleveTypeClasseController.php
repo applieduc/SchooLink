@@ -161,7 +161,7 @@ class EleveTypeClasseController extends Controller
         }
 
         $session=$this->get("session");
-       
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
         $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
 
         $classe_typ_selct='';
@@ -175,16 +175,18 @@ class EleveTypeClasseController extends Controller
            }
         $em->flush();
         for ($i=1;$i<=(int)$request->get('nb_eleves');$i++){
-            $id_eleve=$request->get('eleve'.$i);
-
-            $eleve=  $em->getRepository(Eleve::class)->find($id_eleve);
-           if ($em->getRepository(EleveTypeClasse::class)->findOneBy(array('type_classe'=>$classe_typ_selct->getId(),'eleve'=>$eleve))==null){
-               $elves_classe_type=new EleveTypeClasse();
-               $elves_classe_type->setTypeClasse($classe_typ_selct);
-               $elves_classe_type->setEleve($eleve);
-               $em->persist($elves_classe_type);
-               $em->flush();
-           }
+            $id_eleve=(int)$request->get('eleve'.$i);
+            if($id_eleve!=0){
+                $eleve=  $em->getRepository(Eleve::class)->find($id_eleve);
+                if ($em->getRepository(EleveTypeClasse::class)->findOneBy(array('type_classe'=>$classe_typ_selct->getId(),'eleve'=>$eleve))==null){
+                    $elves_classe_type=new EleveTypeClasse();
+                    $elves_classe_type->setTypeClasse($classe_typ_selct);
+                    $elves_classe_type->setEleve($eleve);
+                    $em->persist($elves_classe_type);
+                    $em->flush();
+                }
+            }
+          
 
         }
         return $this->redirectToRoute('eleve_classe_index',array('classe'=>$classe->getId()));

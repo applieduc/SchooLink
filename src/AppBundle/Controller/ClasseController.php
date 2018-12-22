@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Annee;
 use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Classe;
+use AppBundle\Entity\TypeClasse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -109,8 +110,14 @@ class ClasseController extends Controller
 
             $classe->setEcole($censeur->getEcole());
             $em->persist($classe);
+            $date=$classe->getDateCreation();
             $em->flush();
-
+            $c=$em->getRepository(Classe::class)->findOneBy(array('dateCreation' => $date ));
+            $type_class=new TypeClasse();
+            $type_class->setLibelle($request->get('default'));
+            $type_class->setClasse($c);
+            $em->persist($type_class);
+            $em->flush();
             return $this->redirectToRoute('classe_show', array('id' => $classe->getId()));
         }
 

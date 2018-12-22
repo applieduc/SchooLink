@@ -35,18 +35,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Left navbar links -->
 
 
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-4">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="rechercher" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
+              
+        <div class="user-panel ml-auto d-flex">
+        
+                  <a class="nav-link" data-toggle="dropdown" href="{{path('show_notif')}}">
+                    <i class="fa fa-bell-o"></i>
+                    <span class="badge badge-warning navbar-badge" id="n">0 </span>
+                  </a>
+                
+                <div class="image">
+                    <img src="{{asset('img/avatar.png')}}" class="img-circle elevation-2" alt="User Image">
                 </div>
+                <div class="info">
+                    <a href="{{path('profil_ecole_show',{'id':app.user.ecole.id})}}" class="d-block text-lowercase">{{app.user.ecole.censeur.nom}}  {{app.user.ecole.censeur.prenom}}</a>
+                </div>
+                
             </div>
-        </form>
-
         <!-- Right navbar links -->
     </nav>
     <!-- /.navbar -->
@@ -55,23 +59,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            <img src="{{asset('img/Logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                  style="opacity: .8">
-            <span class="brand-text font-weight-light">SchooLink</span>
+            <span class="brand-text font-weight-light">SchoolLink</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
+           
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
-                </div>
-            </div>
-
+                    <div class="image">
+                      <img src="{{asset('img/ecole.png')}}" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                      <a href="{{path('profil_ecole_show',{'id':app.user.ecole.id})}}" class="d-block">{{app.user.ecole.nom}}</a>
+                    </div>
+                  </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -80,7 +84,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a href="{{path('schools')}}" class="nav-link">
                             <i class="nav-icon fa fa-th"></i>
                             <p>
-                               Années Académique
+                                 Années Académique
                             </p>
                         </a>
                     </li>
@@ -188,6 +192,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{{ asset('build/adminlte.js') }}"></script>
 <script>
+
+    setInterval('noti()',5000);
+    function noti(){
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{{ path('getNotif')}}",
+            cache: false,
+            contentType:false,
+            processData:false,
+            success:function (data) {
+            console.log(data);
+             $('#n').html(data.nb);  
+            }
+
+
+        });
+    }
+        
+
     function verifyDateFin(debut,fin) {
         if(new Date(debut[2],debut[1]-1,debut[0])<=new Date(fin[2],fin[1]-1,fin[0])){
             $(".error").html("");
@@ -229,7 +253,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
        
         $('.date').datepicker({
-            format: 'dd/mm/yyyy',
+            format: 'mm/dd/yyyy',
 
           });
     $(function () {

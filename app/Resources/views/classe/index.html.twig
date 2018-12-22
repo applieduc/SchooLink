@@ -19,6 +19,19 @@
           
                {% endfor %}
               {% endif %}
+              
+              {% if app.session.getFlashBag.has('success') %}
+              {% for flashMessage in app.session.flashbag.get('success') %}
+
+              
+                <div class="alert alert-info">
+                    <span class="T">  {{ flashMessage |raw }}</span>
+                </div>
+            
+             
+          
+               {% endfor %}
+              {% endif %}
             </div><!-- /.col -->
             <!--<div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -57,7 +70,7 @@
         <tbody>
         {% for classe in classes %}
             <tr>
-                <td><a href="{{ path('classe_show', { 'id': classe.id }) }}">{{ classe.id }}</a></td>
+                <td>{{loop.index}}</td>
                 <td><a href="{{ path('eleve_classe_index', { 'classe': classe.id }) }}">{{ classe.libelle }} </a></td>
                 <td>{{ classe.dateCreation | date('Y-m-d H:i:s')}}</td>
                 <td>
@@ -92,6 +105,10 @@
 
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
+                    <div class="form-group">
+                            <label for="">Type par defaut</label>
+                            <input type="text" name="default" class="form-control" required>
+                    </div>
                     <button class="btn btn-success pull-right" type="submit"> Ajouter  </button>
                     {{ form_end(form) }}
 

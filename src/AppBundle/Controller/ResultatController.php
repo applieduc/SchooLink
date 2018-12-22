@@ -36,7 +36,12 @@ class ResultatController extends Controller
     {
 
         $em=$this->getDoctrine()->getManager();
-        $classes=$em->getRepository(Classe::class)->findAll();
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+          
+
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+       
+        $classes=$em->getRepository(Classe::class)->findBy(array('ecole'=>$ecole->getId()));
         $tabClasse=array();
 
         for ($i=0; $i<sizeof($classes);$i++)
@@ -50,10 +55,6 @@ class ResultatController extends Controller
         }
         $matiere=$em->getRepository(ClasseMatiere::class)->findBy(array('classe'=>$classes[0]->getId()));
 
-        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
-          
-
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
         $id=0;
       if ($annee!=null){
           $id=$annee->getId();
@@ -65,6 +66,10 @@ class ResultatController extends Controller
         foreach ($tc as $c){
             $t[$i]=$em->getRepository(TypeClasse::class)->findOneBy(array('classe'=>$c->getId()));
             $i++;
+        }
+        if(sizeof($t)==0){
+            $this->get('session')->getFlashBag()->set('success','Vous n\'avez aucune sous classe');
+            return $this->redirectToRoute('classe_index');
         }
 
         $cm=$em->getRepository(ClasseMatiere::class)->findAll();

@@ -33,7 +33,7 @@
                         <div class="card-body box-profile">
                             {#<div class="text-center">#}
                                 {#<img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">#}
-                            </div>
+                             {#</div>#}
 
                             <h3 class="profile-username text-center">{{ professeur.identite }}</h3>
 
@@ -63,7 +63,7 @@
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
-
+        </div>
         <div class="col-6">
             <div class="card">
                 <div class="card-header">
@@ -117,7 +117,7 @@
     </div>
     <div class="row">
 
-        <div class="col-8">
+        <div class="col-8 offset-2">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -137,25 +137,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for matiere in matieres %}
-                            <tr>
-                                <td><a href="{{ path('matiere_show', { 'id': matiere.id }) }}">{{ matiere.id }}</a></td>
-                                <td>{{ matiere.libelle }}</td>
-                                <td>{{ matiere.dateCreation | date('Y-m-d H:i:s')}}</td>
-                                <td>{% if matiere.archiver %}<span class="badge badge-danger">Obselète</span>{% else %}<span class="badge badge-success">Enseignée</span>{% endif %}</td>
-                                <td>
-                                    <div class=" row d-column justify-content-center">
-                                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('matiere_edit', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
-                                        <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('matiere_show', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
-                                        {% if matiere.archiver %}
-                                            <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('matiere_desarchive', { 'id': matiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
-                                        {% else %}
-                                            <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
+                        
                         </tbody>
                     </table>
 
@@ -200,8 +182,12 @@
                 // Récupérer les autoécoles de son département pour qu'il puisse faire le choix
                 // by ajax
                // $('#pleaseWaitDialog').modal('show');
+               id=classe_id;
+                var url = "{{ path('matiere-classe', {'id': 'id'})}}";
+                url = url.replace("id", window.id);
+    
                 $.ajax({
-                    url: Routing.generate('matiere-classe', {'id': classe_id}),
+                    url: url,
                     type: 'GET',
                     success: function (data) {
                      //  $('#pleaseWaitDialog').modal('hide');
@@ -225,9 +211,15 @@
                 // Récupérer les autoécoles de son département pour qu'il puisse faire le choix
                 // by ajax
                 // $('#pleaseWaitDialog').modal('show');
-                $.ajax({
-                    url: Routing.generate('type-classe', {'id': classe_id}),
+                id=classe_id;
+                var url = "{{ path('type-classe', {'id': 'id'})}}";
+                url = url.replace("id", window.id);
+    
+            
+               $.ajax({
+                    url:  url,
                     type: 'GET',
+             
                     success: function (data) {
                         //  $('#pleaseWaitDialog').modal('hide');
                         var matiere = $('#typeclasse');

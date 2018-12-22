@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Censeur</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ censeur.id }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ censeur.photo }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if censeur.createdAt %}{{ censeur.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if censeur.updatedAt %}{{ censeur.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('censeur_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('censeur_edit', { 'id': censeur.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

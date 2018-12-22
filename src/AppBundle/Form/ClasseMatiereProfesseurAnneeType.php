@@ -20,6 +20,32 @@ class ClasseMatiereProfesseurAnneeType extends AbstractType
 
         if ($options['nature'] == 'prof'){
             $builder
+            ->add('professeur',EntityType::class ,[
+                'class' => 'AppBundle\Entity\Professeur',
+                'query_builder'=>function (EntityRepository $er/*,$user*/) {
+
+                    return $er->createQueryBuilder('u')
+                        ->where('u.createdBy = :user')
+                        ->setParameter('user',$this->user )
+                        ->orderBy('u.nom', 'ASC');
+                },
+                'label' => 'Professeur :',
+                'choice_label' => 'Identite',
+                'placeholder' => 'Sélectionnez un professeur',
+                'empty_data' => null,
+                'required' => true,
+                'attr' => array(
+                    'class' => 'select2',
+                    'required' => 'required',
+                )])
+               // ->add('type_classe')
+                //          ->add('annee')
+            ;
+
+        } elseif ($options['nature'] == 'matiere'){
+            $builder
+//            ->add('classe_matiere')
+//            ->add('type_classe')  
                 ->add('classe_matiere',EntityType::class, [
                     'class' => 'AppBundle\Entity\ClasseMatiere',
                     'query_builder'=>function (EntityRepository $er/*,$user*/) {
@@ -27,10 +53,10 @@ class ClasseMatiereProfesseurAnneeType extends AbstractType
                         return $er->createQueryBuilder('m')
                             ->leftJoin('m.matiere','mat')
                             ->leftJoin('mat.ecole','ec')
-                            ->where('ec.id = 2')
-//                            ->where('u.createdBy = :user')
-//                            ->setParameter('user',$this->user )
-//                            ->orderBy('u.nom', 'ASC')
+                            ->where('ec.id =2')
+                //                            ->where('u.createdBy = :user')
+                //                            ->setParameter('user',$this->user )
+                //                            ->orderBy('u.nom', 'ASC')
                                 ;
                     },
                     'label' => 'Selectionnez la matiere :',
@@ -43,32 +69,7 @@ class ClasseMatiereProfesseurAnneeType extends AbstractType
                         'required' => 'required',
                     )
                     ])
-               // ->add('type_classe')
-                //          ->add('annee')
-            ;
-
-        } elseif ($options['nature'] == 'matiere'){
-            $builder
-//            ->add('classe_matiere')
-//            ->add('type_classe')
-                ->add('professeur',EntityType::class ,[
-                    'class' => 'AppBundle\Entity\Professeur',
-                    'query_builder'=>function (EntityRepository $er/*,$user*/) {
-
-                        return $er->createQueryBuilder('u')
-                            ->where('u.createdBy = :user')
-                            ->setParameter('user',$this->user )
-                            ->orderBy('u.nom', 'ASC');
-                    },
-                    'label' => 'Professeur :',
-                    'choice_label' => 'Identite',
-                    'placeholder' => 'Sélectionnez un professeur',
-                    'empty_data' => null,
-                    'required' => true,
-                    'attr' => array(
-                        'class' => 'select2',
-                        'required' => 'required',
-                    )])
+                
             ;
         }
 
