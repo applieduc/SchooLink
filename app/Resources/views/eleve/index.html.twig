@@ -33,6 +33,7 @@
                 <thead>
                 <tr>
                     <th>N°</th>
+                    <th>Code</th>
                     <th>Nom</th>
                     <th>Prenom</th>
                     <th>Sexe</th>
@@ -47,6 +48,7 @@
                     <tr>
                         {#<td><a href="{{ path('eleve_show', { 'id': eleve.id }) }}">{{ eleve.id }}</a></td>#}
                         <td>{{ loop.index }}</td>
+                        <td>{{ eleve.code }}</td>
                         <td>{{ eleve.nom }}</td>
                         <td>{{ eleve.prenom }}</td>
                         <td>{% if eleve.sexe == 1 %}M {% else %}F{% endif %}</td>
@@ -91,6 +93,7 @@
                 <thead>
                 <tr>
                     <th>N°</th>
+                    <th>Code</th>
                     <th>Nom</th>
                     <th>Prenom</th>
                     <th>Sexe</th>
@@ -105,6 +108,7 @@
                     <tr>
                         {#<td><a href="{{ path('eleve_show', { 'id': eleve.id }) }}">{{ eleve.id }}</a></td>#}
                         <td>{{ loop.index }}</td>
+                        <td>{{ eleve.code }}</td>
                         <td>{{ eleve.nom }}</td>
                         <td>{{ eleve.prenom }}</td>
                         <td>{% if eleve.sexe == 1 %}M {% else %}F{% endif %}</td>

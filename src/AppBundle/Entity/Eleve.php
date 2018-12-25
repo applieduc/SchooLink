@@ -18,9 +18,15 @@ class Eleve
         $this->dateCreation=new \DateTime();
         $this->dateModification=new \DateTime();
         $this->archiver=0;
-        $this->photo="prpfile.png";
+        $this->photo="avatar.png";
+        $this->code=strtoupper(substr(sha1(uniqid(mt_rand(), true)), 4, 6)."-ELV-" . substr(sha1(uniqid(mt_rand(), true)), 2, 4));
     }
-
+/**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255)
+     */
+    private $code;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"}, inversedBy="eleves")
@@ -77,7 +83,7 @@ class Eleve
     /**
      * @var string
      *
-     * @ORM\Column(name="photo", type="blob")
+     * @ORM\Column(name="photo", type="string")
      */
     private $photo;
 
@@ -350,5 +356,29 @@ class Eleve
     public function getEcole()
     {
         return $this->ecole;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return Eleve
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

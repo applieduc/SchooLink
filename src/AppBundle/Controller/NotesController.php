@@ -35,21 +35,37 @@ class NotesController extends Controller
     public function indexAction($id)
     {
         $em=$this->getDoctrine()->getManager();
-        $cm=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findAll();
-if ($id==1)
-{
-    return $this->render('AppBundle:Notes:index.html.twig', array(
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
 
-        'noteNV'=>$this->noteNonValide(),
-        'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
-    ));
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
 
-}else{
-    return $this->render('AppBundle:Notes:index.html.twig', array(
-        'noteR'=>$this->noteRejet   (),
-        'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
-    ));
-}
+       
+        if($annee==null){
+            $this->get('session')->getFlashBag()->set('info','Créer une nouvelle année académique');
+            return $this->redirectToRoute('new_school',array('id'=>0));
+
+         }  
+        $cm=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('annee'=>$annee->getId()));
+        
+        if(sizeof($cm)==0){
+               $this->get('session')->getFlashBag()->set('success','Vous n\'avez aucune matiere attribuer');
+                return $this->redirectToRoute('classe_index');
+    
+        }
+        if ($id==1)
+        {
+            return $this->render('AppBundle:Notes:index.html.twig', array(
+
+                'noteNV'=>$this->noteNonValide(),
+                'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
+            ));
+
+        }else{
+            return $this->render('AppBundle:Notes:index.html.twig', array(
+                'noteR'=>$this->noteRejet   (),
+                'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
+            ));
+        }
 
     }
 

@@ -18,7 +18,7 @@ class ClasseMatiereProfesseurAnneeController extends Controller
     /**
      * Lists all classeMatiereProfesseurAnnee entities.
      *
-     * @Route("/", name="enseignement_index")
+     * @Route("/", name="classematiereprofesseurannee_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -60,11 +60,12 @@ class ClasseMatiereProfesseurAnneeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $classeMatiereProfesseurAnnee = new Classematiereprofesseurannee();
-        $form = $this->createForm('AppBundle\Form\ClasseMatiereProfesseurAnneeType', $classeMatiereProfesseurAnnee,['user'=>$this->getUser() ]);
+        $form = $this->createForm('AppBundle\Form\ClasseMatiereProfesseurAnneeType', $classeMatiereProfesseurAnnee,['user'=>$this->getUser(),'nature'=>'prof']);
          $class_matiere = $em->getRepository('AppBundle:ClasseMatiere')->findOneBy(['id'=>$id]);
+       //  var_dump()
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) { 
            $classeMatiereProfesseurAnnee->setClasseMatiere($class_matiere);
          //  $classeMatiereProfesseurAnnee->set
             $em->persist($classeMatiereProfesseurAnnee);
@@ -93,7 +94,7 @@ class ClasseMatiereProfesseurAnneeController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $classeMatiereProfesseurAnnee = new Classematiereprofesseurannee();
-        $form = $this->createForm('AppBundle\Form\ClasseMatiereProfesseurAnneeType', $classeMatiereProfesseurAnnee,['user'=>$this->getUser(),'nature'=>'prof' ]);
+        $form = $this->createForm('AppBundle\Form\ClasseMatiereProfesseurAnneeType', $classeMatiereProfesseurAnnee,['user'=>$this->getUser(),'nature'=>'matiere' ]);
         $prof = $em->getRepository('AppBundle:Professeur')->findOneBy(['id'=>$id]);
         $classes = $em->getRepository('AppBundle:Classe')->findBy(['ecole'=>$this->getUser()->getEcole()]);
         $form->handleRequest($request);
@@ -136,7 +137,7 @@ class ClasseMatiereProfesseurAnneeController extends Controller
     /**
      * Displays a form to edit an existing classeMatiereProfesseurAnnee entity.
      *
-     * @Route("/{id}/edit", name="enseignement_edit")
+     * @Route("/{id}/edit", name="classematiereprofesseurannee_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, ClasseMatiereProfesseurAnnee $classeMatiereProfesseurAnnee)
@@ -161,7 +162,7 @@ class ClasseMatiereProfesseurAnneeController extends Controller
     /**
      * Deletes a classeMatiereProfesseurAnnee entity.
      *
-     * @Route("/{id}", name="enseignement_delete")
+     * @Route("/{id}", name="classematiereprofesseurannee_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, ClasseMatiereProfesseurAnnee $classeMatiereProfesseurAnnee)

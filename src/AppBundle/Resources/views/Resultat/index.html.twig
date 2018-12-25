@@ -242,7 +242,7 @@
                     <form action="{{ path('fiche_note') }}" method="post">
                         <div class="form-group">
                             <label>Type de classe</label>
-                            <select class="form-control" name="tc" id="type">
+                            <select class="form-control" name="tc" id="type" required>
                                 {% for i in tc %}
                                     {% if i!=null %}
                                 <option value="{{ i.id }}" rel="{{ i.classe.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
@@ -257,12 +257,13 @@
                             #}{#{% for i in cm %}#}{#
                                 #}{#<option value="{{ i.matiere.id }}">{{ i.matiere.libelle }}</option>#}{#
                             #}{#{% endfor %}#}{#
+
                             </select>
 
                         </div>
                         <div class="form-group">
                             <label>Période</label>
-                            <select class="form-control" name="p">
+                            <select class="form-control" name="p" required>
                                 {% for i in periode %}
                                 <option title="{{ i.dateDebut | date("d-m-Y") }} au  {{ i.dateFin | date("d-m-Y") }}" value="{{ i.id }}">{{ annee.typePeriode }} {{ loop.index }}
                                     </option>
@@ -270,7 +271,7 @@
                             </select>
                         </div>
                         <div class="form-actions">
-                            <input type="submit" class="btn btn-primary">
+                            <input type="submit" class="btn btn-primary" value="Rechecher">
                         </div>
                     </form>
                 </div>
@@ -283,7 +284,7 @@
                     <form action="{{ path('bulletin') }}" method="post">
                         <div class="form-group">
                             <label>Type de classe</label>
-                            <select class="form-control" name="tc">
+                            <select class="form-control" name="tc" required>
                                 {% for i in tc %}
                                 {% if i!=null %}
                                 <option value="{{ i.id }}">{{ i.classe.libelle }}  {{ i.libelle }}</option>
@@ -294,7 +295,7 @@
                         </div>
                         <div class="form-group">
                             <label>Période</label>
-                            <select class="form-control" name="p">
+                            <select class="form-control" name="p" required>
                                 {% for i in periode %}
                                     <option title="{{ i.dateDebut | date("d-m-Y") }} au  {{ i.dateFin | date("d-m-Y") }}" value="{{ i.id }}">{{ annee.typePeriode }} {{ loop.index }}
                                     </option>
@@ -302,7 +303,7 @@
                             </select>
                         </div>
                         <div class="form-actions">
-                            <input type="submit" class="btn btn-primary">
+                            <input type="submit" class="btn btn-primary" value="Rechercher">
                         </div>
                     </form>
                 </div>

@@ -1,21 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'master.html.twig' %}
+{% block head %}
 
-{% block body %}
-    <h1>Professeur edit</h1>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Professeur</h1>
+                </div><!-- /.col -->
+                <!--<div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Starter Page</li>
+                    </ol>
+                </div>-->
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+{% endblock %}
+{% block content %}
+<div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        Ajouter un nouveau professeur
+                        <span class="pull-right">
+                            <a href="{{ path('ecole_professeur_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+                        {{ form_start(edit_form) }}
+                        {{ form_widget(edit_form) }}
+                        <button class="btn btn-warning pull-right" type="submit"> Modifier  </button>
+                        
+                    {{ form_end(edit_form) }}
+                
+                </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('ecole_professeur_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

@@ -78,27 +78,31 @@
                     <th>Nom prenom(s) </th>
                     <th>Contact</th>
                     <th>E-mail</th>
+                    <th>Adresse</th>
+                    <th>Statut</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for professeur in professeurs %}
+                {% for ecole_professeur in ecole_professeurs %}
                     <tr>
                         <td>{{ loop.index }}</td>
                         {#<td><a href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}">{{ professeur.id }}</a></td>#}
-                        <td>{{ professeur.identite }}</td>
-                        <td>{{ professeur.telephone}}</td>
-                        <td>{{ professeur.email }}</td>
+                        <td>{{ ecole_professeur.professeur.identite }}</td>
+                        <td>{{ ecole_professeur.professeur.telephone}}</td>
+                        <td>{{ ecole_professeur.professeur.email }}</td>
+                        <td>{{ ecole_professeur.professeur.adresse }}</td>
+                        <td>{% if ecole_professeur.archiver %}<span class="badge badge-danger">Desactiver</span>{% else %}<span class="badge badge-success">Activer</span>{% endif %}</td>
                         <td>
                             <div class=" row d-column justify-content-center">
-                                <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('ecole_professeur_edit', { 'id': professeur.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
-                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('ecole_professeur_show', { 'id': professeur.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
-                                {#{% if matiere.archiver %}#}
-                                    {#<div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('matiere_desarchive', { 'id': matiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>#}
-                                {#{% else %}#}
-                                    {#<div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>#}
-                                {#{% endif %}#}
-                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('enseignement_prof_new', { 'id': professeur.id }) }}" rel="#"><i class="fa fa-bookmark-o text-primary"></i></a></div>
+                                <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('ecole_professeur_edit', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('ecole_professeur_show', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                                {% if ecole_professeur.archiver %}
+                                    <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('ecole_professeur_desarchive', { 'id': ecole_professeur.professeur.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
+                                {% else %}
+                                <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('ecole_professeur_archive', { 'id': ecole_professeur.professeur.id  }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                                {% endif %}
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('enseignement_prof_new', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-bookmark-o text-primary"></i></a></div>
 
                             </div>
                         </td>

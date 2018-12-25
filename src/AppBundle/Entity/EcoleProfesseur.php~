@@ -95,28 +95,5 @@ class EcoleProfesseur
         $this->professeur = $professeur;
     }
 
-
-    /**
-     * Set archiver
-     *
-     * @param boolean $archiver
-     *
-     * @return EcoleProfesseur
-     */
-    public function setArchiver($archiver)
-    {
-        $this->archiver = $archiver;
-    
-        return $this;
-    }
-
-    /**
-     * Get archiver
-     *
-     * @return boolean
-     */
-    public function getArchiver()
-    {
-        return $this->archiver;
-    }
 }
+
