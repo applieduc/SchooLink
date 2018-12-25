@@ -8,6 +8,9 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    ecole_directory: '%kernel.project_dir%/web/uploads/ecole'
+    censeur_directory: '%kernel.project_dir%/web/uploads/censeur'
+    professeur_directory: '%kernel.project_dir%/web/uploads/professeur'
 
 framework:
     #esi: ~

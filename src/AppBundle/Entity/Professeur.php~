@@ -19,6 +19,8 @@ class Professeur
      *
      */
     private $compte;
+
+
     /**
      * @var int
      *
@@ -313,30 +315,6 @@ class Professeur
 
 
     /**
-     * Set showPassword
-     *
-     * @param string $showPassword
-     *
-     * @return Professeur
-     */
-    public function setShowPassword($showPassword)
-    {
-        $this->show_password = $showPassword;
-    
-        return $this;
-    }
-
-    /**
-     * Get showPassword
-     *
-     * @return string
-     */
-    public function getShowPassword()
-    {
-        return $this->show_password;
-    }
-
-    /**
      * Set compte
      *
      * @param \AppBundle\Entity\Compte $compte
@@ -358,5 +336,29 @@ class Professeur
     public function getCompte()
     {
         return $this->compte;
+    }
+
+    /**
+     * Set passwordMobile
+     *
+     * @param string $passwordMobile
+     *
+     * @return Professeur
+     */
+    public function setPasswordMobile($passwordMobile)
+    {
+        $this->password_mobile = $passwordMobile;
+    
+        return $this;
+    }
+
+    /**
+     * Get passwordMobile
+     *
+     * @return string
+     */
+    public function getPasswordMobile()
+    {
+        return $this->password_mobile;
     }
 }

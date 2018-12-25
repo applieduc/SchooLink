@@ -20,95 +20,174 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="card">
-        <div class="card-header">
-            <h6><b>Classe</b> {{ tc.classe.libelle }}{{ tc.libelle }}</h6>
-            <h6><b>Effectif</b>{{ el | length }}</h6>
-            <h6><b>Période</b>{% if p.id ==1 %}1er semestre{% else %}2 Semestre{% endif %}</h6>
-            {% for l in tab %}
-                {{ dump(l) }}
-            <div class="card-body">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Bulletion de note de <b>{{ l['eleve'] }}</b> <span class="pull-right"> N° {{ loop.index }}</span></h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Matiere</th>
-                                <th>Coef.</th>
-                                {% for i in l['note'] %}
-                                    {% if loop.first %}
-                                        {% if i['interro_name'] is defined %}
-                                            {% for h in i['interro_name'] %}
-                                <th> {%  if g['etat'] == 1 %}
-                                    <span>  {{g['nom']}}</span> <br>
-                                    {% endif %}
-                                </th>
-                                {% endfor %}
-                                {% endif %}
-                                {% endif %}
-                                {% endfor %}
+    <div class="row">
+    <div class="col-3">
+    <div class="row">
+    <div class="col-12">
+        <ul class="list-group">
+            <li class="list-header">Classes</li>
+            {% set m=0 %}
+            {% set inc=0 %}
+            {% set type_loop=0 %}
+            {% for i in tabClasse %}
+                {% set classe_loop=loop.index0 %}
+                {% for l in i %}
+                    {% set type_loop=type_loop+1 %}
 
+                    <li class="list-group-item f1 {% if classe_loop== param_classe %}{% if type_loop== param_type %}active{% endif %} {% endif %}" rel="{{inc }}">
+                        <form id="{{ inc}}" action="" method="get">
+                            <input type="hidden" name="classe" value="{{ l.number }}">
+                            <input type="hidden" name="type" value="{{ l.type }}">
+                            {{ l.classe }}
+                        </form>
+                    </li>
 
-                                <th>Moy.Int</th>
+                    {% set m=1 %}
+                    {%  set inc=inc+1 %}
+                {% endfor%}
+            {% endfor%}
+        </ul>
+    </div>
+    </div>
+    </div>
+        <div class="col-9">
+            <div class="row d-flex justify-content-center">
 
-                                {% for i in tab['tab'] %}
-                                    {% if loop.first %}
-                                        {% if i['devoir_name'] is defined %}
-                                            {% for h in i['devoir_name'] %}
-                                                <th> {%  if h['etat'] == 1 %}
-                                                    <span>{{h['nom']}}</span> <br>
-
-                                                    {% endif %}
-
-                                                </th>
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-
-                                <th>Moy/20</th>
-                                <th>Moy coeff</th>
-                                <th>Obs.</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                           <tr>
-                                    <td></td>
-                                    <td></td>
-                                           {% if l['interro_note'] is defined %}
-                                    {% for g in l['interro_note'] %}
-                                    {%  if g['etat'] == 1 %}
-                                        <td>{{g['note']}}</td>
-                                    {% endif %}
-                                    {% endfor %}
-                                    {% endif %}
-
-                                    <td>{{l['MINT']}}</td>
-                                    {% if l['devoir_name'] is defined %}
-                                    {% for h in i['devoir_note'] %}
-                                    {%  if h['etat'] == 1 %}
-                                    <td>{{h['etat']}}</td>
-                                    {% endif %}
-                                    {% endfor %}
-                                    {% endif %}
-                                    <td>{{ l['Moy'] }}</td>
-                                    <td>{{ l['MoyC'] }}</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-            </div>
+                {% for i  in periode %}
+                    <form id="{{ i.nomPeriode  }}" action="" method="get">
+                        <input type="hidden" name="type" value="{{ param_type }}">
+                        <input type="hidden" name="periode" value=" {{ i.id  }}">
+                        <input class="btn {% if loop.index == param_periode %}btn-primary {% else %}btn-default {% endif %}" rel="{{ i.nomPeriode  }}" value="{{ i.nomPeriode  }}" type="submit">
+                    </form>
                 {% endfor %}
+
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h6><b>Classe</b> {{ tab['tc'].classe.libelle }}{{ tab['tc'].libelle }}</h6>
+                    <h6><b>Effectif</b>{{ tab['el'] | length }}</h6>
+                    <h6><b>Période</b>{{  tab['p'].nomPeriode}}</h6>
+                </div>
+                    {% for l in tab['tab'] %}
+                        <div class="card-body">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Bulletion de note de <b>{{ l['eleve'] }}</b> <span class="pull-right"> N° {{ loop.index }}</span></h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    {% if l['note'] is defined %}
+                                        <table id="" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Matiere</th>
+                                                <th>Coef.</th>
+                                                {% if l['interro_name'] is defined %}
+                                                    {% for g in l['interro_name'] %}
+                                                        {%  if g['etat'] == 1 %}
+                                                            <th> {{g['nom']}}</th>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                <th>Moy.Int</th>
+                                                {% if l['devoir_name'] is defined %}
+                                                    {% for h in l['devoir_name'] %}
+                                                        {%  if h['etat'] == 1 %}
+                                                            <th>{{h['nom']}}</th>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                <th>Moy/20</th>
+                                                <th>Moy coeff</th>
+                                                <th>Obs.</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for i in l['note'] %}
+                                                <tr>
+                                                    <td>{{ i.matiere }}</td>
+                                                    <td>{{ i.coeffiecient }}</td>
+                                                    {% if i['interro_note'] is defined %}
+                                                        {% for g in i['interro_note'] %}
+                                                            {%  if g['etat'] == 1 %}
+                                                                <td>{{g['note']}}</td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {% if l['interro_name'] is defined %}
+                                                            {% for g in l['interro_name'] %}
+                                                                {%  if g['etat'] == 1 %}
+                                                                    <td>0</td>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    <td>{{i['MINT']}}</td>
+                                                    {% if i['devoir_note'] is defined %}
+                                                        {% for h in i['devoir_note'] %}
+                                                            {%  if h['etat'] == 1 %}
+                                                                <td>{{h['note']}}</td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {% if l['devoir_name'] is defined %}
+                                                            {% for h in l['devoir_name'] %}
+                                                                {%  if h['etat'] == 1 %}
+                                                                    <td>0</td>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    <td>{{ i['Moy'] }}</td>
+                                                    <td>{{ i['MoyC'] }}</td>
+                                                    <td></td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                            <tfoot>
+                                            </tfoot>
+                                        </table>
+                                    {% else %}
+                                        <h3 class="text-center text-muted">Aucune donnée</h3>
+                                    {% endif %}
+
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-3">
+                                    <span ><b class="mr-3">Total Coefficient :</b> {{ l.totalCoeff }}</span>
+                                </div>
+                                <div class="col-3">
+                                    <span ><b class="mr-3">Totale moyenne :</b> {{ l.totalPoint }}</span>
+                                </div>
+                                <div class="col-3">
+                                    <span ><b class="mr-3">Moyenne sur 20 :</b> {{ l.moyTotal }}</span>
+                                </div>
+                                <div class="col-3">
+                                    <span ><b class="mr-3">Rang :</b> </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            <br>
+            <br>
+            <br>
         </div>
+
     </div>
 
+{% endblock  %}
+{% block js %}
+<script>
+    $('.f1').click(function () {
+        id=$(this).attr('rel');
+        $("#"+id).submit();
+    });
+
+    </script>
 {% endblock  %}
