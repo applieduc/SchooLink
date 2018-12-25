@@ -23,7 +23,7 @@ class NoteRepository extends \Doctrine\ORM\EntityRepository
     public function typeInterro($id)
     {
         $con=$this->_em->getConnection();
-        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="validé" and etat=1 and type like "i%" ');
+        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="validé"  and type like "i%" ');
         $state->execute(array($id));
 
         return $state->fetchAll();
@@ -32,7 +32,7 @@ class NoteRepository extends \Doctrine\ORM\EntityRepository
     public function typeDevoir($id)
     {
         $con=$this->_em->getConnection();
-        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="validé" and etat=1 and type like "d%" ');
+        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="validé"  and type like "d%" ');
         $state->execute(array($id));
 
         return $state->fetchAll();

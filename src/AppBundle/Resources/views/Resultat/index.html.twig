@@ -26,10 +26,23 @@
                     <ul class="list-group">
                         <li class="list-header">Classes</li>
                         {% set m=0 %}
+                        {% set inc=0 %}
+                        {% set type_loop=0 %}
                         {% for i in tabClasse %}
+                            {% set classe_loop=loop.index0 %}
                             {% for l in i %}
-                                <li class="list-group-item {% if m==0 %}active{% endif %} ">{{ l.classe }}</li>
+                                {% set type_loop=type_loop+1 %}
+
+                                <li class="list-group-item f1 {% if classe_loop== param_classe %}{% if type_loop== param_type %}active{% endif %} {% endif %}" rel="{{inc }}">
+                                    <form id="{{ inc}}" action="" method="get">
+                                        <input type="hidden" name="classe" value="{{ l.number }}">
+                                        <input type="hidden" name="type" value="{{ l.type }}">
+                                        {{ l.classe }}
+                                    </form>
+                                </li>
+
                                 {% set m=1 %}
+                                {%  set inc=inc+1 %}
                             {% endfor%}
                         {% endfor%}
                     </ul>
@@ -38,7 +51,14 @@
                     <ul class="list-group">
                         <li class="list-header">Matières</li>
                         {% for i in matiere %}
-                                <li class="list-group-item {% if loop.first %}active{% endif %}  ">{#<a href="{{ path('resultat_index_filtre',{"periode":}) }}"></a>#}{{ i.matiere.libelle }}</li>
+                                <li class="list-group-item m1 {% if loop.index0 == param_matiere %}active{% endif %}" rel="{{ i.matiere.libelle }}">
+                                    <form id="{{ i.matiere.libelle }}" action="" method="get">
+                                        <input type="hidden" name="classe" value="{{ param_classe }}">
+                                        <input type="hidden" name="type" value="{{ param_type }}">
+                                        <input type="hidden" name="matiere" value="{{ loop.index0}}">
+                                        {{ i.matiere.libelle }}
+                                    </form>
+                                  </li>
                         {% endfor%}
                     </ul>
                 </div>
@@ -46,6 +66,20 @@
 
         </div>
 <div class="col-9">
+    <div class="row d-flex justify-content-center">
+
+                {% for i  in periode  %}
+                    <form id="{{ i.nomPeriode  }}" action="" method="get">
+                            <input type="hidden" name="classe" value="{{ param_classe }}">
+                                        <input type="hidden" name="type" value="{{ param_type }}">
+                                        <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
+                                        <input type="hidden" name="periode" value=" {{ i.id  }}">
+                    <input class="btn {% if loop.index == param_periode %}btn-primary {% else %}btn-default {% endif %}" rel="{{ i.nomPeriode  }}" value="{{ i.nomPeriode  }}" type="submit">
+                        </form>
+                {% endfor %}
+
+    </div>
+    {% if tab['tab'] | length != 0 %}
     <div class="card">
         <div class="card-header">
             <h6><b>Fiche de note</b></h6>
@@ -68,22 +102,86 @@
                                 <th>Elève</th>
                                 {% for i in tab['tab'] %}
                                 {% if loop.first %}
-
+                                    {% if i['interro_name'] is defined %}
                                 {% for g in i['interro_name'] %}
-                                    <th>{{g}}</th>
+                                    <th>
+                                     <span>  {{g['nom']}}</span> <br>
+                                        {%  if g['etat'] == 1 %}
+                                            <span>
+                                     <form action="" method="post">
+                                          <input type="hidden" name="classe" value="{{ param_classe }}">
+                                        <input type="hidden" name="type" value="{{ param_type }}">
+                                        <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
+                                        <input type="hidden" name="periode" value=" {{ param_periode  }}">
+                                         <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
+                                         <input type="hidden" value="{{g['nom']}}" name="type2">
+                                         <button class="btn btn-sm text-danger"><i class="fa fa-remove"></i></button>
+                                     </form>
+                                     </span>
+
+                                            {% else %}
+
+                                                <span>
+                                     <form action="" method="post">
+                                          <input type="hidden" name="classe" value="{{ param_classe }}">
+                                        <input type="hidden" name="type" value="{{ param_type }}">
+                                        <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
+                                        <input type="hidden" name="periode" value=" {{ param_periode  }}">
+                                         <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
+                                         <input type="hidden" value="{{g['nom']}}" name="type2">
+                                         <button class="btn btn-sm text-success"><i class="fa fa-send"></i></button>
+                                     </form>
+                                     </span>
+                                            {% endif %}
+                                    </th>
                                 {% endfor %}
                                 {% endif %}
+                                {% endif %}
                                 {% endfor %}
+
 
                                 <th>Moy.Int</th>
 
                                 {% for i in tab['tab'] %}
                                 {% if loop.first %}
+                                    {% if i['devoir_name'] is defined %}
                                 {% for h in i['devoir_name'] %}
-                                    <th>{{h}}</th>
+                                    <th>
+                                     <span>{{h['nom']}}</span> <br>
+                                    {%  if h['etat'] == 1 %}
+                                        <span>
+                                     <form action="" method="post">
+                                          <input type="hidden" name="classe" value="{{ param_classe }}">
+                                        <input type="hidden" name="type" value="{{ param_type }}">
+                                        <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
+                                        <input type="hidden" name="periode" value=" {{ param_periode  }}">
+                                         <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
+                                         <input type="hidden" value="{{h['nom']}}" name="type2">
+                                         <button class="btn btn-sm text-danger"><i class="fa fa-remove"></i></button>
+                                     </form>
+                                     </span>
+
+                                    {% else %}
+                                        <span>
+                                     <form action="" method="post">
+                                          <input type="hidden" name="classe" value="{{ param_classe }}">
+                                        <input type="hidden" name="type" value="{{ param_type }}">
+                                        <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
+                                        <input type="hidden" name="periode" value=" {{ param_periode  }}">
+                                         <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
+                                         <input type="hidden" value="{{h['nom']}}" name="type2">
+                                         <button class="btn btn-sm text-success"><i class="fa fa-send"></i></button>
+                                     </form>
+                                     </span>
+
+                                    {% endif %}
+
+                                    </th>
                                 {% endfor %}
                                 {% endif %}
+                                {% endif %}
                                 {% endfor %}
+
 
                                 <th>Moy/20</th>
                                 <th>Moy coeff</th>
@@ -96,14 +194,18 @@
                                 <tr>
                                     <td>{{ loop.index }}</td>
                                     <td>{{ i['eleve']}}</td>
+                                    {% if i['interro_note'] is defined %}
                                     {% for g in i['interro_note'] %}
                                         <td>{{g}}</td>
                                     {% endfor %}
-                                    <td>{{i['MINT']}}</td>
+                                    {% endif %}
 
+                                    <td>{{i['MINT']}}</td>
+                                    {% if i['devoir_name'] is defined %}
                                     {% for h in i['devoir_note'] %}
                                     <td>{{h}}</td>
                                     {% endfor %}
+                                    {% endif %}
 
                                     <td>{{ i['Moy'] }}</td>
                                     <td>{{ i['MoyC'] }}</td>
@@ -120,12 +222,16 @@
                 </div>
             </div>
         </div>
-    </div>#}
+    </div>
+    {% else %}
+
+        <h2 class="text-muted "  style="margin-top: 50px">Pas de fiche de note disponible pour cette classe</h2>
+    {% endif %}
 </div>
     </div>
 
 
-    <div class="row">
+{#    <div class="row">
         <div class="col-3">
             <h5>Option de recherche</h5>
             <div class="card">
@@ -148,9 +254,9 @@
                         <div class="form-group">
                             <label>Matière</label>
                             <select class="form-control" name="cm" id="mat">
-                            {#{% for i in cm %}#}
-                                {#<option value="{{ i.matiere.id }}">{{ i.matiere.libelle }}</option>#}
-                            {#{% endfor %}#}
+                            #}{#{% for i in cm %}#}{#
+                                #}{#<option value="{{ i.matiere.id }}">{{ i.matiere.libelle }}</option>#}{#
+                            #}{#{% endfor %}#}{#
                             </select>
 
                         </div>
@@ -232,7 +338,7 @@
                                 <td>{{ i.note }}</td>
                                 <td>{{ i.classeMatiereProfesseurAnnee.classematiere.matiere.libelle }}</td>
                                 <td>{{ i.classeMatiereProfesseurAnnee.classematiere.classe.libelle }} {{ i.classeMatiereProfesseurAnnee.typeclasse.classe.libelle }}</td>
-                                <td>{#  {{ i.classeMatiereProfesseurAnnee.professeur.nom}}#} nom prof</td>
+                                <td>#}{#  {{ i.classeMatiereProfesseurAnnee.professeur.nom}}#}{# nom prof</td>
                                 <td>{{ i.periode.id }}</td>
                             </tr>
                         {% endfor %}
@@ -244,13 +350,26 @@
                 <!-- /.card-body -->
             </div>
         </div>
-    </div>
+    </div>#}
 
     <!-- /.card -->
 {% endblock %}
 
 {% block js %}
     <script>
+        $('.f1').click(function () {
+            id=$(this).attr('rel');
+            $("#"+id).submit();
+        });
+
+        $('.m1').click(function () {
+            id=$(this).attr('rel');
+            $("#"+id).submit();
+        });
+        $('.p1').click(function () {
+            id=$(this).attr('rel');
+            $("#"+id).submit();
+        });
         $('#type').change(function () {
             var id=$(this).val();
             var form=new FormData();
