@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Censeur;
+use AppBundle\Entity\Ecole;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Censeur controller.
@@ -34,12 +36,13 @@ class CenseurController extends Controller
     /**
      * Creates a new censeur entity.
      *
-     * @Route("/new", name="censeur_new")
+     * @Route("/{ecole}/new", name="censeur_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request,Ecole $ecole)
     {
         $censeur = new Censeur();
+        $censeur->setEcole($ecole);
 
         $form = $this->createForm('AppBundle\Form\CenseurType', $censeur);
         $form->handleRequest($request);

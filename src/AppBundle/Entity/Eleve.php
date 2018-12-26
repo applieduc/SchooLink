@@ -66,6 +66,13 @@ class Eleve
      */
     private $prenom;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="contact", type="string", length=255)
+     */
+    private $contact;
+
     /**
      * @var string
      *
@@ -380,5 +387,29 @@ class Eleve
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set contact
+     *
+     * @param string $contact
+     *
+     * @return Eleve
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+    
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return string
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 }

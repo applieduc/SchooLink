@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ClasseMatiere;
 use AppBundle\Entity\Classe;
+use AppBundle\Entity\Matiere;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -26,10 +27,10 @@ class ClasseMatiereController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $classeMatieres = $em->getRepository('AppBundle:ClasseMatiere')->findBy(array('classe'=>$id));
-
-
-
+        $matieres=$em->getRepository('AppBundle:Matiere')->findBy(array('ecole'=>$this->getUser()->getEcole()->getId()));
+        
         $classeMatiere = new ClasseMatiere();
+
         $form = $this->createForm('AppBundle\Form\ClasseMatiereType', $classeMatiere);
         $form->handleRequest($request);
         $classe= $em->getRepository(Classe::class)->find($id);
@@ -44,7 +45,6 @@ class ClasseMatiereController extends Controller
                 $em->flush();
             }
            
-            
             return $this->redirectToRoute('class_mat_index', array('id' =>$id ));
         }
         
@@ -53,6 +53,7 @@ class ClasseMatiereController extends Controller
             'classe'=>$classe,
             'classeMatiere' => $classeMatiere,
             'form' => $form->createView(),
+            "matieres"=>$matieres
         ));
     }
 
@@ -72,7 +73,9 @@ class ClasseMatiereController extends Controller
            
             $em = $this->getDoctrine()->getManager();
             $classe= $em->getRepository(Classe::class)->find($id);
+            $matiere=$em->getRepository(Matiere::class)->find($request->get('matiere'));
             $classeMatiere->setClasse($classe);
+            $classeMatiere->setMatiere($matiere);
              $verify=$em->getRepository(ClasseMatiere::class)->findOneBy(array('classe'=>$classe->getId(),'matiere'=>$classeMatiere->getMatiere()->getId()));
              if($verify==null){
                 $em->persist($classeMatiere);

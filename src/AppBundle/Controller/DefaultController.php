@@ -5,6 +5,7 @@ use AppBundle\Entity\Censeur;
 
 use AppBundle\Entity\Ecole;
 use AppBundle\Entity\Annee;
+use AppBundle\Entity\Eleve;
 use AppBundle\Form\CenseurProfType;
 use AppBundle\Form\EcoleType;
 use AppBundle\Entity\NotificationProfesseur;
@@ -64,9 +65,11 @@ class DefaultController extends Controller
      */
     public function showAction(Ecole $ecole)
     {
-
+        $em = $this->getDoctrine()->getManager();
+        $eleve=   $em->getRepository(Eleve::class)->findBy(array('ecole' => $ecole->getId() ));
         return $this->render('default/show.html.twig', array(
             'ecole' => $ecole,
+            "nb_eleve"=>sizeof($eleve),
         ));
     }
 

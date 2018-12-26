@@ -15,11 +15,7 @@ class ClasseMatiereType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     
-        $builder->add('coefficient')->add('matiere', EntityType::class, array(
-        'class' => 'AppBundle\Entity\Matiere',
-        'choice_label' => 'libelle',
-
-    ));
+        $builder->add('coefficient');
     }
     /*
      ->add('classe', EntityType::class, array(

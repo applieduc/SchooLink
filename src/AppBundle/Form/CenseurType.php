@@ -19,17 +19,6 @@ class CenseurType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ecole', EntityType::class ,[
-                    'class' => 'AppBundle\Entity\Ecole',
-                    'label' => 'Ecole :',
-                    'choice_label' => 'nom',
-                    'placeholder' => 'Sélectionnez son ecole',
-                    'empty_data' => null,
-                    'required' => true,
-                    'attr' => array(
-                        'class' => 'select2',
-                        'required' => 'required',
-                    )])
             ->add('nom')
             ->add("prenom")
             ->add('telephone')

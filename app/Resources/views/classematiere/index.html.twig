@@ -87,10 +87,17 @@
             {{ form_start(form) }}
             <div class="form-group">
                 <label>Matiere</label>
-                {{ form_widget(form.matiere,{'attr':{'class':'form-control'}}) }}
+                <select class="form-control" name='matiere'>
+                        {% for matiere in matieres %}
+                        <option value="{{matiere.id}}">
+                            {{matiere.libelle}}
+                        </option>
+                        {% endfor %}
+                </select>   
             </div>
             <div class="form-group">
                 <label>Coefficient</label>
+                
                 {{ form_widget(form.coefficient,{'attr':{'class':'form-control'}}) }}
             </div>
             <input type="submit" value="Ajouter"  class="btn btn-success"/>

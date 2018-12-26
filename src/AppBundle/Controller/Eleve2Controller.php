@@ -27,10 +27,12 @@ class Eleve2Controller extends Controller
     public function indexAction(TypeClasse $classeType)
     {
         $em = $this->getDoctrine()->getManager();
+        $eleves=$this->get_eleve($classeType->getClasse());
         $eleve_type=$em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$classeType->getId()));
         return $this->render('AppBundle:EleveClasse:eleve_index.html.twig', array(
             'eleves_type' => $eleve_type,
             'classeType'=>$classeType,
+            'eleves' =>$eleves,
 
         ));
     }

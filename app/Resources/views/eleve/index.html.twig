@@ -31,31 +31,29 @@
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
-                <tr>
-                    <th>N°</th>
-                    <th>Code</th>
-                    <th>Nom</th>
-                    <th>Prenom</th>
-                    <th>Sexe</th>
-                    <th>Date de naissance</th>
-                    <th>Classe</th>
+                <tr class="">
+                    <th >Code</th>
+                    <th >Nom & Prenom</th>
+                    
+                    <th >Date de naissance</th>
+                    <th  >Contact parent</th>
+                    <th >Classe</th>
                     <th class="text-center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for eleve in eleves %}
                     {% if eleve.archiver == 0 %}
-                    <tr>
+                    <tr class="">
                         {#<td><a href="{{ path('eleve_show', { 'id': eleve.id }) }}">{{ eleve.id }}</a></td>#}
-                        <td>{{ loop.index }}</td>
-                        <td>{{ eleve.code }}</td>
-                        <td>{{ eleve.nom }}</td>
-                        <td>{{ eleve.prenom }}</td>
-                        <td>{% if eleve.sexe == 1 %}M {% else %}F{% endif %}</td>
-                        <td>{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
-                        <td>{{ eleve.classe.libelle }}</td>
+                        <td >{{ eleve.code }}</td>
+                        <td >{{ eleve.nom }} {{ eleve.prenom }}</td>
+                        {#<td>{% if eleve.sexe == 1 %}M {% else %}F{% endif %}</td>#}
+                        <td >{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
+                        <td >{{ eleve.contact }}</td>
+                        <td >{{ eleve.classe.libelle }}</td>
 
-                        <td>
+                        <td class="text-center">
                             <div class=" row d-column justify-content-center">
                                 <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('eleve_edit', { 'id': eleve.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
                                 <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('eleve_show', { 'id': eleve.id })}}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
@@ -92,13 +90,12 @@
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>N°</th>
-                    <th>Code</th>
-                    <th>Nom</th>
-                    <th>Prenom</th>
-                    <th>Sexe</th>
-                    <th>Date de naissance</th>
-                    <th>Classe</th>
+                    <th >Code</th>
+                    <th >Nom & Prenom</th>
+                    
+                    <th >Date de naissance</th>
+                    <th  >Contact parent</th>
+                    <th >Classe</th>
                     <th class="text-center">Actions</th>
                 </tr>
                 </thead>
@@ -107,12 +104,10 @@
                     {% if eleve.archiver == 1 %}
                     <tr>
                         {#<td><a href="{{ path('eleve_show', { 'id': eleve.id }) }}">{{ eleve.id }}</a></td>#}
-                        <td>{{ loop.index }}</td>
                         <td>{{ eleve.code }}</td>
-                        <td>{{ eleve.nom }}</td>
-                        <td>{{ eleve.prenom }}</td>
-                        <td>{% if eleve.sexe == 1 %}M {% else %}F{% endif %}</td>
+                        <td>{{ eleve.nom }} {{ eleve.prenom }}</td>
                         <td>{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
+                        <td>{{ eleve.contact }}</td>
                         <td>{{ eleve.classe.libelle }}</td>
 
                         <td>

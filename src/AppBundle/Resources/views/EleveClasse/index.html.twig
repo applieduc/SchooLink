@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Eleve Classe</h1>
+                <h1 class="m-0 text-dark">Classe</h1>
             </div><!-- /.col -->
             <!--<div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -23,6 +23,48 @@
 {% block content %}
 <section class="content">
     <div class="row">
+        <div class="col-8 ">
+            <div class="card">
+                <div class="card-header">
+                   <div class="row">
+                       <h3 class="card-title">Sous classe de la {{classe.libelle}}</h3>
+                   </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table  class="table table-bordered datatable table-striped">
+                        <thead>
+                        <tr class="text-center">
+                            <th>Classe</th>
+                            <th>Effectif</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in classes_type %}
+                        <tr class="text-center">
+
+                            <td><a href="{{ path('eleve_type_index',{'classeType':item.type_classe.id}) }}">{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</a></td>
+                            <td>{{ item.eff }}</td>
+                            <td class="d-flex justify-content-center">
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('show_type_edit',{'type':item.type_classe.id}) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                {% if item.type_classe.archiver %}
+                                    <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="#"><i class="fa fa-folder-open-o text-success"></i></a></div>
+                                {% else %}
+                                    <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="#"><i class="fa fa-folder text-danger"></i></a></div>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
         <div class="col-4">
                 <div class="card">
                     <div class="card-header">
@@ -30,7 +72,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form action="{{ path('save_type_classe_eleve',{'classe':classe}) }}"  method="post">
+                        <form action="{{ path('save_type_classe_eleve',{'classe':classe.id}) }}"  method="post">
                             <input type="hidden" name="nb_eleves" id="nb" value="2">
                             <div class="row">
                                 <div class="col-md-12">
@@ -86,48 +128,6 @@
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
-        </div>
-        <div class="col-6 offset-1">
-            <div class="card">
-                <div class="card-header">
-                   <div class="row">
-                       <h3 class="card-title">Eleve Classe</h3>
-                   </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table  class="table table-bordered datatable table-striped">
-                        <thead>
-                        <tr class="text-center">
-                            <th>Classe</th>
-                            <th>Effectif</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for item in classes_type %}
-                        <tr class="text-center">
-
-                            <td><a href="{{ path('eleve_type_index',{'classeType':item.type_classe.id}) }}">{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</a></td>
-                            <td>{{ item.eff }}</td>
-                            <td>
-                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('show_type_edit',{'type':item.type_classe.id}) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
-                                {% if item.type_classe.archiver %}
-                                    <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="#"><i class="fa fa-folder-open-o text-success"></i></a></div>
-                                {% else %}
-                                    <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="#"><i class="fa fa-folder text-danger"></i></a></div>
-                                {% endif %}
-                            </td>
-
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-
-                    </table>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
         </div>
     </div>
 

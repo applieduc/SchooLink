@@ -13,7 +13,7 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('uploads/images/ecole.png') }}" alt="User profile picture">
+                        <img class="profile-user-img img-fluid img-circle" src="{{ asset('uploads/images/') }}{{ecole.logo}}" alt="User profile picture">
                     </div>
 
                     <h3 class="profile-username text-center">{{ ecole.nom }}</h3>
@@ -32,7 +32,7 @@
                             <b>Mail</b> <a class="float-right">{{ ecole.mail }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Nombre d'eleves</b> <a class="float-right"> 172</a>
+                            <b>Nombre d'eleves</b> <a class="float-right">{{nb_eleve}}</a>
                         </li>
                     </ul>
 

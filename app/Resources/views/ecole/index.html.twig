@@ -1,6 +1,8 @@
 
 {% extends 'template/layout.html.twig' %}
 {#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+{% block titrepage %}Ecoles{% endblock %}
+
 {% block menu %}
 
     {% if is_granted('ROLE_ADMIN_GENERAL') %}

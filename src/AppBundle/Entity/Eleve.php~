@@ -66,6 +66,13 @@ class Eleve
      */
     private $prenom;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="contact", type="string", length=255)
+     */
+    private $contact;
+
     /**
      * @var string
      *
