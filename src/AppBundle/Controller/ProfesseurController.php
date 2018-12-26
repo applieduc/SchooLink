@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\EcoleProfesseur;
 use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Professeur;
+use AppBundle\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class ProfesseurController extends Controller
      * @Route("/new", name="ecole_professeur_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request,FileUploader $fileUploader)
     {
         $professeur = new Professeur();
         $form = $this->createForm('AppBundle\Form\ProfesseurType', $professeur);
@@ -53,6 +54,11 @@ class ProfesseurController extends Controller
             //On verifie si le prof existe deja
             $profexiste = $em->getRepository('AppBundle:Professeur')->findOneBy(['nom'=>$data->getNom(),'prenom'=>$data->getPrenom(),'telephone'=>$data->getTelephone()]);
             if(!$profexiste){
+
+                /* $file = $professeur->getBrochure();
+                $fileName = $fileUploader->upload($file);
+                $professeur->setBrochure($fileName);*/
+
                 // le professeur n'existe on le sauvgarde
                 $codeprof = strtoupper("PROF-" . substr(sha1(uniqid(mt_rand(), true)), 0, 4));
                 $professeur->setCodeProf($codeprof);

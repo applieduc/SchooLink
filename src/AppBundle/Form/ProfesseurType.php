@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +20,12 @@ class ProfesseurType extends AbstractType
             ->add('telephone')
             ->add('email')
             ->add("adresse")
+            ->add('avatar', FileType::class,
+                array(
+                    'required' => false,
+                    'label' => "Photo (PNG)",
+                    "data_class" => null,
+                ));
          //   ->add('codeProf')
 
             //->add('compte')
