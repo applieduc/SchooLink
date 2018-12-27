@@ -251,7 +251,7 @@ class ResultatController extends Controller
                  $moyint=0.00000000;
              }
 
-                $tab[$i]['MINT']=substr($moyint,0,4);;
+                $tab[$i]['MINT']=substr($moyint,0,4);
                 $tab[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
                 if ($totalDevoir !=0)
                 {
@@ -262,6 +262,8 @@ class ResultatController extends Controller
                 $moy=($moyint+$totalDevoir)/(sizeof($allDevoir)+1);
                 $tab[$i]['Moy']=substr($moy,0,4);
                 $tab[$i]['MoyC']=substr( $moy*$cm->getCoefficient(),0,4);
+
+
             }
 
         return $this->render('AppBundle:Resultat:fiche.html.twig', array('tab'=>$tab,

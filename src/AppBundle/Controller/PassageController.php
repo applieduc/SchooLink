@@ -21,16 +21,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Eleve controller.
+ * Passage controller.
  *
- * @Route("bulletin")
+ * @Route("Passage")
  */
-class BulletinController extends Controller
+class PassageController extends Controller
 {
     /**
      * Lists all eleve entities.
      *
-     * @Route("/", name="bulletin_index")
+     * @Route("/", name="passage_index")
      * @Method("GET")
      */
     public function indexAction(Request $request)
@@ -46,6 +46,7 @@ class BulletinController extends Controller
 
         $param_type=1;
         if ($request->get('type') !="") $param_type=$request->get('type');
+        $classprof=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('type_classe'=>$param_type));
 
         $param_periode=1;
         if ($request->get('periode') !="") $param_periode=(int)$request->get('periode');
@@ -53,8 +54,8 @@ class BulletinController extends Controller
         $param_classe=0;
         if ($request->get('classe') !="")$param_classe=$request->get('classe');
 
-        $tab= $this->getBulletin($param_type,$param_periode,$annee);
-        return $this->render('AppBundle:Bulletin:index.html.twig', array(
+        $tab=$em->getRepository(Resultat::class)->findBy(array('annee'=>$annee[0]->getId(),'type_classe'=>$param_type));
+        return $this->render('AppBundle:Bulletin:passage.html.twig', array(
             'tab'=>$tab,
             'param_type'=>$param_type,
             'param_periode'=>$param_periode,
@@ -81,7 +82,7 @@ class BulletinController extends Controller
         return $tabClasse;
     }
 
-    private function  getBulletin($param_type,$param_periode,$annee)
+    private function  getBulletin($param_type,$param_periode)
     {
         $em=$this->getDoctrine()->getManager();
         $tc=$em->getRepository(TypeClasse::class)->find($param_type);
@@ -168,18 +169,18 @@ class BulletinController extends Controller
             $tab[$i]['totalCoeff']=$totalCoeff;
             if($totalCoeff != 0) $moyTotal=$totalPoint/$totalCoeff;
             $tab[$i]['moyTotal']=$moyTotal;
-            $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'type_classe'=>$param_type,'annee'=>$annee[0]->getId()));
+            $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'classe_matiere_professeur_annee'=>$classprof->getId()));
             if ($param_periode==sizeof($p)){
-                $tab[$i]['moyAn']=$resultat[0]->getMoyAnnuelle();
-                $tab[$i]['rangAn']=$resultat[0]->getRangAnnuelle();
-                $tab[$i]['obs']=$resultat[0]->getObs();
+                $tab[$i]['moyAn']=$resultat->getMoyAnnuelle();
+                $tab[$i]['rangAn']=$resultat->getRangAnnuelle();
+                $tab[$i]['obs']=$resultat->getObs();
                 if ($param_periode=2){
-                    $tab[$i]['moyGen1']=$resultat[0]->getMoyGen1();
-                    $tab[$i]['rang1']=$resultat[0]->getRang1();
+                    $tab[$i]['moyGen1']=$resultat->getMoyGen1();
+                    $tab[$i]['rang1']=$resultat->getRang1();
                 }
                 if ($param_periode=3){
-                    $tab[$i]['moyGen2']=$resultat[0]->getMoyGen2();
-                    $tab[$i]['rang2']=$resultat[0]->getRang2();
+                    $tab[$i]['moyGen2']=$resultat->getMoyGen2();
+                    $tab[$i]['rang2']=$resultat->getRang2();
                 }
             }
 
@@ -219,8 +220,7 @@ class BulletinController extends Controller
                 $resultat=new Resultat();
                 $resultat->setMoyGen1($moyTotal);
                 $resultat->setEleve($eleve[$i]->getEleve());
-                $resultat->setAnnee($annee);
-                $resultat->setTypeClasse($tc);
+                $resultat->setClasseMatierePrfesseurAnnee($classprof);
                 $resultat->setCoeff($totalCoeff);
             }
             $em->persist($resultat);

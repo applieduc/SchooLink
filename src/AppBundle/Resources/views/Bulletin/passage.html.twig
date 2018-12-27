@@ -1,0 +1,68 @@
+
+{% extends 'master.html.twig' %}
+{% block head %}
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Présentation des Bulletins des élèves</h1>
+                </div><!-- /.col -->
+                <!--<div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Starter Page</li>
+                    </ol>
+                </div>-->
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+    <div class="col-3">
+    <div class="row">
+    <div class="col-12">
+        <ul class="list-group">
+            <li class="list-header">Classes</li>
+            {% set m=0 %}
+            {% set inc=0 %}
+            {% set type_loop=0 %}
+            {% for i in tabClasse %}
+                {% set classe_loop=loop.index0 %}
+                {% for l in i %}
+                    {% set type_loop=type_loop+1 %}
+
+                    <li class="list-group-item f1 {% if classe_loop== param_classe %}{% if type_loop== param_type %}active{% endif %} {% endif %}" rel="{{inc }}">
+                        <form id="{{ inc}}" action="" method="get">
+                            <input type="hidden" name="classe" value="{{ l.number }}">
+                            <input type="hidden" name="type" value="{{ l.type }}">
+                            {{ l.classe }}
+                        </form>
+                    </li>
+
+                    {% set m=1 %}
+                    {%  set inc=inc+1 %}
+                {% endfor%}
+            {% endfor%}
+        </ul>
+    </div>
+    </div>
+    </div>
+        <div class="col-9">
+ {{ dump(tab) }}
+        </div>
+
+    </div>
+
+{% endblock  %}
+{% block js %}
+<script>
+    $('.f1').click(function () {
+        id=$(this).attr('rel');
+        $("#"+id).submit();
+    });
+
+    </script>
+{% endblock  %}
