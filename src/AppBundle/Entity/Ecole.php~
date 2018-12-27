@@ -72,9 +72,10 @@ class Ecole
     private $logo;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EcoleProfesseur", mappedBy="ecole")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Professeur",inversedBy="ecole",cascade={"persist"})
      */
-    private $ecoleProf;
+    private $professeur;
+
 
     /**
      *
@@ -83,6 +84,14 @@ class Ecole
      */
      private $censeur;
 
+
+
+      /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Annee",mappedBy="ecole",cascade={"persist"})
+     */
+    private $annees;
+
+
     /**
      * Ecole constructor.
      */
@@ -90,6 +99,7 @@ class Ecole
     {
         $this->codeTelephone = 'ab';
         $this->ecoleProf = new ArrayCollection();
+        $this->annees=new ArrayCollection();
     }
 
 
@@ -274,40 +284,63 @@ class Ecole
     }
 
 
-    /**
-     * Add ecoleProf
-     *
-     * @param \AppBundle\Entity\EcoleProfesseur $ecoleProf
-     *
-     * @return mixed
-     */
-    public function addEcoleProf(\AppBundle\Entity\EcoleProfesseur $ecoleProf)
-    {
-        $this->ecoleProf[] = $ecoleProf;
 
+
+    /**
+     * Set professeur
+     *
+     * @param \AppBundle\Entity\Professeur $professeur
+     *
+     * @return Ecole
+     */
+    public function setProfesseur(\AppBundle\Entity\Professeur $professeur = null)
+    {
+        $this->professeur = $professeur;
+    
         return $this;
     }
 
     /**
-     * Remove vente
+     * Get professeur
      *
-     * @param \AppBundle\Entity\EcoleProfesseur $ecoleProf
+     * @return \AppBundle\Entity\Professeur
      */
-    public function removeEcoleProf(\AppBundle\Entity\EcoleProfesseur $ecoleProf)
+    public function getProfesseur()
     {
-        $this->ecoleProf->removeElement($ecoleProf);
+        return $this->professeur;
     }
 
     /**
-     * Get vente
+     * Add annee
+     *
+     * @param \AppBundle\Entity\Annee $annee
+     *
+     * @return Ecole
+     */
+    public function addAnnee(\AppBundle\Entity\Annee $annee)
+    {
+        $this->annees[] = $annee;
+    
+        return $this;
+    }
+
+    /**
+     * Remove annee
+     *
+     * @param \AppBundle\Entity\Annee $annee
+     */
+    public function removeAnnee(\AppBundle\Entity\Annee $annee)
+    {
+        $this->annees->removeElement($annee);
+    }
+
+    /**
+     * Get annees
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEcoleProf()
+    public function getAnnees()
     {
-        return $this->ecoleProf;
+        return $this->annees;
     }
-
-
-
 }

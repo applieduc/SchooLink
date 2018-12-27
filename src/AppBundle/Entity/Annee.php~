@@ -23,7 +23,7 @@ class Annee
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"},inversedBy="annees")
      *
      */
     private $ecole;
@@ -164,5 +164,29 @@ class Annee
     public function getDateFin()
     {
         return $this->dateFin;
+    }
+
+    /**
+     * Set ecole
+     *
+     * @param \AppBundle\Entity\Ecole $ecole
+     *
+     * @return Annee
+     */
+    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
+    {
+        $this->ecole = $ecole;
+    
+        return $this;
+    }
+
+    /**
+     * Get ecole
+     *
+     * @return \AppBundle\Entity\Ecole
+     */
+    public function getEcole()
+    {
+        return $this->ecole;
     }
 }

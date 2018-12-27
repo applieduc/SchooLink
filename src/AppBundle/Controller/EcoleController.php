@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Ecole;
 use AppBundle\Entity\Eleve;
+use AppBundle\Entity\Annee;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -47,6 +48,16 @@ class EcoleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $code = strtoupper("ET" . substr(sha1(uniqid(mt_rand(), true)), 0, 8));
+            $file = $censeur->getLogo();
+            if ($file) {
+                $fileName = $this->get('app.file_uploader')->upload($file);
+                $ecole->setLogo($fileName);
+
+
+            }else{
+
+                $ecole->setLogo('ecole.jpg');
+            }
            $ecole->setCodeTelephone($code);
             $em = $this->getDoctrine()->getManager();
             $em->persist($ecole);
@@ -72,10 +83,17 @@ class EcoleController extends Controller
     {
         $deleteForm = $this->createDeleteForm($ecole);
         $em = $this->getDoctrine()->getManager();
-         $eleve=   $em->getRepository(Eleve::class)->findBy(array('ecole' => $ecole->getId() ));
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        if($annee!=null){
+            $eleve=   $em->getRepository(EleveClasseEcoleAnnee::class)->findBy(array('ecole' => $ecole->getId(),'annee'=>$annee->getId() ));
+        
+            $s_eleve=sizeof($eleve);
+        }
+       
+        $s_eleve=0;
         return $this->render('ecole/show.html.twig', array(
             'ecole' => $ecole,
-            "nb_eleve"=>sizeof($eleve),
+            "nb_eleve"=>$s_eleve,
             'delete_form' => $deleteForm->createView(),
         ));
     }

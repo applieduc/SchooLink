@@ -85,7 +85,10 @@
                         </li>
                     </ul>
                     <div class="row">
-                    <div class="col-lg-4 offset-4"><a href="{{ path('profil_censeur_edit', { 'id': ecole.censeur.id }) }}" class="btn btn-primary btn-block"><b>Modifier</b></a></div>
+                    <div class="col-lg-4 offset-4"><a href="{{ path('profil_censeur_edit', { 'id': ecole.censeur.id }) }}" class="btn btn-primary btn-block"><b>Modifier</b></a>
+                    
+                        <a href="{{ path('fos_user_change_password') }}" class="btn btn-primary btn-block"><b>Modifier Votre Mot de Passe</b></a>
+                    </div>
                     {#<div class="col-lg-6"><a href="" class="btn btn-danger btn-block" ><b>Supprimer</b></a></div>#}
                     </div>
 

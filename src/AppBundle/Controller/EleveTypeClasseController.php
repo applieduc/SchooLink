@@ -6,6 +6,8 @@ use AppBundle\Entity\Annee;
 use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Classe;
 use AppBundle\Entity\Eleve;
+use AppBundle\Entity\EleveClasseEcoleAnnee;
+
 use AppBundle\Entity\EleveTypeClasse;
 use AppBundle\Entity\TypeClasse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -103,20 +105,19 @@ class EleveTypeClasseController extends Controller
     }
     private function get_eleve($classe){
         $em = $this->getDoctrine()->getManager();
-        $eleves = $em->getRepository('AppBundle:Eleve')->findBy(array('archiver' =>false,'classe'=>$classe));
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $eleves = $em->getRepository('AppBundle:EleveClasseEcoleAnnee')->findBy(array('archiver' =>false,'classe'=>$classe,'ecole'=>$this->getUser()->getEcole()->getId(),'annee'=>$annee));
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
 
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
 
         $eleves_not_classe=array();
         $i=0;
         foreach ($eleves as $val) {
-            $eleve = $em->getRepository('AppBundle:EleveTypeClasse')->findOneBy(array('eleve' =>$val->getId(),'archiver'=>false));
+            $eleve = $em->getRepository('AppBundle:EleveTypeClasse')->findOneBy(array('eleve' =>$val->getEleve()->getId(),'archiver'=>false));
             if($eleve!=null ){
-                if ($eleve->getDateCreation() < $annee->getDateDebut()){
                     $eleves_not_classe[$i]=$val;
                     $i++;
-                }
 
 
             }elseif ($eleve==null){

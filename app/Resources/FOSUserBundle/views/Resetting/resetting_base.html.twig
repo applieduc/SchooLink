@@ -1,10 +1,4 @@
-
-{#{% block fos_user_content %}#}
-{#{% include "@FOSUser/Resetting/reset_content.html.twig" %}#}
-{#{% endblock fos_user_content %}#}
-{#{% trans_default_domain 'FOSUserBundle' %}#}
 <html>
-  {% trans_default_domain 'FOSUserBundle' %}
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,28 +21,47 @@
 <div class="login-box">
     <div class="login-logo">
         <a href=""><b>School</b>LINK</a>
-
     </div>
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
+            {#{% if error %}#}
+            {#<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
+            {#{% endif %}#}
+            <p class="login-box-msg">Connectez-vous</p>
 
             {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+            {% if app.request.hasPreviousSession %}
+                {% for notice, messages in app.session.flashbag.all() %}
+                    {% for msg in messages %}
+                        <div class="alert alert-{{ notice }}">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong> {{ msg }}.</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            {#{% if error %}#}
+            {#<div class="alert alert-danger">{{ error.message | trans }}</div>#}
+            {#{% endif %}#}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
             {{ form_widget(form) }}
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-block btn-outline-success">{{ 'resetting.reset.submit'|trans }}</button>
-                </div>
-
+            <div>
+                <input type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
             </div>
-            {{ form_end(form) }}
-
-
-
+            <!-- /.col -->
         </div>
-        <!-- /.login-card-body -->
+        {{ form_end(form) }}
+
+
+
+        <p class="mb-1">
+            <a href="#">%ot de passe oublie</a>
+        </p>
+
     </div>
+    <!-- /.login-card-body -->
+</div>
 </div>
 <!-- /.login-box -->
 

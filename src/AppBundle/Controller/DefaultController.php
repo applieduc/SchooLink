@@ -8,6 +8,7 @@ use AppBundle\Entity\Annee;
 use AppBundle\Entity\Eleve;
 use AppBundle\Form\CenseurProfType;
 use AppBundle\Form\EcoleType;
+use AppBundle\Entity\EleveClasseEcoleAnnee;
 use AppBundle\Entity\NotificationProfesseur;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;;
 
 class DefaultController extends Controller
 {
+
+
+      /**
+     * @Route("/year", name="active")
+     */
+    public function activeAction(Request $request)
+    {
+        
+        $em=$this->getDoctrine()->getManager();
+        if($request->get('year')!="0"){
+            $annee=$em->getRepository(Annee::class)->find((int)$request->get('year'));
+        }else{
+            $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$this->getUser()->getEcole()->getId()));
+        }
+       
+        $this->get('session')->set('annee',$annee);
+        return $this->redirect();
+    }
+
     /**
      * @Route("/", name="homepage")
      */
@@ -66,10 +86,17 @@ class DefaultController extends Controller
     public function showAction(Ecole $ecole)
     {
         $em = $this->getDoctrine()->getManager();
-        $eleve=   $em->getRepository(Eleve::class)->findBy(array('ecole' => $ecole->getId() ));
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        if($annee!=null){
+            $eleve=   $em->getRepository(EleveClasseEcoleAnnee::class)->findBy(array('ecole' => $ecole->getId(),'annee'=>$annee->getId() ));
+        
+            $s_eleve=sizeof($eleve);
+        }
+       
+        $s_eleve=0;
         return $this->render('default/show.html.twig', array(
             'ecole' => $ecole,
-            "nb_eleve"=>sizeof($eleve),
+            "nb_eleve"=>$s_eleve,
         ));
     }
 

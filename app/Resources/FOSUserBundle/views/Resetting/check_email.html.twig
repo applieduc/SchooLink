@@ -1,9 +1,69 @@
-{% extends "@FOSUser/layout.html.twig" %}
+{#{% extends "@FOSUser/layout_base.html.twig" %}#}
 
+{#{% trans_default_domain 'FOSUserBundle' %}#}
+
+{#{% block fos_user_content %}#}
+{#<p>#}
+
+{#</p>#}
+{#{% endblock %}#}
+{#{% extends "@FOSUser/layout.html.twig" %}#}
+
+{#{% block fos_user_content %}#}
+{#{% include "@FOSUser/Resetting/request_content.html.twig" %}#}
+{#{% endblock fos_user_content %}#}
 {% trans_default_domain 'FOSUserBundle' %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SchooLink | connexion </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block fos_user_content %}
-<p>
-{{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
-</p>
-{% endblock %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('build/structure.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href=""><b>School</b>LINK</a>
+        <
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body ">
+
+            {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+
+    </div>
+    <!-- /.login-card-body -->
+</div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{{ asset('build/structure.css') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('build/bootstrap-bundle.js') }}"></script>
+<!-- iCheck -->
+<script src="../../plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass   : 'iradio_square-blue',
+            increaseArea : '20%' // optional
+        })
+    })
+</script>
+</body>
+</html>

@@ -23,7 +23,7 @@ class Annee
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"},inversedBy="annees")
      *
      */
     private $ecole;

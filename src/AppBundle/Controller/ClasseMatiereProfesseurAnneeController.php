@@ -97,6 +97,8 @@ class ClasseMatiereProfesseurAnneeController extends Controller
         $form = $this->createForm('AppBundle\Form\ClasseMatiereProfesseurAnneeType', $classeMatiereProfesseurAnnee,['user'=>$this->getUser(),'nature'=>'matiere' ]);
         $prof = $em->getRepository('AppBundle:Professeur')->findOneBy(['id'=>$id]);
         $classes = $em->getRepository('AppBundle:Classe')->findBy(['ecole'=>$this->getUser()->getEcole()]);
+
+        $matiere_enseignee = $em->getRepository('AppBundle:ClasseMatiereProfesseurAnnee')->findBy(['professeur'=>$id]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -114,6 +116,7 @@ class ClasseMatiereProfesseurAnneeController extends Controller
             'classeMatiereProfesseurAnnee' => $classeMatiereProfesseurAnnee,
             'professeur' => $prof,
             'classes'=>$classes,
+            'matieresenseignes'=>$matiere_enseignee,
             'form' => $form->createView(),
         ));
     }

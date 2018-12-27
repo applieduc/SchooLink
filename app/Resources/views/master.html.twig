@@ -33,9 +33,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand bg-light-blue-gradient navbar-light border-bottom">
         <!-- Left navbar links -->
+        <div class="user-panel mr-auto d-flex">
+    
+        <form class="form-inline ml-3"  method="POST" action="{{path('active')}}">
+            <div class="input-group input-group-sm">
+              <select class="form-control form-control-navbar" name="year">
+                  <option value="0"> selectionnez une année</option>
+                {% for annee in app.user.ecole.annees %}
 
-
-              
+                <option value="{{annee.id}}"> {{annee.dateDebut|date('Y')}} - {{annee.dateFin|date('Y')}}</option>
+                {% endfor %}
+              </select>
+              <div class="input-group-append">
+                <button class="btn btn-navbar" type="submit">
+                Appliquer
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>       
         <div class="user-panel ml-auto d-flex">
         
                   <a class="nav-link" data-toggle="dropdown" href="{{path('show_notif')}}">
@@ -63,7 +79,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                  style="opacity: .8">
             <span class="brand-text font-weight-light">SchoolLink</span>
         </a>
-
+      
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
@@ -75,7 +91,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="info">
                       <a href="{{path('profil_ecole_show',{'id':app.user.ecole.id})}}" class="d-block">{{app.user.ecole.nom}}</a>
                     </div>
-                  </div>
+            </div>
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -135,14 +151,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <i class="nav-icon fa fa-th"></i>
                             <p>
                                 Résultats
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{path('bulletin_index')}}" class="nav-link">
-                            <i class="nav-icon fa fa-th"></i>
-                            <p>
-                                Bulletin
                             </p>
                         </a>
                     </li>

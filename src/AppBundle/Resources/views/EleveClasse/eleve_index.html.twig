@@ -44,7 +44,6 @@
                 </thead>
                 <tbody>
                 {% for eleve_type in eleves_type %}
-                    {% if eleve_type.eleve.archiver == 0 %}
                     <tr>
                         {#<td><a href="{{ path('eleve_show', { 'id': eleve.id }) }}">{{ eleve.id }}</a></td>#}
                         <td>{{ loop.index }}</td>
@@ -69,7 +68,6 @@
                             </div>#}
                         </td>
                     </tr>
-                {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
@@ -88,7 +86,7 @@
                 <div class="card-body">
                     <form action="{{ path('save_new_eleve_in_classe',{'classeType': classeType.id}) }}">
                     <div class="form-group">
-                        <label>Classe</label>
+                        <label>Eleve</label>
                         <select name="eleve" id="eleve" class="form-control">
                             {% for eleve in eleves %}
                             <option value="{{ eleve.id }}">{{ eleve.prenom }} {{ eleve.nom }}</option>
