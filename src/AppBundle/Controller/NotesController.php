@@ -227,8 +227,29 @@ class NotesController extends Controller
             $em->persist($actif);
         }
 
+
+        //notif parent
+
+
         $em->flush();
        return $this->redirectToRoute('notes_index',array('id'=>1));
+    }
+
+    private function getParent($note)
+    {
+        $matiere=$note->getClasseMatiereProfesseurAnnee()->getClasseMatiere()->getMatiere()->getLibelle();
+        $classe=$note->getClasseMatiereProfesseurAnnee()->getTypeClasse()->getClasse()->getLibelle()." ".$note->getClasseMatiereProfesseurAnnee()->getTypeClasse()->getLibelle();
+        $prof=$note->getClasseMatiereProfesseurAnnee()->getProfesseur()->getNom()." ".$note->getClasseMatiereProfesseurAnnee()->getProfesseur()->getPrenom();
+        $em=$this->getDoctrine()->getManager();   
+        $elve_parents=$em->getRepository(EleveParent::class)->findBy(array('eleve' => $note->getEleve()->getId()));
+        foreach ($elve_parents as $item) {
+            $parent=$item->getParent();
+            $notif=new NotificationCenseur();
+            $notif->setMessage("Eleve : ".$note->getEleve()->getNom()." ".$note->getEleve()->getPrenom()." Matière : ".$matiere." Professeur : ".$prof." Note : ".$note->getNote());
+            $notif->setDateCreation(new \Datetime());
+            $notif->setDestinataire($parent->getId());
+            $notif->setEmetteur($this->getUser()->getEcole()->getCenseur()->getId());
+        }
     }
 
     /**
