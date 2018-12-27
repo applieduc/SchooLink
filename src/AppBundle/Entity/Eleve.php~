@@ -17,7 +17,6 @@ class Eleve
     {
         $this->dateCreation=new \DateTime();
         $this->dateModification=new \DateTime();
-        $this->archiver=0;
         $this->photo="avatar.png";
         $this->code=strtoupper(substr(sha1(uniqid(mt_rand(), true)), 4, 6)."-ELV-" . substr(sha1(uniqid(mt_rand(), true)), 2, 4));
     }
@@ -27,21 +26,6 @@ class Eleve
      * @ORM\Column(name="code", type="string", length=255)
      */
     private $code;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"}, inversedBy="eleves")
-     *
-     */
-    private $ecole;
-
-    /**
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Classe",cascade={"persist"})
-     */
-    private $classe;
-
-
-
 
     /**
      * @var int
@@ -107,13 +91,7 @@ class Eleve
      * @ORM\Column(name="dateModification", type="datetimetz")
      */
     private $dateModification;
-     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="archiver", type="boolean")
-     */
-    private $archiver;
-    
+   
 
     /**
      * Get id
@@ -293,77 +271,7 @@ class Eleve
         return $this->dateModification;
     }
 
-    /**
-     * Set classe
-     *
-     * @param \AppBundle\Entity\Classe $classe
-     *
-     * @return Eleve
-     */
-    public function setClasse(\AppBundle\Entity\Classe $classe = null)
-    {
-        $this->classe = $classe;
     
-        return $this;
-    }
-
-    /**
-     * Get classe
-     *
-     * @return \AppBundle\Entity\Classe
-     */
-    public function getClasse()
-    {
-        return $this->classe;
-    }
-
-    /**
-     * Set archiver
-     *
-     * @param boolean $archiver
-     *
-     * @return Eleve
-     */
-    public function setArchiver($archiver)
-    {
-        $this->archiver = $archiver;
-    
-        return $this;
-    }
-
-    /**
-     * Get archiver
-     *
-     * @return boolean
-     */
-    public function getArchiver()
-    {
-        return $this->archiver;
-    }
-
-    /**
-     * Set ecole
-     *
-     * @param \AppBundle\Entity\Ecole $ecole
-     *
-     * @return Eleve
-     */
-    public function setEcole(\AppBundle\Entity\Ecole $ecole = null)
-    {
-        $this->ecole = $ecole;
-    
-        return $this;
-    }
-
-    /**
-     * Get ecole
-     *
-     * @return \AppBundle\Entity\Ecole
-     */
-    public function getEcole()
-    {
-        return $this->ecole;
-    }
 
     /**
      * Set code
@@ -387,5 +295,29 @@ class Eleve
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set contact
+     *
+     * @param string $contact
+     *
+     * @return Eleve
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+    
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return string
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 }

@@ -1,0 +1,92 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EleveClasseEcoleAnnee
+ *
+ * @ORM\Table(name="eleve_classe_ecole_annee")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EleveClasseEcoleAnneeRepository")
+ */
+class EleveClasseEcoleAnnee
+{
+
+
+    public  function __construct()
+    {
+        $this->dateCreation=new \DateTime();
+        $this->dateModification=new \DateTime();
+        $this->archiver=0;
+    }
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    
+      /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eleve",cascade={"persist"})
+     *
+     */
+    private $eleve;
+
+      /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ecole",cascade={"persist"})
+     *
+     */
+    private $ecole;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Classe",cascade={"persist"})
+     */
+    private $classe;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Annee",cascade={"persist"})
+     */
+    private $annee;
+
+
+      /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreation", type="datetimetz")
+     */
+    private $dateCreation;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateModification", type="datetimetz")
+     */
+    private $dateModification;
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="archiver", type="boolean")
+     */
+    private $archiver;
+
+}
+

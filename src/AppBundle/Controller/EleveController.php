@@ -117,7 +117,8 @@ class EleveController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $eleve->setDateModification(new \DateTime());
             $eleve->setPhoto('avatar.png');
-            $eleve->setClasse($em->getRepository(Classe::class)->find((int)$request->get('classe')));
+            $classe=$em->getRepository(Classe::class)->find((int)$request->get('classe'));
+            
             $eleve->setDateNaissance(new \Datetime($request->get('dateNaiss')));
             $em->persist($eleve);
             $em->flush();

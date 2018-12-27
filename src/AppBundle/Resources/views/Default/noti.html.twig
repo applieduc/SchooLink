@@ -38,9 +38,10 @@
                         <p style="word-wrap: break-word">
                             <i class="fa fa-circle-o"></i>  
                                 {{notif.message}}
+                                <br>
+                                {{notif.dateCreation| date('d-m-Y H:i:s')}}
                         </p>
 
-                    
                     {% endfor %}
                 </div>
                 <!-- /.card-body -->
