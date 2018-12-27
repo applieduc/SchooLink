@@ -34,7 +34,7 @@ class ResultatController extends Controller
      */
     public function indexAction(Request $request)
     {
-
+    
         $em=$this->getDoctrine()->getManager();
         $ecole=$this->getUser()->getEcole();
         $annee=$em->getRepository(Annee::class)->findBy(array('ecole'=>$ecole->getId(),'cloture'=>0));

@@ -27,7 +27,7 @@ class EleveTypeClasseController extends Controller
      * @Route("/{classe}", name="eleve_classe_index")
      * @Method("GET")
      */
-    public function indexAction(Request $request,$classe)
+    public function indexAction(Request $request,Classe $classe)
     {
         $em = $this->getDoctrine()->getManager();
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();

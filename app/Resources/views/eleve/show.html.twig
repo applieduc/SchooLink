@@ -67,16 +67,12 @@
                                 <td>{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('Y-m-d H:i:s') }}{% endif %}</td>
                             </tr>
                             <tr>
-                                <th>Photo</th>
-                                <td>{{ eleve.photo }}</td>
+                                <th>Contact du parent</th>
+                                <td>{{ eleve.contact }}</td>
                             </tr>
                             <tr>
-                                <th>Datecreation</th>
+                                <th>Date creation</th>
                                 <td>{{ eleve.dateCreation |date('Y-m-d H:i:s')}}</td>
-                            </tr>
-                            <tr>
-                                <th>Datemodification</th>
-                                <td>{{ eleve.dateModification |date('Y-m-d H:i:s')}}</td>
                             </tr>
                             <tr>
                                 <th>Statut</th>

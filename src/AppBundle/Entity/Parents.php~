@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Traits\Identifiers;
 
 /**
  * Parents
@@ -10,8 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="parents")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ParentsRepository")
  */
-class Parents extends User
+class Parents 
 {
+
+    use Identifiers;
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Compte",cascade={"persist"})
      *
@@ -19,6 +22,16 @@ class Parents extends User
     private $compte;
 
     
+
+   /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
 
     /**
      * @var string
@@ -62,14 +75,7 @@ class Parents extends User
     private $email_mobile;
 
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+  
 
 
     /**

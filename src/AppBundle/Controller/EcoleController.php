@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Ecole;
+use AppBundle\Entity\Eleve;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Ecole controller.
@@ -51,7 +53,7 @@ class EcoleController extends Controller
             $em->flush();
 
 //            return $this->redirectToRoute('ecole_show', array('id' => $ecole->getId()));
-            return $this->redirectToRoute('censeur_new');
+            return $this->redirectToRoute('censeur_new',array('ecole' => $ecole->getId()));
         }
 
         return $this->render('ecole/new.html.twig', array(
@@ -69,9 +71,11 @@ class EcoleController extends Controller
     public function showAction(Ecole $ecole)
     {
         $deleteForm = $this->createDeleteForm($ecole);
-
+        $em = $this->getDoctrine()->getManager();
+         $eleve=   $em->getRepository(Eleve::class)->findBy(array('ecole' => $ecole->getId() ));
         return $this->render('ecole/show.html.twig', array(
             'ecole' => $ecole,
+            "nb_eleve"=>sizeof($eleve),
             'delete_form' => $deleteForm->createView(),
         ));
     }
