@@ -42,22 +42,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for eleve in eleves %}
-                    {% if eleve.archiver == 0 %}
+                {% for item in all %}
+                    {% if item.archiver == 0 %}
                     <tr class="">
                         {#<td><a href="{{ path('eleve_show', { 'id': eleve.id }) }}">{{ eleve.id }}</a></td>#}
-                        <td >{{ eleve.code }}</td>
-                        <td >{{ eleve.nom }} {{ eleve.prenom }}</td>
+                        <td >{{ item.eleve.code }}</td>
+                        <td >{{ item.eleve.nom }} {{ item.eleve.prenom }}</td>
                         {#<td>{% if eleve.sexe == 1 %}M {% else %}F{% endif %}</td>#}
-                        <td >{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
-                        <td >{{ eleve.contact }}</td>
-                        <td >{{ eleve.classe.libelle }}</td>
+                        <td >{% if item.eleve.dateNaissance %}{{ item.eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
+                        <td >{{ item.eleve.contact }}</td>
+                        <td >{{ item.classe.libelle }}</td>
 
                         <td class="text-center">
                             <div class=" row d-column justify-content-center">
-                                <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('eleve_edit', { 'id': eleve.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
-                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('eleve_show', { 'id': eleve.id })}}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
-                                <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('eleve_archive', { 'id': eleve.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                                <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('eleve_edit', { 'id': item.eleve.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('eleve_show', { 'id': item.eleve.id })}}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                                <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('eleve_archive', { 'id': item.eleve.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
 
                             </div>
                             {#<div class="dropdown navbar">
@@ -100,20 +100,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for eleve in eleves %}
-                    {% if eleve.archiver == 1 %}
+                {% for item in all %}
+                    {% if item.archiver == 1 %}
                     <tr>
                         {#<td><a href="{{ path('eleve_show', { 'id': eleve.id }) }}">{{ eleve.id }}</a></td>#}
-                        <td>{{ eleve.code }}</td>
-                        <td>{{ eleve.nom }} {{ eleve.prenom }}</td>
-                        <td>{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
-                        <td>{{ eleve.contact }}</td>
-                        <td>{{ eleve.classe.libelle }}</td>
+                        <td>{{ item.eleve.code }}</td>
+                        <td>{{ item.eleve.nom }} {{ item.eleve.prenom }}</td>
+                        <td>{% if item.eleve.dateNaissance %}{{ item.eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
+                        <td>{{ item.eleve.contact }}</td>
+                        <td>{{ item.classe.libelle }}</td>
 
                         <td>
                             <div class=" row d-column justify-content-center">
-                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('eleve_show', { 'id': eleve.id })}}" rel="#"><i class=" fa fa-file-o text-primary"></i></a></div>
-                                <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('eleve_desarchive', { 'id': eleve.id }) }}"><i class="fa fa-folder-open text-success"></i></a></div>
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('eleve_show', { 'id': item.eleve.id })}}" rel="#"><i class=" fa fa-file-o text-primary"></i></a></div>
+                                <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('eleve_desarchive', { 'id': item.eleve.id }) }}"><i class="fa fa-folder-open text-success"></i></a></div>
 
                             </div>
                         </td>

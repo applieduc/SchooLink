@@ -91,7 +91,8 @@
                                          <div class="col-lg-6">
                                              <select name="eleve1" class= "form-control type form-group" {% if eleves|length >0 %}  required {% endif %}>
                                                  {% for eleve in eleves %}
-                                                     <option value="{{  eleve.id}}">{{eleve.nom}}</option>
+
+                                                     <option value="{{  eleve.id}}">{{eleve.eleve.nom}}</option>
                                                  {% endfor %}
                                              </select>
                                          </div>
@@ -100,7 +101,7 @@
                                                   <option value=""></option>
 
                                                   {% for eleve in eleves %}
-                                                      <option value="{{  eleve.id}}">{{eleve.nom}}</option>
+                                                      <option value="{{  eleve.id}}">{{eleve.eleve.nom}}</option>
                                                   {% endfor %}
                                               </select>
                                           </div>
@@ -145,14 +146,14 @@
                 '                                         <div class="col-lg-6">\n' +
                 '                                             <select name="eleve'+(i-1)+'" class= "form-control type form-group"  required>\n' +
                 '                                                 {% for eleve in eleves %}\n' +
-                '                                                     <option value="{{  eleve.id}}">{{ eleve.nom }}</option>\n' +
+                '                                                     <option value="{{  eleve.id}}">{{ eleve.eleve.nom }}</option>\n' +
                 '                                                 {% endfor %}\n' +
                 '                                             </select>\n' +
                 '                                         </div>\n' +
                 '                                          <div class="col-lg-6">\n' +
                 '                                              <select  name="eleve'+i+'" class= "form-control type form-group">\n' +
                 '                                                  {% for eleve in eleves %}\n' +
-                '                                                      <option value="{{  eleve.id}}">{{ eleve.nom }}</option>\n' +
+                '                                                      <option value="{{  eleve.id}}">{{ eleve.eleve.nom }}</option>\n' +
                 '                                                  {% endfor %}\n' +
                 '                                              </select>\n' +
                 '                                          </div>\n' +

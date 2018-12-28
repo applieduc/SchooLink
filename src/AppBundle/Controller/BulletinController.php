@@ -89,6 +89,7 @@ class BulletinController extends Controller
         $classprof=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('type_classe'=>$tc));
         $eleve=$em->getRepository(EleveTypeClasse::class)->findBy(array("type_classe"=>$tc));
         $tab=array();
+        $tab2=array();
         for ($i=0; $i<sizeof($eleve);$i++)
         {
             $totalPoint=0;
@@ -96,11 +97,12 @@ class BulletinController extends Controller
             $moyTotal=0;
 
             $tab[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
+            $tab2[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
             for ($j=0;$j<sizeof($classprof);$j++)
             {
                 // $prof=$em->getRepository(Professeur::class)->find($classprof[$j]->getProfesseur()->getId());
-                $allInterro=$em->getRepository(Note::class)->typeInterro($classprof[$j]->getId());
-                $allDevoir=$em->getRepository(Note::class)->typeDevoir($classprof[$j]->getId());
+                $allInterro=$em->getRepository(Note::class)->typeInterro($classprof[$j]->getId(),$param_periode);
+                $allDevoir=$em->getRepository(Note::class)->typeDevoir($classprof[$j]->getId(),$param_periode);
 
                 $totalInterro=0;
                 $totalDevoir=0;
@@ -109,35 +111,48 @@ class BulletinController extends Controller
                 for ($n=0; $n<sizeof($allInterro);$n++)
                 {
 
-                    $actif=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$param_periode,'classe_matiere_professeur_annee'=>$classprof[$j]->getId(),'statut'=>"validé",'type'=>$allInterro[$n]));
+                    $datetimer=substr($allInterro[$n]['dateCreation'],0,13);
+
+                    $actif=$em->getRepository(Note::class)->getNote($eleve[$i]->getEleve()->getId(),$param_periode,$classprof[$j]->getId(),$datetimer);
+
                     if ($actif!= null){
-                        $tab[$i]['interro_name'][$n]['nom']=$actif[0]->getType();
-                        $tab[$i]['interro_name'][$n]['etat']=$actif[0]->getEtat();
-                        $tab[$i]['note'][$j]['interro_note'][$n]['etat']=$actif[0]->getEtat();
-                        $tab[$i]['note'][$j]['interro_note'][$n]['note']=$actif[0]->getNote();
-                        if($actif[0]->getEtat() == 1){
-                            $totalInterro+=$actif[0]->getNote();
+                        $tab[$i]['interro_name'][$n]['nom']=$actif['type'];
+                        $tab[$i]['interro_name'][$n]['etat']=$actif['etat'];
+                        $tab[$i]['interro_name'][$n]['date']=$datetimer;
+                        $tab[$i]['interro_note'][$n]=$actif['note'];
+                        if($actif['etat'] == 1){
+                            $totalInterro+=$actif['note'];
                             $diviseurInterro++;
                         }
 
+                    }else{
+                        $tab[$i]['interro_name'][$n]['nom']=$allInterro[$n]['type'];
+                        $tab[$i]['interro_name'][$n]['etat']=$allInterro[$n]['etat'];
+                        $tab[$i]['interro_note'][$n]=0;
                     }
 
                 }
                 for ($n=0; $n<sizeof($allDevoir);$n++)
                 {
 
-                    $actif=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$param_periode,'classe_matiere_professeur_annee'=>$classprof[$j]->getId(),'statut'=>"validé",'type'=>$allDevoir[$n]));
+
+                    $datetimer=substr($allDevoir[$n]['dateCreation'],0,13);
+                    $actif=$em->getRepository(Note::class)->getNote($eleve[$i]->getEleve()->getId(),$param_periode,$classprof[$j]->getId(),$datetimer);
                     if ($actif!= null){
-                        $tab[$i]['devoir_name'][$n]['nom']=$actif[0]->getType();
-                        $tab[$i]['devoir_name'][$n]['etat']=$actif[0]->getEtat();
-                        $tab[$i]['note'][$j]['devoir_note'][$n]['etat']=$actif[0]->getEtat();
-                        $tab[$i]['note'][$j]['devoir_note'][$n]['note']=$actif[0]->getNote();
-                        if($actif[0]->getEtat() == 1)
+                        $tab[$i]['devoir_name'][$n]['nom']=$actif['type'];
+                        $tab[$i]['devoir_name'][$n]['etat']=$actif['etat'];
+                        $tab[$i]['devoir_name'][$n]['date']=$datetimer;
+                        $tab[$i]['devoir_note'][$n]=$actif['note'];
+                        if($actif['etat'] == 1)
                         {
-                            $totalDevoir+=$actif[0]->getNote();
+                            $totalDevoir+=$actif['note'];
                             $diviseurDevoir ++;
                         }
 
+                    }else{
+                        $tab[$i]['devoir_name'][$n]['nom']=$allInterro[$n]['type'];
+                        $tab[$i]['devoir_name'][$n]['etat']=$allInterro[$n]['etat'];
+                        $tab[$i]['devoir_note'][$n]=0;
                     }
 
                 }
@@ -160,6 +175,7 @@ class BulletinController extends Controller
                 $totalPoint+=$moy*$classprof[$j]->getClasseMatiere()->getCoefficient();
                 $totalCoeff+=$classprof[$j]->getClasseMatiere()->getCoefficient();
                 $tab[$i]['note'][$j]['Moy']=substr($moy,0,4);
+                $tab[$i]['note'][$j]['obs']=$this->getObservation(substr($moy,0,4));
                 $tab[$i]['note'][$j]['MoyC']=substr( $moy*$classprof[$j]->getClasseMatiere()->getCoefficient(),0,4);
                 $tab[$i]['note'][$j]['coeffiecient']=$classprof[$j]->getClasseMatiere()->getCoefficient();
                 $tab[$i]['note'][$j]['matiere']=$classprof[$j]->getClasseMatiere()->getMatiere()->getLibelle();
@@ -168,7 +184,8 @@ class BulletinController extends Controller
             $tab[$i]['totalCoeff']=$totalCoeff;
             if($totalCoeff != 0) $moyTotal=$totalPoint/$totalCoeff;
             $tab[$i]['moyTotal']=$moyTotal;
-            $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'type_classe'=>$param_type,'annee'=>$annee[0]->getId()));
+            $tab2[$i]['moyTotal']=$moyTotal;
+         /*   $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'type_classe'=>$param_type,'annee'=>$annee[0]->getId()));
             if ($param_periode==sizeof($p)){
                 $tab[$i]['moyAn']=$resultat[0]->getMoyAnnuelle();
                 $tab[$i]['rangAn']=$resultat[0]->getRangAnnuelle();
@@ -224,8 +241,57 @@ class BulletinController extends Controller
                 $resultat->setCoeff($totalCoeff);
             }
             $em->persist($resultat);
-            $em->flush();
+            $em->flush();*/
         }
-        return array('tab'=>$tab,'tc'=>$tc,'el'=>$eleve,'p'=>$p);
+        return array('tab'=>$tab,'tab2'=>$this->tri($tab2),'tc'=>$tc,'el'=>$eleve,'p'=>$p);
+    }
+    private   function  getObservation($note){
+        $etat="";
+        $note=explode(".",$note)[0];
+        if ($note==0)
+        {
+            $etat="Nul";
+        }elseif ($note>0 and $note<4)
+        {
+            $etat="Mal";
+        }elseif ($note>=4 and $note<8)
+        {
+            $etat="médiocre";
+        }elseif ($note>=8 and $note<12)
+        {
+            $etat="Passable";
+        }
+        elseif ($note>=12 and $note<14)
+        {
+            $etat="assez bien";
+
+        }elseif ($note>=14 and $note<16)
+        {
+            $etat="Bien";
+        }elseif ($note>=16 and $note<20)
+        {
+            $etat="Très bien";
+        }elseif ($note == 20)
+        {$etat="Excellent";
+
+        }
+        return $etat;
+    }
+
+    private function tri($table)
+    {
+        for ($i=0; $i<sizeof($table);$i++)
+        {
+            for ($j=1; $j<sizeof($table);$j++)
+            {
+                if ($table[$i]['moyTotal']>$table[$j]['moyTotal'])
+                {
+                    $int=$table[$i];
+                    $table[$i]['moyTotal']=$table[$j]['moyTotal'];
+                    $table[$j]['moyTotal']=$int;
+                }
+            }
+        }
+        return $table;
     }
 }

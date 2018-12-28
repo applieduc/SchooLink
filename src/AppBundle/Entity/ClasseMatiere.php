@@ -16,7 +16,7 @@ class ClasseMatiere
 
     public  function __construct()
     {
-        $this->archiver=true;
+        $this->archiver=false;
     }
 
     /**

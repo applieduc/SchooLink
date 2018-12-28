@@ -25,7 +25,7 @@
             <div class="card-header">
                 <div class="card-title">
                     <span class="">
-                         {% if eleve.archiver %}
+                         {% if relate.archiver %}
                              <i class="fa fa-circle text-danger"></i>
                         {% else %}
                              <i class="fa fa-circle text-success"></i>
@@ -34,7 +34,7 @@
                     <span class="pull-right" >
                         <a href="{{ path('eleve_index') }}"><i class="fa fa-backward text-dark"></i></a>
                         <a href="{{ path('eleve_edit', { 'id': eleve.id }) }}"><i class="fa fa-edit text-warning"></i></a>
-                        {% if eleve.archiver %}
+                        {% if relate.archiver %}
                             <a href="{{ path('eleve_desarchive', { 'id': eleve.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
                         {% else %}
                             <a href="{{ path('eleve_archive', { 'id': eleve.id }) }}"><i class="fa fa-folder text-danger"></i></a>
@@ -51,32 +51,36 @@
                             <tbody>
                            
                             <tr>
-                                <th>Nom</th>
+                                <th>Nom </th>
                                 <td>{{ eleve.nom }}</td>
                             </tr>
                             <tr>
-                                <th>Prenom</th>
+                                <th>Prenom </th>
                                 <td>{{ eleve.prenom }}</td>
                             </tr>
                             <tr>
-                                <th>Sexe</th>
-                                <td>{{ eleve.sexe }}</td>
+                                <th>Sexe </th>
+                                <td>{% if eleve.sexe==1 %}
+                                    Masculin
+                                    {% else %}
+                                    Féminin
+                                {% endif %}</td>
                             </tr>
                             <tr>
-                                <th>Datenaissance</th>
+                                <th>Datenaissance </th>
                                 <td>{% if eleve.dateNaissance %}{{ eleve.dateNaissance|date('Y-m-d H:i:s') }}{% endif %}</td>
                             </tr>
                             <tr>
-                                <th>Contact du parent</th>
+                                <th>Contact du parent </th>
                                 <td>{{ eleve.contact }}</td>
                             </tr>
                             <tr>
-                                <th>Date creation</th>
+                                <th>Date creation </th>
                                 <td>{{ eleve.dateCreation |date('Y-m-d H:i:s')}}</td>
                             </tr>
                             <tr>
                                 <th>Statut</th>
-                                <td>{% if eleve.archiver %}<span class="badge badge-danger">Non actif</span>{% else %}<span class="badge badge-success">Actif</span>{% endif %}</td>
+                                <td>{% if relate.archiver %}<span class="badge badge-danger">Non actif</span>{% else %}<span class="badge badge-success">Actif</span>{% endif %}</td>
                             </tr>
                             </tbody>
                         </table></div>

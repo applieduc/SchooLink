@@ -134,9 +134,26 @@
                             <th>Matiere</th>
 
                             <th>Actions</th>
+
                         </tr>
                         </thead>
                         <tbody>
+                        {% for mat  in  matieresenseignes %}
+                            <tr>
+                                <td>
+                                    {{ loop.index }}
+                                </td>
+                                <td>
+                                    {{ mat.ClasseMatiere.classe.libelle }} {{ mat.TypeClasse ? mat.TypeClasse.libelle : '' }}
+                                </td>
+                                <td>
+                                    {{ mat.ClasseMatiere.matiere.libelle }}
+                                </td>
+                                <td>
+                                    <label class="label label-danger"> <a href="{{ path('classematiereprofesseurannee_delete', { 'id': mat.id }) }}"> Supprimer </a> </label>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         
                         </tbody>
                     </table>

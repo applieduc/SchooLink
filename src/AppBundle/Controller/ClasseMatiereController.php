@@ -39,7 +39,8 @@ class ClasseMatiereController extends Controller
             $em = $this->getDoctrine()->getManager();
             $classe= $em->getRepository(Classe::class)->find($id);
             $classeMatiere->setClasse($classe);
-             $verify=$em->getRepository(ClasseMatiere::class)->findOneBy(array('classe'=>$classe->getId(),'matiere'=>$classeMatiere->getMatiere()->getId()));
+            $classeMatiere->setMatiere($em->getRepository(Matiere::class)->find($request->get('matiere')));
+           $verify=$em->getRepository(ClasseMatiere::class)->findOneBy(array('classe'=>$classe->getId(),'matiere'=>$request->get('matiere')));
              if($verify==null){
                 $em->persist($classeMatiere);
                 $em->flush();

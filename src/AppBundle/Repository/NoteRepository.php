@@ -14,34 +14,60 @@ class NoteRepository extends \Doctrine\ORM\EntityRepository
     public function typeNV($id)
     {
         $con=$this->_em->getConnection();
-        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="mise en attente" ');
+        $state=$con->prepare('select type, nom_periode , dateCreation from note, periode where periode.id=note.periode_id and  classe_matiere_professeur_annee_id=? and statut ="mise en attente" ');
         $state->execute(array($id));
 
         return $state->fetchAll();
     }
 
-    public function typeInterro($id)
-    {
-        $con=$this->_em->getConnection();
-        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="validé"  and type like "i%" ');
-        $state->execute(array($id));
-
-        return $state->fetchAll();
-    }
-
-    public function typeDevoir($id)
-    {
-        $con=$this->_em->getConnection();
-        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="validé"  and type like "d%" ');
-        $state->execute(array($id));
-
-        return $state->fetchAll();
-    }
     public function typeR($id)
     {
         $con=$this->_em->getConnection();
-        $state=$con->prepare('select distinct type from note where classe_matiere_professeur_annee_id=? and statut ="non validé" ');
+        $state=$con->prepare('select type, nom_periode , dateCreation from note, periode where periode.id=note.periode_id and  classe_matiere_professeur_annee_id=? and statut ="non validé" ');
         $state->execute(array($id));
+
+        return $state->fetchAll();
+    }
+    public function typeNoteNV($id,$datetimer)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select note.id , note , nom , prenom , note.dateCreation from note, eleve where eleve.id=note.eleve_id and  classe_matiere_professeur_annee_id=? and statut ="mise en attente" and note.dateCreation like "'.$datetimer.'%" ');
+        $state->execute(array($id));
+
+        return $state->fetchAll();
+    }
+    public function typeNoteNV2($id,$datetimer)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select note.id , note , nom , prenom , note.dateCreation from note, eleve where eleve.id=note.eleve_id and  classe_matiere_professeur_annee_id=? and statut ="non validé" and note.dateCreation like "'.$datetimer.'%" ');
+        $state->execute(array($id));
+
+        return $state->fetchAll();
+    }
+
+    public function typeNoteR($id,$datetimer)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select note.id, note , nom , prenom , note.dateCreation from note, eleve where eleve.id=note.eleve_id and  classe_matiere_professeur_annee_id=? and statut ="non validé" and note.dateCreation like "'.$datetimer.'%" ');
+        $state->execute(array($id));
+
+        return $state->fetchAll();
+    }
+
+    public function typeInterro($id,$periode)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select type,etat, nom_periode , dateCreation from note, periode where note.periode_id=periode.id and periode_id =? and classe_matiere_professeur_annee_id=? and statut ="validé"  and type ="Interrogation" ');
+        $state->execute(array($id, $periode));
+
+        return $state->fetchAll();
+    }
+
+    public function typeDevoir($id,$periode)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select  type, etat, nom_periode , dateCreation  from note, periode  where  note.periode_id=periode.id and periode_id =? and classe_matiere_professeur_annee_id=? and statut ="validé"  and type ="Devoir" ');
+        $state->execute(array($id,$periode));
 
         return $state->fetchAll();
     }
@@ -54,5 +80,22 @@ class NoteRepository extends \Doctrine\ORM\EntityRepository
         $state->execute(array($id, $type));
 
         return $state->fetchAll();
+    }
+    public function getNotes($id,$datetimer)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select  * from note where classe_matiere_professeur_annee_id=? and dateCreation like "'.$datetimer.'%" ');
+        $state->execute(array($id));
+
+        return $state->fetchAll();
+    }
+
+    public function getNote($eleve,$periode,$cmpa,$datetimer)
+    {
+        $con=$this->_em->getConnection();
+        $state=$con->prepare('select note.id , etat, note , nom , prenom , note.dateCreation, type from note, eleve where eleve.id=note.eleve_id and note.eleve_id=? and periode_id=? and statut="validé"  and classe_matiere_professeur_annee_id=? and note.dateCreation like "'.$datetimer.'%" ');
+        $state->execute(array($eleve,$periode,$cmpa));
+
+        return $state->fetch();
     }
 }

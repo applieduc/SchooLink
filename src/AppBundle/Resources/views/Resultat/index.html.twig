@@ -79,6 +79,7 @@
                 {% endfor %}
 
     </div>
+
     {% if tab['tab'] | length != 0 %}
     <div class="card">
         <div class="card-header">
@@ -95,7 +96,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example1" class="table table-bordered table-striped table-responsive">
                             <thead>
                             <tr>
                                 <th>N°</th>
@@ -114,7 +115,7 @@
                                         <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
                                         <input type="hidden" name="periode" value=" {{ param_periode  }}">
                                          <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
-                                         <input type="hidden" value="{{g['nom']}}" name="type2">
+                                         <input type="hidden" value="{{g['date']}}" name="type2">
                                          <button class="btn btn-sm text-danger"><i class="fa fa-remove"></i></button>
                                      </form>
                                      </span>
@@ -128,7 +129,7 @@
                                         <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
                                         <input type="hidden" name="periode" value=" {{ param_periode  }}">
                                          <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
-                                         <input type="hidden" value="{{g['nom']}}" name="type2">
+                                         <input type="hidden" value="{{g['date']}}" name="type2">
                                          <button class="btn btn-sm text-success"><i class="fa fa-send"></i></button>
                                      </form>
                                      </span>
@@ -156,7 +157,7 @@
                                         <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
                                         <input type="hidden" name="periode" value=" {{ param_periode  }}">
                                          <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
-                                         <input type="hidden" value="{{h['nom']}}" name="type2">
+                                         <input type="hidden" value="{{h['date']}}" name="type2">
                                          <button class="btn btn-sm text-danger"><i class="fa fa-remove"></i></button>
                                      </form>
                                      </span>
@@ -169,7 +170,7 @@
                                         <input type="hidden" name="param_matiere" value="{{ param_matiere }}">
                                         <input type="hidden" name="periode" value=" {{ param_periode  }}">
                                          <input type="hidden" value="{{ tab['cm'].id }}" name="cmpa">
-                                         <input type="hidden" value="{{h['nom']}}" name="type2">
+                                         <input type="hidden" value="{{h['date']}}" name="type2">
                                          <button class="btn btn-sm text-success"><i class="fa fa-send"></i></button>
                                      </form>
                                      </span>
@@ -185,6 +186,7 @@
 
                                 <th>Moy/20</th>
                                 <th>Moy coeff</th>
+                                <th>Rang</th>
                                 <th>Obs.</th>
                             </tr>
                             </thead>
@@ -209,7 +211,14 @@
 
                                     <td>{{ i['Moy'] }}</td>
                                     <td>{{ i['MoyC'] }}</td>
-                                    <td></td>
+                                    <td>
+                                        {% for b in tab['tab2'] %}
+                                        {%  if b['eleve'] == i['eleve'] %}
+                                        {{ loop.index }}
+                                        {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ i['obs'] }}</td>
                                 </tr>
                             {% endfor %}
 

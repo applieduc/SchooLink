@@ -20,12 +20,6 @@ class ProfesseurType extends AbstractType
             ->add('telephone')
             ->add('email')
             ->add("adresse")
-            ->add('avatar', FileType::class,
-                array(
-                    'required' => false,
-                    'label' => "Photo (PNG)",
-                    "data_class" => null,
-                ));
          //   ->add('codeProf')
 
             //->add('compte')

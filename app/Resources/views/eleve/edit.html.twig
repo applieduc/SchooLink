@@ -7,19 +7,10 @@
                 <div class="card-header">
                     <div class="card-title">
                         <span class="">
-                             {% if eleve.archiver %}
-                                 <i class="fa fa-circle text-danger"></i>
-                        {% else %}
-                                 <i class="fa fa-circle text-success"></i>
-                             {% endif %}
+                        
                             Information personnelle</span>
                         <span class="pull-right" >
                         <a href="{{ path('eleve_index') }}"><i class="fa fa-backward text-dark"></i></a>
-                            {% if eleve.archiver %}
-                                <a href="{{ path('eleve_desarchive', { 'id': eleve.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
-                        {% else %}
-                                <a href="{{ path('eleve_archive', { 'id': eleve.id }) }}"><i class="fa fa-folder text-danger"></i></a>
-                            {% endif %}
 
                     </span>
                     </div>
@@ -40,19 +31,20 @@
                     </div>
                     <div class="form-group">
                         <label>Date de naissance</label>
-                        <input type="text" value="{{eleve.dateNaissance|date('d/m/Y') }}" class="form-control date" name="dateNaiss" >
+                        <input type="text" value="{{eleve.dateNaissance|date('m/d/Y') }}" class="form-control date" name="dateNaiss" >
                     </div>
                     <div class="form-group">
                         <label>Classe</label>
                         <select name="classe" id="classe" class="form-control">
                             {% for classe in classes %}
+                                <option value="0"></option>
                                 <option value="{{ classe.id }}">{{ classe.libelle }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
                             <label>Contact du parent</label>
-                            {{ form_widget(form.contact,{'attr':{'class':'form-control'}}) }}
+                            {{ form_widget(edit_form.contact,{'attr':{'class':'form-control'}}) }}
                         </div>
 
                     <input type="submit" value="Sauvegarder"  class="btn btn-success"/>

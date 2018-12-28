@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Censeur;
 use AppBundle\Entity\Classe;
 use AppBundle\Entity\Eleve;
+use AppBundle\Entity\Annee;
 use AppBundle\Entity\EleveTypeClasse;
 use AppBundle\Entity\TypeClasse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -76,30 +77,32 @@ class Eleve2Controller extends Controller
     }
 
     private function get_eleve($classe){
-        $annee=$this->get('session')->get('annee');
         $em = $this->getDoctrine()->getManager();
-        $eleves = $em->getRepository('AppBundle:Eleve')->findBy(array('archiver' =>false,'classe'=>$classe));
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $eleves = $em->getRepository('AppBundle:EleveClasseEcoleAnnee')->findBy(array('archiver' =>false,'classe'=>$classe,'ecole'=>$this->getUser()->getEcole()->getId(),'annee'=>$annee));
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+
 
         $eleves_not_classe=array();
         $i=0;
         foreach ($eleves as $val) {
-            $eleve = $em->getRepository('AppBundle:EleveTypeClasse')->findOneBy(array('eleve' =>$val->getId(),'archiver'=>false));
+            $eleve = $em->getRepository('AppBundle:EleveTypeClasse')->findOneBy(array('eleve' =>$val->getEleve()->getId(),'archiver'=>false));
+            if($eleve!=null ){
+                    $eleves_not_classe[$i]=$val;
+                    $i++;
 
-            if($eleve!=null && $eleve->getDateCreation() <$annee->getDateDebut()){
 
-                $eleves_not_classe[$i]=$val;
-                $i++;
             }elseif ($eleve==null){
                 $eleves_not_classe[$i]=$val;
                 $i++;
             }
 
-
+           
         }
 
         return $eleves_not_classe;
     }
-
     /**
      * Displays a form to edit an existing eleve entity.
      *
@@ -116,7 +119,7 @@ class Eleve2Controller extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $eleve->setDateModification(new \DateTime());
-            $eleve->setClasse($em->getRepository(Classe::class)->find((int)$request->get('classe')));
+           // $eleve->setClasse($em->getRepository(Classe::class)->find((int)$request->get('classe')));
 
            $em->flush();
 

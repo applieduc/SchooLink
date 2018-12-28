@@ -3,8 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Censeur;
+use AppBundle\Entity\EleveClasseEcoleAnnee;
 use AppBundle\Entity\Classe;
 use AppBundle\Entity\Eleve;
+use AppBundle\Entity\Annee;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -39,10 +41,10 @@ class EleveController extends Controller
 
             return $this->redirectToRoute('eleve_index');
         }
-        $eleves = $em->getRepository('AppBundle:Eleve')->findBy(array("ecole"=>$censeur->getEcole()));
+        $all = $em->getRepository('AppBundle:EleveClasseEcoleAnnee')->findBy(array("ecole"=>$censeur->getEcole()));
 
         return $this->render('eleve/index.html.twig', array(
-            'eleves' => $eleves,
+            'all' => $all,
             'form' => $form->createView()
         ));
     }
@@ -63,13 +65,23 @@ class EleveController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
-            $eleve->setEcole($censeur->getEcole());
             $eleve->setDateNaissance(new \Datetime($request->get('dateNaiss')));
-            
-            $eleve->setClasse($em->getRepository(Classe::class)->find((int)$request->get('classe')));
+           // $all = $em->getRepository('AppBundle:EleveClasseEcoleAnnee')->findBy(array("ecole"=>$censeur->getEcole()));
             $em->persist($eleve);
             $em->flush();
 
+
+            $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+            $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+            $elev=$em->getRepository(Eleve::class)->findOneBy(array('dateCreation' =>$eleve->getDateCreation()));
+            $class=$em->getRepository(Classe::class)->find((int)$request->get('classe'));
+            $relate=new EleveClasseEcoleAnnee(); 
+            $relate->setEcole($censeur->getEcole());
+            $relate->setEleve($elev);
+            $relate->setClasse($class);
+            $relate->setAnnee($annee);
+            $em->persist($relate);
+            $em->flush();
             return $this->redirectToRoute('eleve_index');
 
 //            return $this->redirectToRoute('eleve_show', array('id' => $eleve->getId()));
@@ -93,9 +105,14 @@ class EleveController extends Controller
     public function showAction(Eleve $eleve)
     {
         $deleteForm = $this->createDeleteForm($eleve);
-
+        $em=$this->getDoctrine()->getManager();
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $relate=$em->getRepository(EleveClasseEcoleAnnee::class)->findOneBy(array('ecole'=>$ecole->getId(),'annee'=>$annee->getId(),'eleve'=>$eleve->getId())); 
+     
         return $this->render('eleve/show.html.twig', array(
             'eleve' => $eleve,
+            'relate'=>$relate,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -123,7 +140,17 @@ class EleveController extends Controller
             $em->persist($eleve);
             $em->flush();
 
-            return $this->redirectToRoute('eleve_edit', array('id' => $eleve->getId()));
+            if($request->get('classe')!="0"){
+                $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+                $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+                $class=$em->getRepository(Classe::class)->find((int)$request->get('classe'));
+                $relate=$em->getRepository(EleveClasseEcoleAnnee::class)->findOneBy(array('ecole'=>$ecole->getId(),'annee'=>$annee->getId())); 
+                $relate->setClasse($class);
+                $em->persist($relate);
+                $em->flush();
+            }
+            
+            return $this->redirectToRoute('eleve_index', array('id' => $eleve->getId()));
         }
 
         $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
@@ -146,8 +173,13 @@ class EleveController extends Controller
     public function archiveAction(Request $request, Eleve $eleve)
     {
         $em=$this->getDoctrine()->getManager();
-        $eleve->setArchiver(1);
-        $em->persist($eleve);
+
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $relate=$em->getRepository(EleveClasseEcoleAnnee::class)->findOneBy(array('ecole'=>$ecole->getId(),'annee'=>$annee->getId(),'eleve'=>$eleve->getId())); 
+     
+        $relate->setArchiver(1);
+        $em->persist($relate);
         $em->flush();
        return $this->redirectToRoute('eleve_index');
     }
@@ -160,8 +192,12 @@ class EleveController extends Controller
     public function desarchiveAction(Request $request, Eleve $eleve)
     {
         $em=$this->getDoctrine()->getManager();
-        $eleve->setArchiver(0);
-        $em->persist($eleve);
+        $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $relate=$em->getRepository(EleveClasseEcoleAnnee::class)->findOneBy(array('ecole'=>$ecole->getId(),'annee'=>$annee->getId(),'eleve'=>$eleve->getId())); 
+     
+        $relate->setArchiver(0);
+        $em->persist($relate);
         $em->flush();
         return $this->redirectToRoute('eleve_index');
     }

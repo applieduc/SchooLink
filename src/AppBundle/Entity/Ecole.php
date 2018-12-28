@@ -84,6 +84,14 @@ class Ecole
      */
      private $censeur;
 
+
+
+      /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Annee",mappedBy="ecole",cascade={"persist"})
+     */
+    private $annees;
+
+
     /**
      * Ecole constructor.
      */
@@ -91,6 +99,7 @@ class Ecole
     {
         $this->codeTelephone = 'ab';
         $this->ecoleProf = new ArrayCollection();
+        $this->annees=new ArrayCollection();
     }
 
 
@@ -276,4 +285,62 @@ class Ecole
 
 
 
+
+    /**
+     * Set professeur
+     *
+     * @param \AppBundle\Entity\Professeur $professeur
+     *
+     * @return Ecole
+     */
+    public function setProfesseur(\AppBundle\Entity\Professeur $professeur = null)
+    {
+        $this->professeur = $professeur;
+    
+        return $this;
+    }
+
+    /**
+     * Get professeur
+     *
+     * @return \AppBundle\Entity\Professeur
+     */
+    public function getProfesseur()
+    {
+        return $this->professeur;
+    }
+
+    /**
+     * Add annee
+     *
+     * @param \AppBundle\Entity\Annee $annee
+     *
+     * @return Ecole
+     */
+    public function addAnnee(\AppBundle\Entity\Annee $annee)
+    {
+        $this->annees[] = $annee;
+    
+        return $this;
+    }
+
+    /**
+     * Remove annee
+     *
+     * @param \AppBundle\Entity\Annee $annee
+     */
+    public function removeAnnee(\AppBundle\Entity\Annee $annee)
+    {
+        $this->annees->removeElement($annee);
+    }
+
+    /**
+     * Get annees
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAnnees()
+    {
+        return $this->annees;
+    }
 }

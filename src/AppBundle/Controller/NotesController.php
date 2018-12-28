@@ -32,13 +32,13 @@ class NotesController extends Controller
      * @Route("/{id}", name="notes_index")
      * @Method("GET")
      */
-    public function indexAction($id)
+    public function indexAction(Request $request,$id)
     {
         $em=$this->getDoctrine()->getManager();
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
 
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-
+       $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        //$annee=$request->get('session')->get('annee');
        
         if($annee==null){
             $this->get('session')->getFlashBag()->set('info','Créer une nouvelle année académique');
@@ -56,23 +56,20 @@ class NotesController extends Controller
         {
             return $this->render('AppBundle:Notes:index.html.twig', array(
 
-                'noteNV'=>$this->noteNonValide(),
-                'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
+                'noteNV'=>$this->noteNonValide($cm)
             ));
 
         }else{
             return $this->render('AppBundle:Notes:index.html.twig', array(
-                'noteR'=>$this->noteRejet   (),
-                'fiche'=>$this->fiche($cm[0]->getTypeClasse(),$cm[0]->getClasseMatiere(),1)
+                'noteR'=>$this->noteRejet   ($cm)
             ));
         }
 
     }
 
-    private function  noteNonValide()
+    private function  noteNonValide($cm)
     {
         $em=$this->getDoctrine()->getManager();
-        $cm=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findAll();
         $tabNAV=array();
         $k=0;
         for ($i=0;$i<sizeof($cm);$i++)
@@ -83,23 +80,29 @@ class NotesController extends Controller
             {
 
 
-                $tabNAV[$k]['annee']=$cm[$i]->getAnnee()->getDateDebut()->format("d-m-Y H:i:s").'-'.$cm[$i]->getAnnee()->getDateFin()->format("d-m-Y H:i:s");
-                $tabNAV[$k]['professeur']=$cm[$i]->getProfesseur()->getNom().'-'.$cm[$i]->getProfesseur()->getPrenom();
-                $tabNAV[$k]['classe']=$cm[$i]->getTypeClasse()->getClasse()->getLibelle().' '.$cm[$i]->getTypeClasse()->getLibelle();
-                $tabNAV[$k]['matiere']=$cm[$i]->getClasseMatiere()->getMatiere()->getLibelle();
-                $tabNAV[$k]['coefficient']=$cm[$i]->getClasseMatiere()->getCoefficient();
-                $tabNAV[$k]['effectif']=sizeof($em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$cm[$i]->getTypeClasse()->getId())));
-                $tabNAV[$k]['idCm']=$cm[$i]->getId();
 
                 for ($j=0;$j<sizeof($typeNV);$j++)
                 {
-                    $note=$em->getRepository(Note::class)->findBy(array('classe_matiere_professeur_annee'=>$cm[$i]->getId(),'type'=>$typeNV[$j]['type']));
+                    $tabNAV[$k]['annee']=$cm[$i]->getAnnee()->getDateDebut()->format("d-m-Y H:i:s").'-'.$cm[$i]->getAnnee()->getDateFin()->format("d-m-Y H:i:s");
+                    $tabNAV[$k]['professeur']=$cm[$i]->getProfesseur()->getNom().'-'.$cm[$i]->getProfesseur()->getPrenom();
+                    $tabNAV[$k]['classe']=$cm[$i]->getTypeClasse()->getClasse()->getLibelle().' '.$cm[$i]->getTypeClasse()->getLibelle();
+                    $tabNAV[$k]['matiere']=$cm[$i]->getClasseMatiere()->getMatiere()->getLibelle();
+                    $tabNAV[$k]['coefficient']=$cm[$i]->getClasseMatiere()->getCoefficient();
+                    $tabNAV[$k]['effectif']=sizeof($em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$cm[$i]->getTypeClasse()->getId())));
+                    $tabNAV[$k]['idCm']=$cm[$i]->getId();
+                    $tabNAV[$k]['periode']=$typeNV[$j]['nom_periode'];
+                    $datetimer=substr($typeNV[$j]['dateCreation'],0,13);
+                    $note=$em->getRepository(Note::class)->typeNoteNV($cm[$i]->getId(),$datetimer);
+                    $tabNAV[$k]['note'][$j]['param']=$datetimer;
+                    $tabNAV[$k]['note'][$j]['type']=$typeNV[$j]['type'];
+                    $tabNAV[$k]['note'][$j]['date']=$typeNV[$j]['dateCreation'];
 
-                    $tabNAV[$k]['note'][$j]=$note;
-                    //    $tabNAV[$k]['notetype']['type']=$typeNV[$j]['type'];
-
-                    // if($i==0)$tabNAV[$k]['periode']=$note[0]->getPeriode()->getNomPeriode();
-
+                    for ($m=0;$m<sizeof($note);$m++)
+                    {
+                        $tabNAV[$k]['note'][$j]['noteDetails'][$m]['eleve']=$note[$m]['nom']." ".$note[$m]['prenom'];
+                        $tabNAV[$k]['note'][$j]['noteDetails'][$m]['note']=$note[$m]['note'];
+                       $tabNAV[$k]['note'][$j]['noteDetails'][$m]['obs']=$this->getObservation($note[$m]['note']);
+                    }
                 }
                 $k++;
             }
@@ -107,10 +110,10 @@ class NotesController extends Controller
         }
         return $tabNAV;
     }
-    private function  noteRejet()
+
+    private function  noteRejet($cm)
     {
         $em=$this->getDoctrine()->getManager();
-        $cm=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findAll();
         $tabNAV=array();
         $k=0;
         for ($i=0;$i<sizeof($cm);$i++)
@@ -121,29 +124,30 @@ class NotesController extends Controller
             {
 
 
-                $tabNAV[$k]['annee']=$cm[$i]->getAnnee()->getDateDebut()->format("d-m-Y H:i:s").'-'.$cm[$i]->getAnnee()->getDateFin()->format("d-m-Y H:i:s");
-                $tabNAV[$k]['professeur']=$cm[$i]->getProfesseur()->getNom().'-'.$cm[$i]->getProfesseur()->getPrenom();
-                $tabNAV[$k]['classe']=$cm[$i]->getTypeClasse()->getClasse()->getLibelle().' '.$cm[$i]->getTypeClasse()->getLibelle();
-                $tabNAV[$k]['matiere']=$cm[$i]->getClasseMatiere()->getMatiere()->getLibelle();
-                $tabNAV[$k]['coefficient']=$cm[$i]->getClasseMatiere()->getCoefficient();
-                $tabNAV[$k]['effectif']=sizeof($em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$cm[$i]->getTypeClasse()->getId())));
-                $tabNAV[$k]['idCm']=$cm[$i]->getId();
 
                 for ($j=0;$j<sizeof($typeNV);$j++)
                 {
-                    $note=$em->getRepository(Note::class)->findBy(array('classe_matiere_professeur_annee'=>$cm[$i]->getId(),'type'=>$typeNV[$j]['type']));
+                    $tabNAV[$k]['annee']=$cm[$i]->getAnnee()->getDateDebut()->format("d-m-Y H:i:s").'-'.$cm[$i]->getAnnee()->getDateFin()->format("d-m-Y H:i:s");
+                    $tabNAV[$k]['professeur']=$cm[$i]->getProfesseur()->getNom().'-'.$cm[$i]->getProfesseur()->getPrenom();
+                    $tabNAV[$k]['classe']=$cm[$i]->getTypeClasse()->getClasse()->getLibelle().' '.$cm[$i]->getTypeClasse()->getLibelle();
+                    $tabNAV[$k]['matiere']=$cm[$i]->getClasseMatiere()->getMatiere()->getLibelle();
+                    $tabNAV[$k]['coefficient']=$cm[$i]->getClasseMatiere()->getCoefficient();
+                    $tabNAV[$k]['effectif']=sizeof($em->getRepository(EleveTypeClasse::class)->findBy(array('type_classe'=>$cm[$i]->getTypeClasse()->getId())));
+                    $tabNAV[$k]['idCm']=$cm[$i]->getId();
+                    $tabNAV[$k]['periode']=$typeNV[$j]['nom_periode'];
+                    $datetimer=substr($typeNV[$j]['dateCreation'],0,13);
+                    $note=$em->getRepository(Note::class)->typeNoteR($cm[$i]->getId(),$datetimer);
 
-                    for ($l=0;$l<sizeof($note);$l++)
+                    $tabNAV[$k]['note'][$j]['type']=$typeNV[$j]['type'];
+                    $tabNAV[$k]['note'][$j]['param']=$datetimer;
+                    $tabNAV[$k]['note'][$j]['date']=$typeNV[$j]['dateCreation'];
+
+                    for ($m=0;$m<sizeof($note);$m++)
                     {
-                        $tabNAV[$k]['note'][$j][$l]['valeur']=$note[$l]->getNote();
-                        $tabNAV[$k]['note'][$j][$l]['type']=$note[$l]->getType();
-                        $el=$em->getRepository(Eleve::class)->find($note[$l]->getEleve());
-                        $tabNAV[$k]['note'][$j][$l]['eleve']=$el->getPrenom().'  '.$el->getNom();
+                        $tabNAV[$k]['note'][$j]['noteDetails'][$m]['eleve']=$note[$m]['nom']." ".$note[$m]['prenom'];
+                        $tabNAV[$k]['note'][$j]['noteDetails'][$m]['note']=$note[$m]['note'];
+                        $tabNAV[$k]['note'][$j]['noteDetails'][$m]['obs']=$this->getObservation($note[$m]['note']);
                     }
-                    //    $tabNAV[$k]['notetype']['type']=$typeNV[$j]['type'];
-
-                    // if($i==0)$tabNAV[$k]['periode']=$note[0]->getPeriode()->getNomPeriode();
-
                 }
                 $k++;
             }
@@ -151,86 +155,25 @@ class NotesController extends Controller
         }
         return $tabNAV;
     }
-    private function fiche($tc,$cm,$p)
-    {
-        $tci=$tc;
-        $cmi=$cm;
-        $pi=$p;
-
-        $em=$this->getDoctrine()->getManager();
-        $tc=$em->getRepository(TypeClasse::class)->find($tci);
-        $cm=$em->getRepository(ClasseMatiere::class)->find($cmi);
-        $p=$em->getRepository(Periode::class)->find($pi);
-        $classprof=null;
-        if(sizeof($em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('type_classe'=>$tci,'classe_matiere'=>$cmi)))>0){
-            $classprof=$em->getRepository(ClasseMatiereProfesseurAnnee::class)->findBy(array('type_classe'=>$tci,'classe_matiere'=>$cmi))[0];
-            $prof=$em->getRepository(Professeur::class)->find($classprof->getProfesseur()->getId());
-
-        }
-        $eleve=$em->getRepository(EleveTypeClasse::class)->findBy(array("type_classe"=>$tci));
-
-        $em=$this->getDoctrine()->getManager();
-        $tab=array();
-        for ($i=0; $i<sizeof($eleve);$i++)
-        {
-            $notes_interro=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>"validé",'type'=>"interro"));
-            $notes_devoir=$em->getRepository(Note::class)->findBy(array("eleve"=>$eleve[$i]->getEleve()->getId(),'periode'=>$pi,'classe_matiere_professeur_annee'=>$classprof->getId(),'statut'=>1,'type'=>"devoir"));
-            if ($notes_interro==null)
-            {
-                $tab[$i]['interro1']=0;
-                $tab[$i]['interro2']=0;
-            }else{
-                if (isset($notes_interro[0])) $tab[$i]['interro1']=$notes_interro[0]->getNote();
-                if (isset($notes_interro[1]) )$tab[$i]['interro2']=$notes_interro[1]->getNote();
-                if (!isset($notes_interro[1]) )$tab[$i]['interro2']=0;
-            }
-            $moyint=($tab[$i]['interro1']+$tab[$i]['interro2'])/2;
-            $tab[$i]['MINT']=substr($moyint,0,4);;
-            if ($notes_devoir==null)
-            {
-                $tab[$i]['devoir1']=0;
-                $tab[$i]['devoir2']=0;
-            }else{
-                if (isset($notes_devoir[0])) $tab[$i]['devoir1']=$notes_devoir[0]->getNote();
-                if (isset($notes_devoir[1]) )$tab[$i]['devoir2']=$notes_devoir[1]->getNote();
-                if (!isset($notes_devoir[1]) )$tab[$i]['devoir2']=0;
-            }
-            $tab[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
-            $moy=($moyint+$tab[$i]['devoir1']+$tab[$i]['devoir2'])/3;
-            $tab[$i]['Moy']=substr($moy,0,4);
-            $tab[$i]['MoyC']=substr( $moy*$cm->getCoefficient(),0,4);
-        }
-
-        return array('tab'=>$tab,
-            'tc'=>$tc,
-            'cm'=>$cm,
-            'p'=>$p,
-            'el'=>$eleve,
-        );
-    }
 
     /**
      * Lists all notes entities.
      *
-     * @Route("/notes/validation/{idCm}/{type}", name="notes_validation")
+     * @Route("/notes/validation/{idCm}/{date_param}", name="notes_validation")
      * @Method("GET")
      */
-    public  function ValiderNoteAction($idCm,$type)
+    public  function ValiderNoteAction($idCm,$date_param)
     {
+
         $em=$this->getDoctrine()->getManager();
-        $notes =$em->getRepository(Note::class)->findBy(array('classe_matiere_professeur_annee'=>$idCm,'type'=>$type));
+        $notes =$em->getRepository(Note::class)->typeNoteNV2($idCm,$date_param);
 
         for ($i=0; $i<sizeof($notes);$i++)
         {
-            $actif=$em->getRepository(Note::class)->find($notes[$i]->getId());
+            $actif=$em->getRepository(Note::class)->find($notes[$i]['id']);
             $actif->setStatut('validé');
             $em->persist($actif);
         }
-
-
-        //notif parent
-
-
         $em->flush();
        return $this->redirectToRoute('notes_index',array('id'=>1));
     }
@@ -255,17 +198,17 @@ class NotesController extends Controller
     /**
      * Lists all notes entities.
      *
-     * @Route("/notes/rejet/{idCm}/{type}", name="notes_rejet")
+     * @Route("/notes/rejet/{idCm}/{date_param}", name="notes_rejet")
      * @Method("GET")
      */
-    public  function RejetNoteAction($idCm,$type)
+    public  function RejetNoteAction($idCm,$date_param)
     {
         $em=$this->getDoctrine()->getManager();
-        $notes =$em->getRepository(Note::class)->findBy(array('classe_matiere_professeur_annee_id'=>$idCm,'type'=>$type));
+        $notes =$em->getRepository(Note::class)->typeNoteNV($idCm,$date_param);
 
         for ($i=0; $i<sizeof($notes);$i++)
         {
-            $actif=$em->getRepository(Note::class)->find($notes[$i]->getId());
+            $actif=$em->getRepository(Note::class)->find($notes[$i]['id']);
             $actif->setStatut('non validé');
             $em->persist($actif);
         }
@@ -274,4 +217,36 @@ class NotesController extends Controller
         return $this->redirectToRoute('notes_index',array('id'=>2));
     }
 
+    private   function  getObservation($note){
+        $etat="";
+        $note=explode(".",$note)[0];
+        if ($note==0)
+        {
+            $etat="Nul";
+        }elseif ($note>0 and $note<4)
+        {
+            $etat="Mal";
+        }elseif ($note>=4 and $note<8)
+        {
+            $etat="médiocre";
+        }elseif ($note>=8 and $note<12)
+        {
+            $etat="Passable";
+        }
+        elseif ($note>=12 and $note<14)
+        {
+            $etat="assez bien";
+
+        }elseif ($note>=14 and $note<16)
+        {
+            $etat="Bien";
+        }elseif ($note>=16 and $note<20)
+        {
+            $etat="Très bien";
+        }elseif ($note == 20)
+        {$etat="Excellent";
+
+        }
+        return $etat;
+    }
 }

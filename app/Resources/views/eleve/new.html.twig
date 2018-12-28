@@ -62,6 +62,7 @@
                         <label>Classe</label>
                         <select name="classe" id="classe" class="form-control">
                             {% for classe in classes %}
+                            <option value="0"></option>
                             <option value="{{ classe.id }}">{{ classe.libelle }}</option>
                             {% endfor %}
                         </select>

@@ -24,6 +24,7 @@
         <a href="{{ path('notes_index',{'id':1}) }}" class="btn  {% if noteNV is defined %}btn-primary {% else %}btn-default {% endif %}  ">En attente de validation</a>
         <a href="{{ path('notes_index',{'id':2}) }}" class="btn {% if noteR is defined %}btn-primary {% else %}btn-default {% endif %} ">Rejeté</a>
     </div>
+
     {% if noteNV is defined %}
         {% if noteNV == null %}
             <h1 class="text-muted text-center">Aucune note en  attente de validation</h1>
@@ -38,7 +39,7 @@
                 <h6><b>Coefficient</b> : {{ i['coefficient'] }}</h6>
                 <h6><b>Classe</b> : {{ i['classe'] }}</h6>
                 <h6><b>Effectif</b> :{{ i['effectif'] }}</h6>
-                <h6><b>Période</b> : 1 semestre</h6>
+                <h6><b>Période</b> : {{ i['periode'] }}</h6>
                 <div class="card-body">
                     <div class="card">
                         <div class="card-header">
@@ -49,30 +50,31 @@
                         {% for l in i['note'] %}
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
+                                <caption>Date de composition :  {{ l['date'] }}</caption>
                                 <thead>
                                 <tr>
                                     <th>N°</th>
                                     <th>Elève</th>
-                                    <th>{{ l[0]['type'] }}</th>
+                                    <th>{{ l['type'] }}</th>
                                     <th>Obs.</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
-                                {% for k in l %}
+                                {% for k in  l['noteDetails'] %}
                                     <tr>
                                     <td>{{ loop.index }}</td>
-                                    <td>{{ k['eleve'] }}</td>
-                                    <td>{{ k['valeur'] }}</td>
-                                    <td></td>
+                                    <td>{{ k['eleve']}}</td>
+                                    <td>{{ k['note'] }}</td>
+                                    <td>{{ k['obs'] }}</td>
                                     </tr>{% endfor %}
                                 </tbody>
                                 <tfoot>
                                 </tfoot>
                             </table>
                             <div align="center">
-                               <a href="{{ path('notes_rejet',{'idCm':i['idCm'],'type': l[0]['type'] }) }}" onclick="return confirm('voulez-vous vraiment rejeter ces notes ?')" class="btn btn-danger"> Rejeter cette composition </a>
-                               <a href="{{ path('notes_validation',{'idCm':i['idCm'],'type': l[0]['type'] }) }}" onclick="return confirm('voulez-vous vraiment valider ces notes ?')" class="btn btn-success"> Valider cette composition </a>
+                               <a href="{{ path('notes_rejet',{'idCm':i['idCm'],'date_param': l['param'] }) }}" onclick="return confirm('voulez-vous vraiment rejeter ces notes ?')" class="btn btn-danger"> Rejeter cette composition </a>
+                               <a href="{{ path('notes_validation',{'idCm':i['idCm'],'date_param': l['param'] }) }}" onclick="return confirm('voulez-vous vraiment valider ces notes ?')" class="btn btn-success"> Valider cette composition </a>
                             </div>
                         </div>
 
@@ -92,13 +94,13 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h6><b>Note Rejeter</b></h6>
+                    <h6><b>Note en attente validation</b></h6>
                     <h6><b>Professeur</b> : {{ i['professeur'] }}</h6>
                     <h6><b>Matiere</b> :{{ i['matiere'] }}</h6>
                     <h6><b>Coefficient</b> : {{ i['coefficient'] }}</h6>
                     <h6><b>Classe</b> : {{ i['classe'] }}</h6>
                     <h6><b>Effectif</b> :{{ i['effectif'] }}</h6>
-                    <h6><b>Période</b> : 1 semestre</h6>
+                    <h6><b>Période</b> : {{ i['periode'] }}</h6>
                     <div class="card-body">
                         <div class="card">
                             <div class="card-header">
@@ -109,29 +111,30 @@
                             {% for l in i['note'] %}
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
+                                        <caption>Date de composition :  {{ l['date'] }}</caption>
                                         <thead>
                                         <tr>
                                             <th>N°</th>
                                             <th>Elève</th>
-                                            <th>{{ l[0]['type'] }}</th>
+                                            <th>{{ l['type'] }}</th>
                                             <th>Obs.</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
-                                        {% for k in l %}
+                                        {% for k in  l['noteDetails'] %}
                                             <tr>
                                             <td>{{ loop.index }}</td>
-                                            <td>{{ k['eleve'] }}</td>
-                                            <td>{{ k['valeur'] }}</td>
-                                            <td></td>
+                                            <td>{{ k['eleve']}}</td>
+                                            <td>{{ k['note'] }}</td>
+                                            <td>{{ k['obs'] }}</td>
                                             </tr>{% endfor %}
                                         </tbody>
                                         <tfoot>
                                         </tfoot>
                                     </table>
                                     <div align="center">
-                                        <a href="{{ path('notes_validation',{'idCm':i['idCm'],'type': l[0]['type'] }) }}" onclick="return confirm('voulez-vous vraiment valider ces notes ?')" class="btn btn-success"> Valider cette composition </a>
+                                        <a href="{{ path('notes_validation',{'idCm':i['idCm'],'date_param': l['param'] }) }}" onclick="return confirm('voulez-vous vraiment valider ces notes ?')" class="btn btn-success"> Valider cette composition </a>
                                     </div>
                                 </div>
 
@@ -142,6 +145,7 @@
                 </div>
             </div>
         </div>
+
     {% endfor %}
 {% endif %}
 {% endblock %}
