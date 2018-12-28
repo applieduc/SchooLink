@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="`user`")
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
-* @DiscriminatorMap({"censeur" = "Censeur", "professeur" = "Professeur", "parent"="Parents", "adminGen" ="AdminGen"})
+* @DiscriminatorMap({"censeur" = "Censeur", "adminGen" ="AdminGen"})
  */
 abstract class User extends BaseUser
 {

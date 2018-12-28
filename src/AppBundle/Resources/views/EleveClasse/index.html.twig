@@ -37,8 +37,11 @@
                         <tr class="text-center">
                             <th>Classe</th>
                             <th>Effectif</th>
+                            {% if app.session.has('annee') %}
                             {% if app.session.get('annee').cloture==0 %} 
                             <th>Actions</th>
+                            {% endif %}
+
                             {% endif %}
                         </tr>
                         </thead>
@@ -48,6 +51,7 @@
 
                             <td><a href="{{ path('eleve_type_index',{'classeType':item.type_classe.id}) }}">{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</a></td>
                             <td>{{ item.eff }}</td>
+                            {% if app.session.has('annee') %}
                             {% if app.session.get('annee').cloture==0 %} 
                             <td class="d-flex justify-content-center">
                                 <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('show_type_edit',{'type':item.type_classe.id}) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
@@ -57,6 +61,7 @@
                                     <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="#"><i class="fa fa-folder text-danger"></i></a></div>
                                 {% endif %}
                             </td>
+                            {% endif %}
                             {% endif %}
                         </tr>
                         {% endfor %}

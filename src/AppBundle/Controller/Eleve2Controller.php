@@ -47,14 +47,20 @@ class Eleve2Controller extends Controller
     public function newAction(Request $request,TypeClasse $classeType)
     {
         $em = $this->getDoctrine()->getManager();
-        $elve=new EleveTypeClasse();
-        $elve->setEleve($em->getRepository(Eleve::class)->find($request->get('eleve')));
-        $elve->setTypeClasse($classeType);
-        $elve->setArchiver(0);
-        $elve->setDateCreation(new \DateTime());
-        $elve->setDateModification(new \DateTime());
-        $em->persist($elve);
-        $em->flush();
+        $annee=$this->get('session')->get('annee');
+        $eleve=$em->getRepository(Eleve::class)->find($request->get('eleve'));
+        $e_t_p=$em->getRepository(EleveTypeClasse::class)->findOneBy(array('eleve'=>$eleve->getId(),'type_classe'=>$classeType->getId()));
+        if($e_t_p->getDateCreation()< $annee->getDateDebut()){
+            $elve=new EleveTypeClasse();
+            $elve->setEleve();
+            $elve->setTypeClasse($classeType);
+            $elve->setArchiver(0);
+            $elve->setDateCreation(new \DateTime());
+            $elve->setDateModification(new \DateTime());
+            $em->persist($elve);
+            $em->flush();
+        }
+     
         return $this->redirectToRoute('eleve_type_index',array('classeType'=>$classeType->getId()));
     }
 
@@ -90,9 +96,13 @@ class Eleve2Controller extends Controller
         $i=0;
         foreach ($eleves as $val) {
             $eleve = $em->getRepository('AppBundle:EleveTypeClasse')->findOneBy(array('eleve' =>$val->getEleve()->getId(),'archiver'=>false));
+           
             if($eleve!=null ){
+                if($eleve->getDateCreation() >= $annee->getDateDebut()){
                     $eleves_not_classe[$i]=$val->getEleve();
                     $i++;
+                }
+                   
 
 
             }elseif ($eleve==null){

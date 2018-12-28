@@ -53,8 +53,10 @@
                         </li>
                     </ul>
                     <div class="row">
+                    {% if app.session.has('annee') %}
                     {% if app.session.get('annee').cloture==0 %} 
                     <div class="col-lg-4 offset-4"><a href="{{ path('ecole_professeur_edit', { 'id': professeur.id }) }}" class="btn btn-primary btn-block"><b>Modifier</b></a></div>
+                    {% endif %}
                     {% endif %}
                     {#<div class="col-lg-6"><a href="" class="btn btn-danger btn-block" ><b>Supprimer</b></a></div>#}
                     </div>

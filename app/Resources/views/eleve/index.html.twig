@@ -23,9 +23,11 @@
     <div class="card mb-5">
         <div class="card-header">
             <h3 class="card-title">Liste des élèves actifs
+                    {% if app.session.has('annee') %}
                     {% if app.session.get('annee').cloture==0 %} 
                 <a type="button" href="{{ path('eleve_new') }}" class="btn btn-primary btn-sm pull-right rounded"    >Ajouter</a>
                     
+                    {% endif %}
                     {% endif %}
                 {#<a type="button" href="#eleve_modal" class="btn btn-primary btn-sm pull-right rounded" data-toggle="modal">Ajouter</a>#}
             </h3>
@@ -59,10 +61,12 @@
                         <td class="text-center">
                             <div class=" row d-column justify-content-center">
                                 <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('eleve_show', { 'id': item.eleve.id })}}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                                {% if app.session.has('annee') %}
                                 {% if app.session.get('annee').cloture==0 %} 
                                 <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('eleve_edit', { 'id': item.eleve.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
 
                                 <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('eleve_archive', { 'id': item.eleve.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                                {% endif %}
                                 {% endif %}
                             </div>
                             {#<div class="dropdown navbar">

@@ -53,7 +53,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </form>
         </div>   
         <div>
+            {% if app.session.has('annee') %}
             <span>Année Académique : {{ app.session.get('annee').dateDebut |date('Y')}} - {{ app.session.get('annee').dateFin |date('Y')}}</span>
+                
+            {% endif %}
+        
         </div>    
         <div class="user-panel ml-auto d-flex">
         

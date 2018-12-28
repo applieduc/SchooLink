@@ -20,10 +20,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="`user`")
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
-* @DiscriminatorMap({"censeur" = "Censeur", "professeur" = "Professeur", "parent"="Parents", "adminGen" ="AdminGen"})
+* @DiscriminatorMap({"censeur" = "Censeur", "adminGen" ="AdminGen"})
  */
 abstract class User extends BaseUser
 {
+
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -31,19 +33,5 @@ abstract class User extends BaseUser
      */
     protected $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="show_password", type="string")
-     */
-    private $show_password;
 
-
-    public function hash($password){
-
-    $options = [
-    'cost' => 13
-     ];
-        $passwordhash = password_hash($password, PASSWORD_BCRYPT, $options);
-    }
 }

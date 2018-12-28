@@ -46,10 +46,6 @@ class Censeur extends User
     private $email_mobile;
 
 
-
-
-
-
     /**
      * @var string
      *

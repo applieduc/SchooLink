@@ -58,8 +58,10 @@
                                 <tr>
                                     <th>Matiere</th>
                                     <th>Professeur</th>
+                                    {% if app.session.has('annee') %}
                                     {% if app.session.get('annee').cloture==0 %}
                                     <th>Action</th>
+                                    {% endif %}
                                     {% endif %}
                                 </tr>
                             </thead>
@@ -71,6 +73,7 @@
                                 <tr>
                                     <td>{{ row.matiere.libelle }}</td>
                                     <td>{{ row.professeur.nom }} {{ row.professeur.prenom }}</td>
+                                    {% if app.session.has('annee') %}
                                     {% if app.session.get('annee').cloture==0 %}
                                     <td>
                                         <div class=" row d-column justify-content-center">     
@@ -78,6 +81,7 @@
                                            
                                         </div>
                                     </td>
+                                    {% endif %}
                                     {% endif %}
                                 </tr>
                             {% endfor %}

@@ -39,8 +39,10 @@
                     <th>Prenom</th>
                     <th>Sexe</th>
                     <th>Date de naissance</th>
+                    {% if app.session.has('annee') %}
                     {% if app.session.get('annee').cloture==0 %} 
                     <th class="text-center">Actions</th>
+                    {% endif %}
                     {% endif %}
                 </tr>
                 </thead>
@@ -53,6 +55,7 @@
                         <td>{{ eleve_type.eleve.prenom }}</td>
                         <td>{% if eleve_type.eleve.sexe == 1 %}M {% else %}F{% endif %}</td>
                         <td>{% if eleve_type.eleve.dateNaissance %}{{ eleve_type.eleve.dateNaissance|date('d-m-Y') }}{% endif %}</td>
+                        {% if app.session.has('annee') %}
                         {% if app.session.get('annee').cloture==0 %} 
                         <td>
                             <div class=" row d-column justify-content-center">
@@ -70,6 +73,7 @@
                                 </div>
                             </div>#}
                         </td>
+                        {% endif %}
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -98,7 +102,7 @@
                         </select>
                     </div>
 
-                    <input type="submit" value="Créer"  class="btn btn-success"  {% if app.session.get('annee').cloture==1 %} disabled {% endif %} />
+                    <input type="submit" value="Créer"  class="btn btn-success" {% if app.session.has('annee') %} {% if app.session.get('annee').cloture==1 %} disabled {% endif %} {% endif %}/>
                     </form>
                 </div>
 

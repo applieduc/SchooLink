@@ -28,6 +28,7 @@
                        Matière</span>
                         <span class="pull-right" >
                         <a href="{{ path('class_mat_index',{'id':classe_id}) }}"><i class="fa fa-backward text-dark"></i></a>
+                        {% if app.session.has('annee') %}
                         {% if app.session.get('annee').cloture==0 %} 
                         <a href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe_id }) }}"><i class="fa fa-edit text-warning"></i></a>
                             {% if classeMatiere.archiver %}
@@ -36,7 +37,7 @@
                                 <a href="{{ path('class_mat_archive', { 'id': classeMatiere.id ,'cl':classe_id }) }}"><i class="fa fa-folder text-danger"></i></a>
                             {% endif %}
                         {% endif %}   
-
+                            {% endif %}
                     </span>
                     </div>
 

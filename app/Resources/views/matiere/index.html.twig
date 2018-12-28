@@ -49,6 +49,7 @@
                 <td>
                     <div class=" row d-column justify-content-center">
                         <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('matiere_show', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                        {% if app.session.has('annee') %}
                         {% if app.session.get('annee').cloture==0 %} 
                         <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('matiere_edit', { 'id': matiere.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
 
@@ -56,6 +57,7 @@
                             <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('matiere_desarchive', { 'id': matiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
                         {% else %}
                             <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                        {% endif %}
                         {% endif %}
                         {% endif %}
                     </div>
@@ -84,7 +86,7 @@
                 <label>Libelle</label>
                 {{ form_widget(form.libelle,{'attr':{'class':'form-control'}}) }}
             </div>
-            <input type="submit" value="Ajouter"  class="btn btn-success"   {% if app.session.get('annee').cloture==1 %} disabled {% endif %} />
+            <input type="submit" value="Ajouter"  class="btn btn-success"    {% if app.session.has('annee') %} {% if app.session.get('annee').cloture==1 %} disabled {% endif %} {% endif %} />
             {{ form_end(form) }}
         </div>
 

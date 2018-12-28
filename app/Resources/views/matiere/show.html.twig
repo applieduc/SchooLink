@@ -28,6 +28,7 @@
                        Classe</span>
                         <span class="pull-right" >
                         <a href="{{ path('matiere_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        {% if app.session.has('annee') %}
                         {% if app.session.get('annee').cloture==0 %} 
                         <a href="{{ path('matiere_edit', { 'id': matiere.id }) }}"><i class="fa fa-edit text-warning"></i></a>
                             {% if matiere.archiver %}
@@ -35,7 +36,8 @@
                         {% else %}
                                 <a href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a>
                             {% endif %}
-                        {% endif %}   
+                        {% endif %}  
+                        {% endif %} 
  
                     </span>
                     </div>
