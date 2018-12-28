@@ -89,8 +89,8 @@ class ClasseMatiereProfesseurAnneeController extends Controller
      */
     public function enseignementAction(Request $request, $id)
     {
-        $session = new  Session();
-        $anne = $session->get('annee');
+       
+        $anne = $this->get('session')->get('annee');
         $em = $this->getDoctrine()->getManager();
 
         $classeMatiereProfesseurAnnee = new Classematiereprofesseurannee();

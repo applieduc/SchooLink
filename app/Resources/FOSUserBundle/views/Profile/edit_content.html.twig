@@ -1,8 +1,22 @@
 {% trans_default_domain 'FOSUserBundle' %}
+<div class="col-lg-6 offset-lg-3">
+        <div class="card card-primary card-outline">
+            <div class="card-header box-profile">
+                Modification des identifiants
+            </div>
+            <div class="card-body box-profile">
+        
+        <div class="fos_user_user_show">
+                {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+                {{ form_widget(form) }}
+                <div>
+                    <input type="submit" class="btn btn-primary btn-block" value="{{ 'profile.edit.submit'|trans }}" />
+                </div>
+            {{ form_end(form) }}
+        </div>
 
-{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+
     </div>
-{{ form_end(form) }}
+</div>
+</div>
+

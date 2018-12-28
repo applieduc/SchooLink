@@ -34,7 +34,9 @@ class DefaultController extends Controller
         }
        
         $this->get('session')->set('annee',$annee);
-        return $this->redirect();
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
     }
 
     /**
@@ -86,7 +88,7 @@ class DefaultController extends Controller
     public function showAction(Ecole $ecole)
     {
         $em = $this->getDoctrine()->getManager();
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $annee=$this->get('session')->get('annee');
         if($annee!=null){
             $eleve=   $em->getRepository(EleveClasseEcoleAnnee::class)->findBy(array('ecole' => $ecole->getId(),'annee'=>$annee->getId() ));
         

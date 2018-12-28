@@ -35,7 +35,7 @@
 
         <thead>
             <tr>
-                <th>Id</th>
+               
                 <th>Matière</th>
                 <th>Coefficient</th>
                 <th>Statut</th>
@@ -46,22 +46,24 @@
         {% for classeMatiere in classeMatieres %}
 
             <tr>
-                <td><a href="{{ path('class_mat_show', { 'id': classeMatiere.id,'cl':classe.id }) }}">{{ classeMatiere.id}}</a></td>
+              
                 <td>{{ classeMatiere.matiere.libelle }}</td>
                 <td>{{ classeMatiere.coefficient }}</td>
         
                 <td>{% if classeMatiere.archiver %}<span class="badge badge-danger">Matière non enseignée</span>{% else %}<span class="badge badge-success">Matière enseignée</span>{% endif %}</td>
                 <td>
                     <div class=" row d-column justify-content-center">
-                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
                         <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('class_mat_show', { 'id': classeMatiere.id ,'cl':classe.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                        
+                        {% if app.session.get('annee').cloture==0 %}  
+                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
                           {% if classeMatiere.archiver %}
                         <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id ,'cl':classe.id}) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
-{% else %}
-    <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('class_mat_archive', { 'id': classeMatiere.id,'cl':classe.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                        {% else %}
+                            <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('class_mat_archive', { 'id': classeMatiere.id,'cl':classe.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
                         {% endif %}
                         <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('enseignement_new', { 'id': classeMatiere.id}) }}" rel="#"><i class="fa fa-user-circle text-info"></i></a></div>
-
+                        {% endif %}
                     </div>
                 </td>
 
@@ -100,7 +102,7 @@
                 
                 {{ form_widget(form.coefficient,{'attr':{'class':'form-control'}}) }}
             </div>
-            <input type="submit" value="Ajouter"  class="btn btn-success"/>
+            <input type="submit" value="Ajouter"  class="btn btn-success"   {% if app.session.get('annee').cloture==1 %} disabled {% endif %} />
             {{ form_end(form) }}
         </div>
 

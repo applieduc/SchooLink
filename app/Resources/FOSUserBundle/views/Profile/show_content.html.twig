@@ -1,6 +1,17 @@
 {% trans_default_domain 'FOSUserBundle' %}
+<div class="col-lg-6 offset-lg-3">
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+        
+        <div class="fos_user_user_show">
+            <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+            <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+        </div>
 
-<div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+        <a href="{{ path('fos_user_change_password') }}" class="btn btn-primary btn-block"><b>Modifier Votre Mot de Passe</b></a>
+        <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary btn-block"><b>Modifier Vos identifiants</b></a>
+
+    </div>
 </div>
+</div>
+

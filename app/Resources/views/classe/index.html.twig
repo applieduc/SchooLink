@@ -77,14 +77,17 @@
                     <div class=" row d-column justify-content-center">
 
                        
-                        <div class="">  <a class="dropdown-item modif btn btn-sm btn-secondary" title="Liste des matieres" href="{{ path('class_mat_index', { 'id': classe.id }) }}" rel="#"><i class="fa fa-list text-secondary"></i></a></div>
+                        <div class="">  <a class="btn"   title="Liste des matieres" href="{{ path('class_mat_index', { 'id': classe.id }) }}" rel="#"><i class="fa fa-list text-secondary"></i></a></div>
                        
-                        <div class="">      <a href="{{ path('classe_edit', { 'id': classe.id }) }}"><i class="fa fa-edit text-warning"></i></a></div>
-                        <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('classe_show', { 'id': classe.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
-                        {% if classe.archiver %}
-                            <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('classe_desarchive', { 'id': classe.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
-                        {% else %}
-                            <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('classe_archive', { 'id': classe.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                        <div class="">  <a class="btn" href="{{ path('classe_show', { 'id': classe.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                        {% if app.session.get('annee').cloture==0 %}  
+                            <div class=""> <a  class="btn" href="{{ path('classe_edit', { 'id': classe.id }) }}" class="" {% if app.session.get('annee').cloture==1 %} disabled {% endif %}><i class="fa fa-edit text-warning"></i></a></div>
+                        
+                            {% if classe.archiver %}
+                                <div class=""> <a class="btn" {% if app.session.get('annee').cloture==1 %} disabled {% endif %}   href="{{ path('classe_desarchive', { 'id': classe.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
+                            {% else %}
+                                <div class=""> <a class="btn" {% if app.session.get('annee').cloture==1 %} disabled {% endif %}   href="{{ path('classe_archive', { 'id': classe.id }) }}"><i class="fa fa-folder text-danger"></i></a></div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </td>
@@ -109,7 +112,7 @@
                             <label for="">Type par defaut</label>
                             <input type="text" name="default" class="form-control" required>
                     </div>
-                    <button class="btn btn-success pull-right" type="submit"> Ajouter  </button>
+                    <button class="btn btn-success pull-right  " {% if app.session.get('annee').cloture==1 %} disabled {% endif %} type="submit"> Ajouter  </button>
                     {{ form_end(form) }}
 
                     {#<ul>#}

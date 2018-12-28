@@ -37,7 +37,9 @@
                         <tr class="text-center">
                             <th>Classe</th>
                             <th>Effectif</th>
+                            {% if app.session.get('annee').cloture==0 %} 
                             <th>Actions</th>
+                            {% endif %}
                         </tr>
                         </thead>
                         <tbody>
@@ -46,6 +48,7 @@
 
                             <td><a href="{{ path('eleve_type_index',{'classeType':item.type_classe.id}) }}">{{ item.type_classe.classe.libelle }} {{ item.type_classe.libelle }}</a></td>
                             <td>{{ item.eff }}</td>
+                            {% if app.session.get('annee').cloture==0 %} 
                             <td class="d-flex justify-content-center">
                                 <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('show_type_edit',{'type':item.type_classe.id}) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
                                 {% if item.type_classe.archiver %}
@@ -54,7 +57,7 @@
                                     <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="#"><i class="fa fa-folder text-danger"></i></a></div>
                                 {% endif %}
                             </td>
-
+                            {% endif %}
                         </tr>
                         {% endfor %}
                         </tbody>
@@ -119,7 +122,7 @@
                             <div class="row my-4">
                                 <div class="col-lg-12 form-group d-flex justify-content-center">
                                     <p class="mx-1"><button type="button"  id="close" class="btn btn-default btn-sm tr_font" >Annuler</button></p>
-                                    <p class="mx-1"><button type="submit" id="btn" class="btn btn-sm bg-success tr_font text-white" >valider</button></p>
+                                    <p class="mx-1"><button type="submit" id="btn" class="btn btn-sm bg-success tr_font text-white"   {% if app.session.get('annee').cloture==1 %} disabled {% endif %} >valider</button></p>
                                 </div>
                             </div>
 

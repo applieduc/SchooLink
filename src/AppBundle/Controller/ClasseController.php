@@ -87,9 +87,9 @@ class ClasseController extends Controller
 
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
 
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+       // $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
 
-        $session->set('annee',$annee);
+        //$session->set('annee',$annee);
 
         $censeur=$em->getRepository(Censeur::class)->find($this->getUser()->getId());
 

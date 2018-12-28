@@ -1,0 +1,178 @@
+{% extends 'master.html.twig' %}
+{% block head %} 
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Gestion des Matieres et Professeurs</h1>
+            </div><!-- /.col -->
+            <!--<div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Starter Page</li>
+                </ol>
+            </div>-->
+            <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-lg-6">
+        <div class="user-panel mr-auto  d-flex">
+
+                <form class="form-inline ml-3 my-2"  method="GET" action="{{path('home_prog')}}">
+                    <div class="input-group input-group-sm">
+                        <select class="form-control form-control-navbar" name="classe">
+                            <option value="0"> selectionnez une classe</option>
+                        {% for classe in classes %}
+        
+                        <option value="{{classe.id}}"> {{classe.libelle}}</option>
+                        {% endfor %}
+                        </select>
+                        <div class="input-group-append">
+                        <button class="btn btn-default" type="submit">
+                        Afficher
+                        </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>   
+                {% if type_classes|length ==0 %}
+                    <h4>Aucune sous classe enregistrer</h4>
+                {% endif %}
+                {% for item in type_classes %} 
+                    <div class="card mb-5">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                {{item.type_classe.classe.libelle}}   {{item.type_classe.libelle}}
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                        <table  class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Matiere</th>
+                                    <th>Professeur</th>
+                                    {% if app.session.get('annee').cloture==0 %}
+                                    <th>Action</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if item.data|length ==0 %}
+                                    <tr><td colspan="3" class="text-center">Aucune programmation faite pour cette salle</td></tr>
+                                {% endif %}
+                            {% for row in item.data %}
+                                <tr>
+                                    <td>{{ row.matiere.libelle }}</td>
+                                    <td>{{ row.professeur.nom }} {{ row.professeur.prenom }}</td>
+                                    {% if app.session.get('annee').cloture==0 %}
+                                    <td>
+                                        <div class=" row d-column justify-content-center">     
+                                            <div class="">  <a class="dropdown-item del btn btn-sm btn-danger" href="{{path('del_prog',{'id':row.id})}}" rel="#"><i class="fa fa-remove text-danger"></i></a></div>
+                                           
+                                        </div>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        </div>
+                    </div>
+                {% endfor %}   
+        </div>
+            <div class="col-lg-6 ">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            Attribution de matière à un professeur
+                            <!-- <span class="pull-right">
+                                <a href="{{ path('matiere_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                            </span>-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                       <form action="{{path('save_prog')}}" method="POST">
+                        <div class="form-group">
+                            <label>Classe</label>
+                            <select name="classe" class="form-control" id="classe">
+                                <option>Selectionnez une classe</option>
+                                    {% for classe in classes %}
+        
+                                    <option value="{{classe.id}}"> {{classe.libelle}}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                                <label>Type Classe</label>
+                                <select name="type_classe" class="form-control" id="type_classe">
+                                       
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                    <label>Matiere</label>
+                                    <select name="matiere" class="form-control" id="matiere">
+                                          
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                        <label>Professeur</label>
+                                        <select name="prof" class="form-control" id="">
+                                            {% for prof_ecole in prof_ecoles %}
+                                                <option value="{{prof_ecole.professeur.id}}">{{prof_ecole.professeur.nom}} {{prof_ecole.professeur.prenom}}</option>
+                                            {% endfor %}    
+                                        </select>
+                                    </div>
+                                    
+                        <input type="submit" value="Ajouter"  class="btn btn-success"    />
+                    </form>
+                    </div>
+
+                </div>
+            </div>
+
+</div></section>
+{% endblock %}
+{% block js %}
+
+<script>
+       $('#classe').change(function(){
+        var dataa=new FormData();
+        dataa.append('classe',$(this).val());
+
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            data:dataa,
+            url:"{{ path('get_info')}}",
+            cache: false,
+            contentType:false,
+            processData:false,
+            success:function (data) {
+                $('#type_classe').html('');
+               for(var i=0;i<data.type_classes.length;i++){
+                $('#type_classe').append('<option value="'+data.type_classes[i].id+'">'+data.type_classes[i].libelle+'</option>')
+               }
+
+
+               $('#matiere').html('');
+               for(var j=0;j<data.classe_matieres.length;j++){
+                $('#matiere').append('<option value="'+data.classe_matieres[j].id+'">'+data.classe_matieres[j].libelle+'</option>')
+               }
+                // toastr.success("Nouveau Projet :"+data.pro.nom);
+            }
+
+
+        });
+       });
+</script>
+
+{% endblock %}

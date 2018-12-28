@@ -107,7 +107,8 @@ class EleveController extends Controller
         $deleteForm = $this->createDeleteForm($eleve);
         $em=$this->getDoctrine()->getManager();
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        //$annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $annee=$this->get('session')->get('annee');
         $relate=$em->getRepository(EleveClasseEcoleAnnee::class)->findOneBy(array('ecole'=>$ecole->getId(),'annee'=>$annee->getId(),'eleve'=>$eleve->getId())); 
      
         return $this->render('eleve/show.html.twig', array(
@@ -142,8 +143,9 @@ class EleveController extends Controller
 
             if($request->get('classe')!="0"){
                 $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
-                $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-                $class=$em->getRepository(Classe::class)->find((int)$request->get('classe'));
+               // $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+               $annee=$this->get('session')->get('annee'); 
+               $class=$em->getRepository(Classe::class)->find((int)$request->get('classe'));
                 $relate=$em->getRepository(EleveClasseEcoleAnnee::class)->findOneBy(array('ecole'=>$ecole->getId(),'annee'=>$annee->getId())); 
                 $relate->setClasse($class);
                 $em->persist($relate);

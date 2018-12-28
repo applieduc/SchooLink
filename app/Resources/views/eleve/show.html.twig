@@ -33,11 +33,13 @@
                         Information personnelle</span>
                     <span class="pull-right" >
                         <a href="{{ path('eleve_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        {% if app.session.get('annee').cloture==0 %} 
                         <a href="{{ path('eleve_edit', { 'id': eleve.id }) }}"><i class="fa fa-edit text-warning"></i></a>
                         {% if relate.archiver %}
                             <a href="{{ path('eleve_desarchive', { 'id': eleve.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
                         {% else %}
                             <a href="{{ path('eleve_archive', { 'id': eleve.id }) }}"><i class="fa fa-folder text-danger"></i></a>
+                        {% endif %}
                         {% endif %}
 
                     </span>

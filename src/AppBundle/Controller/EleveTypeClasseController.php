@@ -33,8 +33,8 @@ class EleveTypeClasseController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-
+        //$annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $annee=$this->get('session')->get('annee');
         if($annee==null){
             $this->get('session')->getFlashBag()->set('info','Vous n\'avez aucune année académique en cours');
             return $this->redirectToRoute('classe_index');
@@ -106,22 +106,24 @@ class EleveTypeClasseController extends Controller
     private function get_eleve($classe){
         $em = $this->getDoctrine()->getManager();
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-        $eleves = $em->getRepository('AppBundle:EleveClasseEcoleAnnee')->findBy(array('archiver' =>false,'classe'=>$classe,'ecole'=>$this->getUser()->getEcole()->getId(),'annee'=>$annee));
+       // $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+       $annee=$this->get('session')->get('annee'); 
+       $eleves = $em->getRepository('AppBundle:EleveClasseEcoleAnnee')->findBy(array('archiver' =>false,'classe'=>$classe,'ecole'=>$this->getUser()->getEcole()->getId(),'annee'=>$annee));
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
 
 
         $eleves_not_classe=array();
         $i=0;
         foreach ($eleves as $val) {
+            
             $eleve = $em->getRepository('AppBundle:EleveTypeClasse')->findOneBy(array('eleve' =>$val->getEleve()->getId(),'archiver'=>false));
             if($eleve!=null ){
-                    $eleves_not_classe[$i]=$val;
+                    $eleves_not_classe[$i]=$val->getEleve();
                     $i++;
 
 
             }elseif ($eleve==null){
-                $eleves_not_classe[$i]=$val;
+                $eleves_not_classe[$i]=$val->getEleve();
                 $i++;
             }
 
@@ -163,8 +165,8 @@ class EleveTypeClasseController extends Controller
 
         $session=$this->get("session");
         $ecole=$em->getRepository(Censeur::class)->find($this->getUser()->getId())->getEcole();
-        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-
+        //$annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $annee=$this->get('session')->get('annee');
         $classe_typ_selct='';
        $classe_typ=$em->getRepository(TypeClasse::class)->findBy(array('libelle'=>$request->get('type'),'classe'=>$classe->getId()));
        foreach ($classe_typ as $item){

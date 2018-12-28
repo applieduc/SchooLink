@@ -37,13 +37,16 @@ class ClasseMatiereController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
            
             $em = $this->getDoctrine()->getManager();
+            
+            $matiere= $em->getRepository(Matiere::class)->find((int)$request->get('matiere'));
             $classe= $em->getRepository(Classe::class)->find($id);
             $classeMatiere->setClasse($classe);
-             $verify=$em->getRepository(ClasseMatiere::class)->findOneBy(array('classe'=>$classe->getId(),'matiere'=>$classeMatiere->getMatiere()->getId()));
-             if($verify==null){
+            $classeMatiere->setMatiere($matiere);
+            // $verify=$em->getRepository(ClasseMatiere::class)->findOneBy(array('classe'=>$classe->getId(),'matiere'=>$classeMatiere->getMatiere()->getId()));
+             //if($verify==null){
                 $em->persist($classeMatiere);
                 $em->flush();
-            }
+            //}
            
             return $this->redirectToRoute('class_mat_index', array('id' =>$id ));
         }

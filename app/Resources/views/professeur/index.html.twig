@@ -66,7 +66,9 @@
         <div class="card-header">
             <h3 class="card-title">Liste des professeurs
                 {#<a type="button" href="#eleve_modal" class="btn btn-primary btn-sm pull-right rounded" data-toggle="modal">Ajouter</a>#}
+                {% if app.session.get('annee').cloture==0 %} 
                 <a type="button" href="{{ path('ecole_professeur_new') }}" class="btn btn-primary btn-sm pull-right rounded" >Ajouter</a>
+                {% endif %}
             </h3>
         </div>
         <!-- /.card-header -->
@@ -95,14 +97,18 @@
                         <td>{% if ecole_professeur.archiver %}<span class="badge badge-danger">Desactiver</span>{% else %}<span class="badge badge-success">Activer</span>{% endif %}</td>
                         <td>
                             <div class=" row d-column justify-content-center">
-                                <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('ecole_professeur_edit', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('enseignement_prof_new', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-bookmark-o text-primary"></i></a></div>
+
                                 <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('ecole_professeur_show', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-file-o text-primary"></i></a></div>
+                                {% if app.session.get('annee').cloture==0 %} 
+                                <div class="">  <a class="dropdown-item modif btn btn-sm btn-warning" href="{{ path('ecole_professeur_edit', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-edit text-warning"></i></a></div>
+
                                 {% if ecole_professeur.archiver %}
                                     <div class=""> <a class="dropdown-item btn btn-sm btn-success "  href="{{ path('ecole_professeur_desarchive', { 'id': ecole_professeur.professeur.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a></div>
                                 {% else %}
                                 <div class=""> <a class="dropdown-item btn btn-sm btn-danger "  href="{{ path('ecole_professeur_archive', { 'id': ecole_professeur.professeur.id  }) }}"><i class="fa fa-folder text-danger"></i></a></div>
                                 {% endif %}
-                                <div class="">  <a class="dropdown-item infos btn btn-sm btn-linkedin" href="{{ path('enseignement_prof_new', { 'id': ecole_professeur.professeur.id }) }}" rel="#"><i class="fa fa-bookmark-o text-primary"></i></a></div>
+                                {% endif %}
 
                             </div>
                         </td>

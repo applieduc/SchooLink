@@ -28,13 +28,15 @@
                        Classe</span>
                         <span class="pull-right" >
                         <a href="{{ path('matiere_index') }}"><i class="fa fa-backward text-dark"></i></a>
+                        {% if app.session.get('annee').cloture==0 %} 
                         <a href="{{ path('matiere_edit', { 'id': matiere.id }) }}"><i class="fa fa-edit text-warning"></i></a>
                             {% if matiere.archiver %}
                                 <a href="{{ path('matiere_desarchive', { 'id': matiere.id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
                         {% else %}
                                 <a href="{{ path('matiere_archive', { 'id': matiere.id }) }}"><i class="fa fa-folder text-danger"></i></a>
                             {% endif %}
-
+                        {% endif %}   
+ 
                     </span>
                     </div>
 
@@ -43,10 +45,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center"><table>
                                 <tbody>
-                                <tr>
-                                    <th>Id</th>
-                                    <td>{{ matiere.id }}</td>
-                                </tr>
+                                
                                 <tr>
                                     <th>Libelle</th>
                                     <td>{{ matiere.libelle }}</td>

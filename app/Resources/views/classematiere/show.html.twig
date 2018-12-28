@@ -1,5 +1,23 @@
 {% extends 'master.html.twig' %}
+{% block head %} 
 
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Matières par Classe</h1>
+            </div><!-- /.col -->
+            <!--<div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Starter Page</li>
+                </ol>
+            </div>-->
+            <!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-6 offset-3">
@@ -10,12 +28,14 @@
                        Matière</span>
                         <span class="pull-right" >
                         <a href="{{ path('class_mat_index',{'id':classe_id}) }}"><i class="fa fa-backward text-dark"></i></a>
+                        {% if app.session.get('annee').cloture==0 %} 
                         <a href="{{ path('class_mat_edit', { 'id': classeMatiere.id,'cl':classe_id }) }}"><i class="fa fa-edit text-warning"></i></a>
                             {% if classeMatiere.archiver %}
                                 <a href="{{ path('class_mat_desarchive', { 'id': classeMatiere.id ,'cl':classe_id }) }}"><i class="fa fa-folder-open-o text-success"></i></a>
                         {% else %}
                                 <a href="{{ path('class_mat_archive', { 'id': classeMatiere.id ,'cl':classe_id }) }}"><i class="fa fa-folder text-danger"></i></a>
                             {% endif %}
+                        {% endif %}   
 
                     </span>
                     </div>
@@ -25,10 +45,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center"><table>
                                 <tbody>
-                                <tr>
-                                    <th>Id</th>
-                                    <td>{{ classeMatiere.id }}</td>
-                                </tr>
+                                
                                 <tr>
                                     <th>Matière</th>
                                     <td>{{ classeMatiere.matiere.libelle }}</td>
@@ -39,7 +56,7 @@
                                 </tr>
                                 <tr>
                                     <th>classe</th>
-                                    <td>{{  classeMatiere.coefficient }}</td>
+                                    <td>{{  classeMatiere.classe.libelle }}</td>
                                 </tr>
 
                                 <tr>

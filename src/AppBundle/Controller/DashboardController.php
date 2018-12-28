@@ -21,6 +21,11 @@ class DashboardController extends Controller
         $annees=$em->getRepository(Annee::class)->findBy(array('ecole'=>$censeur->getEcole()->getId()),array('id'=>'DESC'));
         $enc=$em->getRepository(Annee::class)->findBy(array('cloture'=>false,'ecole'=>$censeur->getEcole()->getId()));
         // replace this example code with whatever you need
+        $annee=$em->getRepository(Annee::class)->findOneBy(array('ecole'=>$this->getUser()->getEcole()->getId()));
+
+        if($annee!=null){
+            $this->get('session')->set('annee',$annee);
+        }
         return $this->render('AppBundle:Ecole:index.html.twig',array('annees'=>$annees,'enc'=>$enc));
     }
 

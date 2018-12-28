@@ -3,6 +3,6 @@
 {{ form_start(form, { 'action': path('fos_user_group_edit', {'groupName': group_name}), 'attr': { 'class': 'fos_user_group_edit' } }) }}
     {{ form_widget(form) }}
     <div>
-        <input type="submit" value="{{ 'group.edit.submit'|trans }}" />
+        <input type="submit" class="btn btn-block btn-primary" value="{{ 'group.edit.submit'|trans }}" />
     </div>
 {{ form_end(form) }}

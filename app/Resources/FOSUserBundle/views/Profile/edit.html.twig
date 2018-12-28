@@ -1,5 +1,14 @@
-{% extends "@FOSUser/layout.html.twig" %}
+{% extends 'template/layout.html.twig' %}
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+{% block menu %}
 
-{% block fos_user_content %}
+    {% if is_granted('ROLE_ADMIN_GENERAL') %}
+        {% include'@App/Administration/Partials/_menu_admin.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block contenuPrincipal %}
+
 {% include "@FOSUser/Profile/edit_content.html.twig" %}
-{% endblock fos_user_content %}
+
+{% endblock contenuPrincipal %}

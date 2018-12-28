@@ -51,7 +51,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
             </div>
           </form>
-        </div>       
+        </div>   
+        <div>
+            <span>Année Académique : {{ app.session.get('annee').dateDebut |date('Y')}} - {{ app.session.get('annee').dateFin |date('Y')}}</span>
+        </div>    
         <div class="user-panel ml-auto d-flex">
         
                   <a class="nav-link" data-toggle="dropdown" href="{{path('show_notif')}}">
@@ -131,6 +134,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </a>
                     </li>
                     <li class="nav-item">
+                            <a href="{{path('home_prog')}}" class="nav-link">
+                                <i class="nav-icon fa fa-th"></i>
+                                <p>
+                                    Gestion
+                                </p>
+                            </a>
+                        </li>
+                    
+                    <li class="nav-item">
                         <a href="{{path('ecole_professeur_index')}}" class="nav-link">
                             <i class="nav-icon fa fa-th"></i>
                             <p>
@@ -209,7 +221,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('build/adminlte.js') }}"></script>
 <script>
 
-    setInterval('noti()',5000);
+    //setInterval('noti()',5000);
     function noti(){
         $.ajax({
             type:"POST",
