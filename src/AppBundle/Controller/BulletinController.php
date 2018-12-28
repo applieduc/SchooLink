@@ -90,6 +90,7 @@ class BulletinController extends Controller
         $eleve=$em->getRepository(EleveTypeClasse::class)->findBy(array("type_classe"=>$tc));
         $tab=array();
         $tab2=array();
+        $tab3=array();
         for ($i=0; $i<sizeof($eleve);$i++)
         {
             $totalPoint=0;
@@ -119,7 +120,8 @@ class BulletinController extends Controller
                         $tab[$i]['interro_name'][$n]['nom']=$actif['type'];
                         $tab[$i]['interro_name'][$n]['etat']=$actif['etat'];
                         $tab[$i]['interro_name'][$n]['date']=$datetimer;
-                        $tab[$i]['interro_note'][$n]=$actif['note'];
+                        $tab[$i]['interro_note'][$n]['etat']=$actif['etat'];
+                        $tab[$i]['interro_note'][$n]['note']=$actif['note'];
                         if($actif['etat'] == 1){
                             $totalInterro+=$actif['note'];
                             $diviseurInterro++;
@@ -128,7 +130,8 @@ class BulletinController extends Controller
                     }else{
                         $tab[$i]['interro_name'][$n]['nom']=$allInterro[$n]['type'];
                         $tab[$i]['interro_name'][$n]['etat']=$allInterro[$n]['etat'];
-                        $tab[$i]['interro_note'][$n]=0;
+                        $tab[$i]['interro_note'][$n]['etat']=$allInterro[$n]['etat'];
+                        $tab[$i]['interro_note'][$n]['note']=0;
                     }
 
                 }
@@ -142,7 +145,8 @@ class BulletinController extends Controller
                         $tab[$i]['devoir_name'][$n]['nom']=$actif['type'];
                         $tab[$i]['devoir_name'][$n]['etat']=$actif['etat'];
                         $tab[$i]['devoir_name'][$n]['date']=$datetimer;
-                        $tab[$i]['devoir_note'][$n]=$actif['note'];
+                        $tab[$i]['note'][$j]['dev'][$n]['etat']=$actif['etat'];
+                        $tab[$i]['note'][$j]['dev'][$n]['note']=$actif['note'];
                         if($actif['etat'] == 1)
                         {
                             $totalDevoir+=$actif['note'];
@@ -152,7 +156,8 @@ class BulletinController extends Controller
                     }else{
                         $tab[$i]['devoir_name'][$n]['nom']=$allInterro[$n]['type'];
                         $tab[$i]['devoir_name'][$n]['etat']=$allInterro[$n]['etat'];
-                        $tab[$i]['devoir_note'][$n]=0;
+                        $tab[$i]['devoir_note'][$n]['etat']=$allInterro[$n]['etat'];
+                        $tab[$i]['devoir_note'][$n]['note']=0;
                     }
 
                 }
@@ -171,7 +176,7 @@ class BulletinController extends Controller
                 }else{
                     $moy=0.00000000;
                 }
-                $moy=($moyint+$totalDevoir)/(sizeof($diviseurDevoir)+1);
+               // $moy=($moyint+$totalDevoir)/(sizeof($diviseurDevoir)+1);
                 $totalPoint+=$moy*$classprof[$j]->getClasseMatiere()->getCoefficient();
                 $totalCoeff+=$classprof[$j]->getClasseMatiere()->getCoefficient();
                 $tab[$i]['note'][$j]['Moy']=substr($moy,0,4);
@@ -184,8 +189,15 @@ class BulletinController extends Controller
             $tab[$i]['totalCoeff']=$totalCoeff;
             if($totalCoeff != 0) $moyTotal=$totalPoint/$totalCoeff;
             $tab[$i]['moyTotal']=$moyTotal;
-            $tab2[$i]['moyTotal']=$moyTotal;
-         /*   $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'type_classe'=>$param_type,'annee'=>$annee[0]->getId()));
+
+            $tab2[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
+            $tab2[$i]['moyR']=substr($moy,0,4);
+            $tab3[$i]['eleve']=$eleve[$i]->getEleve()->getPrenom()."  ".$eleve[$i]->getEleve()->getNom();
+            $tab3[$i]['moyTotal']=substr($moyTotal,0,4);
+            $tab3[$i]['obs']="Passe en classe supérieure";
+            if($moyTotal<10)$tab3[$i]['obs']="redouble";
+           $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'type_classe'=>$param_type,'annee'=>$annee[0]->getId()));
+           /*
             if ($param_periode==sizeof($p)){
                 $tab[$i]['moyAn']=$resultat[0]->getMoyAnnuelle();
                 $tab[$i]['rangAn']=$resultat[0]->getRangAnnuelle();
@@ -199,51 +211,52 @@ class BulletinController extends Controller
                     $tab[$i]['rang2']=$resultat[0]->getRang2();
                 }
             }
-
+            */
             if($resultat!=null)
             {
                 if($param_periode==1){
-                    $resultat->setMoyGen1($moyTotal);
-                    $resultat->setEleve($eleve[$i]->getEleve());
-                    $resultat->setClasseMatierePrfesseurAnnee($classprof);
-                    $resultat->setCoeff($totalCoeff);
+                    $resultat[0]->setMoyGen1($moyTotal);
+                    $resultat[0]->setEleve($eleve[$i]->getEleve());
+                    $resultat[0]->setTypeClasse($tc);
+                    $resultat[0]->setAnnee($annee[0]);
                     }
                 if($param_periode==2){
-                    $resultat->setMoyGen2($moyTotal);
-                    if (sizeof($p==2))
+                    $resultat[0]->setMoyGen2($moyTotal);
+                    if (sizeof($p)==2)
                     {
                         $moyAnn=($resultat->getMoyGen1()+$moyTotal)/2;
                         $obs="passe en classe supérieure";
-                        $resultat->setMoyAnnuelle($moyAnn);
+                        $resultat[0]->setMoyAnnuelle($moyAnn);
                         if($moyAnn<10)$obs="Redouble la classe";
-                        $resultat->setObs($obs);
+                        $resultat[0]->setObs($obs);
 
                     }
                 }
                 if($param_periode==3){
-                    $resultat->setMoyGen3($moyTotal);
-                    if (sizeof($p==3))
+                    $resultat[0]->setMoyGen3($moyTotal);
+                    if (sizeof($p)==3)
                     {
                         $moyAnn=($resultat->getMoyGen1()+$resultat->getMoyGen2()+$moyTotal)/3;
                         $obs="passe en classe supérieure";
-                        $resultat->setMoyAnnuelle($moyAnn);
+                        $resultat[0]->setMoyAnnuelle($moyAnn);
                         if($moyAnn<10)$obs="Redouble la classe";
-                        $resultat->setObs($obs);
+                        $resultat[0]->setObs($obs);
                     }
                 }
+                $em->persist($resultat[0]);
             }
             else{
                 $resultat=new Resultat();
                 $resultat->setMoyGen1($moyTotal);
                 $resultat->setEleve($eleve[$i]->getEleve());
-                $resultat->setAnnee($annee);
+                $resultat->setAnnee($annee[0]);
                 $resultat->setTypeClasse($tc);
-                $resultat->setCoeff($totalCoeff);
+                $em->persist($resultat);
             }
-            $em->persist($resultat);
-            $em->flush();*/
+
+            $em->flush();
         }
-        return array('tab'=>$tab,'tab2'=>$this->tri($tab2),'tc'=>$tc,'el'=>$eleve,'p'=>$p);
+        return array('tab'=>$tab,'tab2'=>$this->tri2($tab2),'tab3'=>$this->tri($tab3),'tc'=>$tc,'el'=>$eleve,'p'=>$p);
     }
     private   function  getObservation($note){
         $etat="";
@@ -289,6 +302,21 @@ class BulletinController extends Controller
                     $int=$table[$i];
                     $table[$i]['moyTotal']=$table[$j]['moyTotal'];
                     $table[$j]['moyTotal']=$int;
+                }
+            }
+        }
+        return $table;
+    }  private function tri2($table)
+    {
+        for ($i=0; $i<sizeof($table);$i++)
+        {
+            for ($j=1; $j<sizeof($table);$j++)
+            {
+                if ($table[$i]['moyR']>$table[$j]['moyR'])
+                {
+                    $int=$table[$i];
+                    $table[$i]['moyR']=$table[$j]['moyR'];
+                    $table[$j]['moyR']=$int;
                 }
             }
         }

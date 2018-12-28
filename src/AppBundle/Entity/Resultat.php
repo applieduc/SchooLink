@@ -20,7 +20,7 @@ class Resultat
 
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Annee",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Annee",cascade={"persist"})
      */
     private $annee;
 
@@ -38,35 +38,6 @@ class Resultat
      */
     private $id;
 
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="coeff", type="integer")
-     */
-    private $coeff;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="rang1", type="integer",nullable=true)
-     */
-    private $rang1;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="rang2", type="integer",nullable=true)
-     */
-    private $rang2;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="rang3", type="integer",nullable=true)
-     */
-    private $rang3;
-
     /**
      * @var int
      *
@@ -82,11 +53,10 @@ class Resultat
      */
     private $obs;
 
-
     /**
      * @var float
      *
-     * @ORM\Column(name="moyGen1", type="float")
+     * @ORM\Column(name="moyGen1", type="float", nullable=true)
      */
     private $moyGen1;
 
@@ -103,6 +73,7 @@ class Resultat
      * @ORM\Column(name="moyGen3", type="float", nullable=true)
      */
     private $moyGen3;
+
 
     /**
      * @var float
@@ -122,42 +93,54 @@ class Resultat
         return $this->id;
     }
 
+
+
     /**
-     * Set moyInt1
+     * Set rangAnnuelle
      *
-     * @param float $moyInt1
+     * @param integer $rangAnnuelle
      *
      * @return Resultat
      */
-    public function setMoyInt1($moyInt1)
+    public function setRangAnnuelle($rangAnnuelle)
     {
-        $this->moyInt1 = $moyInt1;
+        $this->rangAnnuelle = $rangAnnuelle;
     
         return $this;
     }
 
     /**
-     * Set coeff
-     *
-     * @param integer $coeff
-     *
-     * @return Resultat
-     */
-    public function setCoeff($coeff)
-    {
-        $this->coeff = $coeff;
-    
-        return $this;
-    }
-
-    /**
-     * Get coeff
+     * Get rangAnnuelle
      *
      * @return integer
      */
-    public function getCoeff()
+    public function getRangAnnuelle()
     {
-        return $this->coeff;
+        return $this->rangAnnuelle;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param integer $obs
+     *
+     * @return Resultat
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+    
+        return $this;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return integer
+     */
+    public function getObs()
+    {
+        return $this->obs;
     }
 
     /**
@@ -231,126 +214,6 @@ class Resultat
     {
         return $this->moyGen3;
     }
-    
-    /**
-     * Set eleve
-     *
-     * @param \AppBundle\Entity\Eleve $eleve
-     *
-     * @return Resultat
-     */
-    public function setEleve(\AppBundle\Entity\Eleve $eleve = null)
-    {
-        $this->eleve = $eleve;
-    
-        return $this;
-    }
-
-    /**
-     * Get eleve
-     *
-     * @return \AppBundle\Entity\Eleve
-     */
-    public function getEleve()
-    {
-        return $this->eleve;
-    }
-
-    /**
-     * Set rang1
-     *
-     * @param integer $rang1
-     *
-     * @return Resultat
-     */
-    public function setRang1($rang1)
-    {
-        $this->rang1 = $rang1;
-    
-        return $this;
-    }
-
-    /**
-     * Get rang1
-     *
-     * @return integer
-     */
-    public function getRang1()
-    {
-        return $this->rang1;
-    }
-
-    /**
-     * Set rang2
-     *
-     * @param integer $rang2
-     *
-     * @return Resultat
-     */
-    public function setRang2($rang2)
-    {
-        $this->rang2 = $rang2;
-    
-        return $this;
-    }
-
-    /**
-     * Get rang2
-     *
-     * @return integer
-     */
-    public function getRang2()
-    {
-        return $this->rang2;
-    }
-
-    /**
-     * Set rang3
-     *
-     * @param integer $rang3
-     *
-     * @return Resultat
-     */
-    public function setRang3($rang3)
-    {
-        $this->rang3 = $rang3;
-    
-        return $this;
-    }
-
-    /**
-     * Get rang3
-     *
-     * @return integer
-     */
-    public function getRang3()
-    {
-        return $this->rang3;
-    }
-
-    /**
-     * Set obs
-     *
-     * @param integer $obs
-     *
-     * @return Resultat
-     */
-    public function setObs($obs)
-    {
-        $this->obs = $obs;
-    
-        return $this;
-    }
-
-    /**
-     * Get obs
-     *
-     * @return integer
-     */
-    public function getObs()
-    {
-        return $this->obs;
-    }
 
     /**
      * Set moyAnnuelle
@@ -374,30 +237,6 @@ class Resultat
     public function getMoyAnnuelle()
     {
         return $this->moyAnnuelle;
-    }
-
-    /**
-     * Set rangAnnuelle
-     *
-     * @param integer $rangAnnuelle
-     *
-     * @return Resultat
-     */
-    public function setRangAnnuelle($rangAnnuelle)
-    {
-        $this->rangAnnuelle = $rangAnnuelle;
-    
-        return $this;
-    }
-
-    /**
-     * Get rangAnnuelle
-     *
-     * @return integer
-     */
-    public function getRangAnnuelle()
-    {
-        return $this->rangAnnuelle;
     }
 
     /**
@@ -446,5 +285,29 @@ class Resultat
     public function getAnnee()
     {
         return $this->annee;
+    }
+
+    /**
+     * Set eleve
+     *
+     * @param \AppBundle\Entity\Eleve $eleve
+     *
+     * @return Resultat
+     */
+    public function setEleve(\AppBundle\Entity\Eleve $eleve = null)
+    {
+        $this->eleve = $eleve;
+    
+        return $this;
+    }
+
+    /**
+     * Get eleve
+     *
+     * @return \AppBundle\Entity\Eleve
+     */
+    public function getEleve()
+    {
+        return $this->eleve;
     }
 }

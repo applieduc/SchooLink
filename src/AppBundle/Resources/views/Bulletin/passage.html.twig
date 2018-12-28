@@ -51,7 +51,39 @@
     </div>
     </div>
         <div class="col-9">
- {{ dump(tab) }}
+            <table id="" class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
+                    <th>eleve</th>
+                    <th>classe</th>
+                    <th>Moy.1</th>
+                    <th>Moy.2</th>
+                    {% if periode | length == 3 %}
+                    <th>Moy.3</th>
+                    {% endif %}
+                    <th>Moy.An</th>
+                    <th>Rang An</th>
+                    <th>Observation</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in tab  %}
+                <tr>
+                <td>{{ i.eleve.nom }} {{ i.eleve.prenom }}</td>
+                <td>{{ i.typeClasse.libelle}} {{ i.typeClasse.classe.libelle }}</td>
+                <td>{{ i.moyGen1}}</td>
+                <td>{{ i.moyGen2}}</td>
+                {% if periode | length == 3 %}
+                <td>{{ i.moyGen3}}</td>
+                {% endif %}
+                <td>{{ i.moyAnnuelle}}</td>
+                <td>{{ i.rangAnnuelle}}</td>
+                <td>{{ i.obs }}</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
 
     </div>

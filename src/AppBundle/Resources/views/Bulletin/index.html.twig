@@ -62,6 +62,7 @@
                 {% endfor %}
 
             </div>
+
             <div class="card">
                  <div class="card-header">
                      <h6><b>Classe</b> {{ tab['tc'].classe.libelle }}{{ tab['tc'].libelle }}</h6>
@@ -82,13 +83,13 @@
                                              <tr>
                                                  <th>Matiere</th>
                                                  <th>Coef.</th>
-                                                 {% if l['interro_name'] is defined %}
+                                                 {#{% if l['interro_name'] is defined %}
                                                      {% for g in l['interro_name'] %}
                                                          {%  if g['etat'] == 1 %}
                                                              <th> {{g['nom']}}</th>
                                                          {% endif %}
                                                      {% endfor %}
-                                                 {% endif %}
+                                                 {% endif %}#}
                                                  <th>Moy.Int</th>
                                                  {% if l['devoir_name'] is defined %}
                                                      {% for h in l['devoir_name'] %}
@@ -105,13 +106,14 @@
                                              </thead>
                                              <tbody>
                                              {% for i in l['note'] %}
-
                                                  <tr>
                                                      <td>{{ i.matiere }}</td>
                                                      <td>{{ i.coeffiecient }}</td>
-                                                     {% if i['interro_note'] is defined %}
-                                                         {% for g in i['interro_note'] %}
-                                                                 <td>{{g}}</td>
+                                                    {# {% if l['interro_note'] is defined %}
+                                                         {% for g in l['interro_note'] %}
+                                                     {% if g['etat'] == 1 %}
+                                                                 <td>{{g['note']}}</td>
+                                                         {% endif %}
                                                          {% endfor %}
                                                      {% else %}
                                                         {% if l['interro_name'] is defined %}
@@ -120,11 +122,13 @@
 
                                                              {% endfor %}
                                                          {% endif %}
-                                                     {% endif %}
+                                                     {% endif %}#}
                                                      <td>{{i['MINT']}}</td>
-                                                     {% if i['devoir_note'] is defined %}
-                                                         {% for h in i['devoir_note'] %}
-                                                                 <td>{{h}}</td>
+                                                     {% if i['dev'] is defined %}
+                                                         {% for h in i['dev'] %}
+                                                     {% if h['etat'] == 1 %}
+                                                                 <td>{{h['note']}}</td>
+                                                         {% endif %}
                                                          {% endfor %}
                                                      {% else %}
                                                          {% if l['devoir_name'] is defined %}
@@ -170,9 +174,30 @@
                                      <span ><b class="mr-3">Moyenne sur 20 :</b> {{ l.moyTotal }}</span>
                                  </div>
                                  <div class="col-3">
-                                     <span ><b class="mr-3">Rang :</b> </span>
+                                     <span ><b class="mr-3">Rang{{  tab['p'].nomPeriode}} : </b>
+                                         {% for b in tab['tab2'] %}
+                                             {%  if b['eleve'] == l['eleve'] %}
+                                                 {{ loop.index }}
+                                             {% endif %}
+                                         {% endfor %}
+                                     </span>
                                  </div>
-
+                                 <div class="col-3">
+                                     <span ><b class="mr-3">Rang annuelle:</b> {% for c in tab['tab3'] %}
+                                         {%  if c['eleve'] == l['eleve'] %}
+                                             {{ loop.index }}
+                                         {% endif %}
+                                         {% endfor %}
+                                     </span>
+                                 </div>  <div class="col-3">
+                                     <span ><b class="mr-3">Décision finale:</b>
+                                         {% for c in tab['tab3'] %}
+                                         {%  if c['eleve'] == l['eleve'] %}
+                                             {{ c['obs']}}
+                                         {% endif %}
+                                         {% endfor %}
+                                     </span>
+                                 </div>
                              </div>
                          </div>
                     {% endfor %}
