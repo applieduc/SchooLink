@@ -70,7 +70,7 @@
                 {% for i in tab  %}
                 <tr>
                 <td>{{ i.eleve.nom }} {{ i.eleve.prenom }}</td>
-                <td>{{ i.typeClasse.libelle}} {{ i.typeClasse.classe.libelle }}</td>
+                <td> {{ i.typeClasse.classe.libelle }} {{ i.typeClasse.libelle}}</td>
                 <td>{{ i.moyGen1}}</td>
                 <td>{{ i.moyGen2}}</td>
                 {% if periode | length == 3 %}
@@ -84,8 +84,47 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
+            {% if tab[0] is defined and  tab[0].actif== 1 %}
+            <form action="{{ path('passage_action') }}" method="post">
+            <div class="row">
+                <div class="col-9">
+                    <input type="hidden" value="{{ param_classe }}" name="classe">
+                    <input type="hidden" value="{{ param_type }}" name="type">
+                    <select class="form-control" name="classe_passe" id="classe_passe">
+                        {% for  i in allClasses %}
+                            <option value="{{ i.id }}">{{ i.libelle }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
+                <div class="col-3">
+                    <input  class="btn btn-success" type="submit" value="Faire passer les  élèves " onclick="return confirm('Voulez vous  vraiment faire passer ses élèves en '+ $('#lcasse_passe').val() +' ?')">
+                </div>
+            </div>
+
+
+
+            </form>
+{% endif %}
+        </div>
+            <div  class="modal fade" id ="classe_modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="{{ path('passage_action') }}" method="post">
+                                <input type="hidden" value="{{ param_classe }}" name="classe">
+                                <input type="hidden" value="{{ param_type }}" name="type">
+                                <select class="form-control" name="calsse_passe">
+                                    {% for  i in allClasses %}
+                                        <option>{{ i.libelle }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 
 {% endblock  %}

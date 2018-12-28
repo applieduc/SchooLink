@@ -37,8 +37,9 @@ class ResultatController extends Controller
     
         $em=$this->getDoctrine()->getManager();
         $ecole=$this->getUser()->getEcole();
-        $annee=$em->getRepository(Annee::class)->findBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-        $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>$annee[0]->getId()));
+       // $annee=$em->getRepository(Annee::class)->findBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $annee=$this->get('session')->get('annee');
+        $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>$annee->getId()));
 
         $classes=$em->getRepository(Classe::class)->findBy(array('ecole'=>$ecole->getId()));
 

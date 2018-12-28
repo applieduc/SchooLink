@@ -37,8 +37,9 @@ class BulletinController extends Controller
     {
         $em=$this->getDoctrine()->getManager();
         $ecole=$this->getUser()->getEcole();
-        $annee=$em->getRepository(Annee::class)->findBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
-        $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>$annee[0]->getId()));
+        //$annee=$em->getRepository(Annee::class)->findBy(array('ecole'=>$ecole->getId(),'cloture'=>0));
+        $annee=$this->get('session')->get('annee');
+        $periode=$em->getRepository(Periode::class)->findBy(array('annee'=>$annee->getId()));
 
         $classes=$em->getRepository(Classe::class)->findBy(array('ecole'=>$ecole->getId()));
 
@@ -196,7 +197,7 @@ class BulletinController extends Controller
             $tab3[$i]['moyTotal']=substr($moyTotal,0,4);
             $tab3[$i]['obs']="Passe en classe supérieure";
             if($moyTotal<10)$tab3[$i]['obs']="redouble";
-           $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'type_classe'=>$param_type,'annee'=>$annee[0]->getId()));
+           $resultat=$em->getRepository(Resultat::class)->findBy(array('eleve'=>$eleve[$i]->getEleve()->getId(),'type_classe'=>$param_type,'annee'=>$annee->getId()));
            /*
             if ($param_periode==sizeof($p)){
                 $tab[$i]['moyAn']=$resultat[0]->getMoyAnnuelle();
@@ -218,7 +219,8 @@ class BulletinController extends Controller
                     $resultat[0]->setMoyGen1($moyTotal);
                     $resultat[0]->setEleve($eleve[$i]->getEleve());
                     $resultat[0]->setTypeClasse($tc);
-                    $resultat[0]->setAnnee($annee[0]);
+                    $resultat[0]->setAnnee($annee);
+                    $resultat[0]->setActif(true);
                     }
                 if($param_periode==2){
                     $resultat[0]->setMoyGen2($moyTotal);
@@ -251,6 +253,7 @@ class BulletinController extends Controller
                 $resultat->setEleve($eleve[$i]->getEleve());
                 $resultat->setAnnee($annee[0]);
                 $resultat->setTypeClasse($tc);
+                $resultat->setActif(true);
                 $em->persist($resultat);
             }
 

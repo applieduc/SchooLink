@@ -60,6 +60,14 @@ class Resultat
      */
     private $moyGen1;
 
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="actif", type="boolean", nullable=true)
+     */
+    private $actif;
+
     /**
      * @var float
      *
@@ -309,5 +317,29 @@ class Resultat
     public function getEleve()
     {
         return $this->eleve;
+    }
+
+    /**
+     * Set actif
+     *
+     * @param boolean $actif
+     *
+     * @return Resultat
+     */
+    public function setActif($actif)
+    {
+        $this->actif = $actif;
+    
+        return $this;
+    }
+
+    /**
+     * Get actif
+     *
+     * @return boolean
+     */
+    public function getActif()
+    {
+        return $this->actif;
     }
 }
